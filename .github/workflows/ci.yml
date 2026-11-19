@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        year: ['0000']
+        year: ['0000', '2015']
     defaults:
       run:
         working-directory: ${{ matrix.year }}
