@@ -23,4 +23,18 @@ class Day02Test extends munit.ScalaCheckSuite:
     val input = readFile("inputs/Day02.txt")
     assertEquals(part1(input), 1606483)
 
+  test("Day02 - part2 - official samples"):
+    assertEquals(ribbon((2, 3, 4)), 34)
+    assertEquals(ribbon((1, 1, 10)), 14)
+
+  test("Day02 - part2 - cube"):
+    assertEquals(ribbon((1, 1, 1)), 5)
+
+  test("Day02 - part2 - two equal dimensions"):
+    assertEquals(ribbon((2, 2, 3)), 20)
+
+  test("Day02 - part2 - real input"):
+    val input = readFile("inputs/Day02.txt")
+    assertEquals(part2(input), 3842356)
+
 end Day02Test

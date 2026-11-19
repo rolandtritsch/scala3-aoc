@@ -55,8 +55,25 @@ object Day02:
     dimensions.map(wrappingPaper).sum
   end part1
 
-  /** part2 is not assigned yet and must not be treated as solved. */
-  def part2(dimensions: Seq[(Int, Int, Int)]): Int = ???
+  /** @return
+    *   the feet of ribbon needed for a single present: the smallest perimeter of any one face
+    *   (twice the sum of the two shortest sides) plus a bow equal to the present's volume.
+    */
+  def ribbon(dimensions: (Int, Int, Int)): Int =
+    val (a, b, c) = dimensions
+    require(a > 0 && b > 0 && c > 0, "dimensions must be positive")
+    val sorted = Seq(a, b, c).sorted
+    2 * (sorted(0) + sorted(1)) + a * b * c
+  end ribbon
+
+  /** @return
+    *   the total riba in feet needed for all presents: for each present, the smallest perimeter of
+    *   any one face plus its volume (the bow), summed over the whole list. Runs in O(n) time with
+    *   O(1) extra space for n presents.
+    */
+  def part2(dimensions: Seq[(Int, Int, Int)]): Int =
+    logger.debug(s"dimensions count: ${dimensions.length}")
+    dimensions.map(ribbon).sum
   end part2
 
 end Day02
