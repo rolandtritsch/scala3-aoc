@@ -30,10 +30,13 @@ helpers before creating a new one; these checkout entry points only delegate.
   there is no skip-tests option. Run before making review improvements.
 - `scripts/extract_review_provenance.py --run-id RUN_ID [--issue-id ISSUE_ID]`
   pulls a solver run's evidence from the authenticated API: run metadata,
-  logBytes, parsed tool-call counts, files touched, bash commands, and any
-  external URLs. It prints a fenced JSON fragment for the
-  `provenance.solverRuns[]` entry of the aoc-review-result block. It only reads;
-  the reviewer still inspects the log to complete the contamination audit.
+  logBytes, parsed tool-call counts, files touched, bash commands, any
+  external URLs, and a decoded-log keyword scan for solution-source signals.
+  `--issue-id` alone lists the issue's runs so you can pick the solver run;
+  `--log-file FILE` scans a saved redacted log excerpt offline (no fragment).
+  It prints a fenced JSON fragment for the `provenance.solverRuns[]` entry of
+  the aoc-review-result block. It only reads; the reviewer still inspects the
+  log to complete the contamination audit.
 - For noncomputational finales, follow the authenticated completion checks in
   the company skills instead of inventing code or a publication receipt.
 
