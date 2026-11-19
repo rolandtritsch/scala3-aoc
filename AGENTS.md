@@ -9,6 +9,16 @@
   `src/main/resources/inputs`, and tests under `src/test/scala`.
 - `problems/` holds puzzle descriptions. Keep Day00 as the runnable example.
 - Build configuration and tool versions belong to each year's directory.
+- `scripts/` holds reusable workflow helpers. `skills/` holds distilled
+  workflow skills with their own `SKILL.md`.
+
+## Workflow helpers
+
+- `scripts/verify_review_block.py` validates a review's fenced
+  `aoc-review-result` JSON block (missing/bad/mismatched values) before the
+  review issue is marked done. Pipe the comment body to stdin and pass
+  `--issue-id` (review issue UUID), `--title` (issue title), and optional
+  `--commit` (reviewed solution commit). Exit 0 only on a valid block.
 
 ## Making changes
 
