@@ -22,6 +22,12 @@ Inputs
                          (JSON as returned by /api/heartbeat-runs/{id}/log)
                          instead of fetching it. Skips run metadata and the
                          fragment; used for offline validation of the scan.
+  --commit FULL_SHA      Reviewed solution commit. Confirms the audited run's
+                         decoded log references that exact full (and short)
+                         hash, binding the run to the reviewed commit. Fails
+                         the audit (exit 1) if absent, so a run that did not
+                         produce/publish the reviewed commit cannot clear
+                         provenance silently.
   --no-keyword-scan      Disable the decoded-log keyword contamination scan.
 
 Environment (auto-injected): PAPERCLIP_API_URL, PAPERCLIP_API_KEY.
@@ -39,8 +45,10 @@ Validation
   toolCalls is the parsed count, and the emitted fragment parses as JSON.
   Run --issue-id alone and confirm it lists runs and exits 0. Run --log-file
   against a saved excerpt with and without planted contamination keywords and
-  confirm the scan reports exactly those hits. Failure cases: missing/invalid
-  run id, empty or unreadable log (exit non-zero).
+  confirm the scan reports exactly those hits. Pass --commit with both a
+  matching full hash (exit 0) and a bogus hash (exit 1) to confirm the binding
+  check is enforced. Failure cases: missing/invalid run id, empty or unreadable
+  log (exit non-zero), or --commit not present in the decoded log (exit 1).
 """
 
 import argparse
@@ -177,7 +185,43 @@ def keyword_hits(records, limit=200):
     return hits
 
 
-def summarize(run_id=None, issue_id=None, log_records=None, scan_keywords=True):
+def commit_binding(records, full_sha):
+    """Confirm the decoded log references the reviewed full commit hash.
+
+    Searches tool inputs and outputs as well as assistant text chunks, so a
+    run that produced or published the reviewed commit (e.g. a publish receipt
+    echoed to the bash output) binds even when the hash only appears after
+    the tool ran. Returns (full_hits, short_only) counts for the full and the
+    short 7-char form.
+    """
+    short = full_sha[:7]
+    full_hits = 0
+    short_only = 0
+    for rec in records:
+        chunk = rec.get("chunk")
+        if not chunk:
+            continue
+        try:
+            inner = json.loads(chunk)
+        except ValueError:
+            continue
+        part = inner.get("part", {})
+        texts = []
+        if inner.get("type") == "tool_use":
+            state = part.get("state") or {}
+            texts.append(json.dumps(state.get("input") or {}))
+            texts.append(json.dumps(state.get("output") or {}))
+        else:
+            texts.append(part.get("text") or part.get("output") or "")
+        for text in texts:
+            full_hits += len(re.findall(re.escape(full_sha), text))
+            short_only += len(re.findall(
+                r"(?<![0-9a-f])" + re.escape(short) + r"(?![0-9a-f])", text))
+    return full_hits, short_only
+
+
+def summarize(run_id=None, issue_id=None, log_records=None, commit=None,
+              scan_keywords=True):
     if issue_id:
         runs = api_get(f"/api/issues/{issue_id}/runs")
         print("Runs for issue {0}:".format(issue_id))
@@ -264,10 +308,24 @@ def summarize(run_id=None, issue_id=None, log_records=None, scan_keywords=True):
         else:
             print("\nKeyword scan: no solution-source keyword hits.")
 
+    binding_ok = True
+    if commit:
+        full_hits, short_only = commit_binding(records, commit)
+        print("\nCommit binding (--commit {0}):".format(commit[:7]))
+        print("  full-hash occurrences in decoded log: {0}".format(full_hits))
+        print("  short-hash occurrences (word-boundary; weaker signal): {0}".format(
+            short_only))
+        if full_hits > 0:
+            print("  Reviewed commit bound to this run: yes")
+        else:
+            print("  Reviewed commit bound to this run: NO (not found in the log)",
+                  file=sys.stderr)
+            binding_ok = False
+
     tool_calls = sum(tools.values())
     if run_id is None:
         print("\n(--log-file mode: no provenance fragment for a non-fetched run.)")
-        return 0
+        return 0 if binding_ok else 1
     fragment = {
         "runId": run_id,
         "logBytes": log_bytes,
@@ -282,6 +340,10 @@ def summarize(run_id=None, issue_id=None, log_records=None, scan_keywords=True):
         print("\nWARNING: empty tool calls or zero log bytes; treat coverage as unknown.",
               file=sys.stderr)
         return 1
+    if not binding_ok:
+        print("WARNING: --commit supplied but not found in the decoded log.",
+              file=sys.stderr)
+        return 1
     return 0
 
 
@@ -292,6 +354,8 @@ def main(argv=None):
     parser.add_argument("--log-file", help="scan a saved redacted log excerpt instead of fetching")
     parser.add_argument("--no-keyword-scan", action="store_true",
                         help="disable the decoded-log keyword contamination scan")
+    parser.add_argument("--commit", metavar="FULL_SHA",
+                        help="reviewed solution commit to bind to this run")
     args = parser.parse_args(argv)
 
     if args.log_file:
@@ -311,11 +375,12 @@ def main(argv=None):
             except ValueError:
                 continue
         return summarize(issue_id=args.issue_id, log_records=records,
+                         commit=args.commit,
                          scan_keywords=not args.no_keyword_scan)
 
     if not args.run_id and not args.issue_id:
         parser.error("provide --run-id, --issue-id, or --log-file")
-    return summarize(args.run_id, args.issue_id,
+    return summarize(args.run_id, args.issue_id, commit=args.commit,
                      scan_keywords=not args.no_keyword_scan)
 
 

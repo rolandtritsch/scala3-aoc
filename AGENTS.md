@@ -28,12 +28,17 @@ helpers before creating a new one; these checkout entry points only delegate.
   formatting, active assigned-day tests, exact runner answer and clean
   HEAD/tracking/live-remote equality before and after checks. Commit is required;
   there is no skip-tests option. Run before making review improvements.
-- `scripts/extract_review_provenance.py --run-id RUN_ID [--issue-id ISSUE_ID]`
+- `scripts/extract_review_provenance.py --run-id RUN_ID [--issue-id ISSUE_ID]
+  [--commit FULL_SHA]`
   pulls a solver run's evidence from the authenticated API: run metadata,
   logBytes, parsed tool-call counts, files touched, bash commands, any
   external URLs, and a decoded-log keyword scan for solution-source signals.
   `--issue-id` alone lists the issue's runs so you can pick the solver run;
   `--log-file FILE` scans a saved redacted log excerpt offline (no fragment).
+  `--commit FULL_SHA` binds the audited run to the reviewed commit (searches
+  tool inputs/outputs for the full hash) and exits non-zero when the reviewed
+  commit is absent from the log, so a run that did not produce/publish it
+  cannot clear provenance silently.
   It prints a fenced JSON fragment for the `provenance.solverRuns[]` entry of
   the aoc-review-result block. It only reads; the reviewer still inspects the
   log to complete the contamination audit.
