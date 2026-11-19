@@ -19,6 +19,12 @@
   review issue is marked done. Pipe the comment body to stdin and pass
   `--issue-id` (review issue UUID), `--title` (issue title), and optional
   `--commit` (reviewed solution commit). Exit 0 only on a valid block.
+- `scripts/verify_review_evidence.py` re-checks the mechanical review evidence
+  read-only: clean tree, HEAD == origin/main, reviewed commit == HEAD, the
+  year's `sbt --batch 'testOnly *'`, and the exact `DayNN - partP:` runner
+  answer. Pass `--year`, `--day`, `--part`, `--answer`, optional `--commit`,
+  `--repo` (defaults to `AOC_REPO_DIR`), and `--skip-sbt` to skip the slow
+  sbt checks. Exit 0 only when all checks pass.
 
 ## Making changes
 
