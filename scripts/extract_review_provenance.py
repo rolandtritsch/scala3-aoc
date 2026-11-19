@@ -29,8 +29,16 @@ Inputs
                          produce/publish the reviewed commit cannot clear
                          provenance silently.
   --no-keyword-scan      Disable the decoded-log keyword contamination scan.
+  --find-solver --year YYYY --day NN --part P --commit FULL_SHA
+                         Locate the solve issue for the given year/day/part in
+                         this company, list its runs, audit each succeeded run
+                         for the reviewed commit, and print the provenance
+                         fragment for the run(s) that reference it. Automates
+                         the manual "grep issue titles for the solve issue,
+                         then try each run until --commit binds" step.
 
-Environment (auto-injected): PAPERCLIP_API_URL, PAPERCLIP_API_KEY.
+Environment (auto-injected): PAPERCLIP_API_URL, PAPERCLIP_API_KEY,
+PAPERCLIP_COMPANY_ID.
 
 Output
 ------
@@ -220,6 +228,58 @@ def commit_binding(records, full_sha):
     return full_hits, short_only
 
 
+def find_solve_issue(year, day, part):
+    """Return the id of this company's `AoC YYYY DayNN partP: solve` issue."""
+    company = os.environ.get("PAPERCLIP_COMPANY_ID", "")
+    if not company:
+        raise SystemExit("PAPERCLIP_COMPANY_ID is required for --find-solver")
+    title = "AoC {0} Day{1:02d} part{2}: solve".format(year, day, part)
+    issues = api_get("/api/companies/{0}/issues".format(company))
+    for issue in issues:
+        if issue.get("title") == title:
+            return issue.get("id")
+    raise SystemExit("no solve issue found with title: {0}".format(title))
+
+
+def find_solver_run(year, day, part, commit):
+    """Audit every succeeded run of the solve issue and report the one(s)
+    whose decoded log references the reviewed commit. Prints the provenance
+    fragment for the bound run and returns 0, or 1 when none binds."""
+    issue_id = find_solve_issue(year, day, part)
+    print("Solve issue: {0}".format(issue_id))
+    runs = api_get("/api/issues/{0}/runs".format(issue_id))
+    bound = []
+    for r in runs:
+        if r.get("status") != "succeeded":
+            continue
+        run_id = r.get("id") or r.get("runId")
+        print("\n--- auditing run {0} (agent {1}) ---".format(
+            run_id, r.get("agentId") or r.get("agent") or "?"))
+        meta = api_get("/api/heartbeat-runs/{0}".format(run_id))
+        log_bytes = meta.get("logBytes", 0)
+        print("  logBytes: {0}".format(log_bytes))
+        records, _ = fetch_log(run_id)
+        full_hits, short_only = commit_binding(records, commit)
+        print("  commit {0}: full-hash hits={1}, short-hash hits={2}".format(
+            commit[:7], full_hits, short_only))
+        if full_hits > 0:
+            tools = Counter()
+            for chunk in iter_tool_chunks(records):
+                tools[chunk.get("part", {}).get("tool")] += 1
+            tool_calls = sum(tools.values())
+            bound.append({"runId": run_id, "logBytes": log_bytes,
+                          "toolCalls": tool_calls, "complete": True})
+    if not bound:
+        print("\nNo succeeded run references commit {0}.".format(commit[:7]))
+        return 1
+    print("\nFragments for provenance.solverRuns[] (audit each for contamination):")
+    for frag in bound:
+        print("```aoc-solver-log")
+        print(json.dumps(frag))
+        print("```")
+    return 0
+
+
 def summarize(run_id=None, issue_id=None, log_records=None, commit=None,
               scan_keywords=True):
     if issue_id:
@@ -354,9 +414,19 @@ def main(argv=None):
     parser.add_argument("--log-file", help="scan a saved redacted log excerpt instead of fetching")
     parser.add_argument("--no-keyword-scan", action="store_true",
                         help="disable the decoded-log keyword contamination scan")
+    parser.add_argument("--find-solver", action="store_true",
+                        help="locate the solve issue's run bound to --commit")
+    parser.add_argument("--year", type=int, help="year for --find-solver")
+    parser.add_argument("--day", type=int, help="day for --find-solver")
+    parser.add_argument("--part", type=int, help="part for --find-solver")
     parser.add_argument("--commit", metavar="FULL_SHA",
                         help="reviewed solution commit to bind to this run")
     args = parser.parse_args(argv)
+
+    if args.find_solver:
+        if not (args.year and args.day and args.part and args.commit):
+            parser.error("--find-solver requires --year --day --part --commit")
+        return find_solver_run(args.year, args.day, args.part, args.commit)
 
     if args.log_file:
         try:

@@ -42,6 +42,12 @@ helpers before creating a new one; these checkout entry points only delegate.
   It prints a fenced JSON fragment for the `provenance.solverRuns[]` entry of
   the aoc-review-result block. It only reads; the reviewer still inspects the
   log to complete the contamination audit.
+  `--find-solver --year YYYY --day NN --part P --commit FULL_SHA` automates
+  the initial lookup: it locates this company's `AoC YYYY DayNN partP: solve`
+  issue, audits every succeeded run for the reviewed commit, and prints the
+  provenance fragment for the run(s) that reference it (exits non-zero when
+  none binds). Use it to avoid hand-grepping issue titles and trying runs one
+  by one.
 - For noncomputational finales, follow the authenticated completion checks in
   the company skills instead of inventing code or a publication receipt.
 
