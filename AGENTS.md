@@ -14,17 +14,22 @@
 
 ## Workflow helpers
 
-- `scripts/verify_review_block.py` validates a review's fenced
-  `aoc-review-result` JSON block (missing/bad/mismatched values) before the
-  review issue is marked done. Pipe the comment body to stdin and pass
-  `--issue-id` (review issue UUID), `--title` (issue title), and optional
-  `--commit` (reviewed solution commit). Exit 0 only on a valid block.
-- `scripts/verify_review_evidence.py` re-checks the mechanical review evidence
-  read-only: clean tree, HEAD == origin/main, reviewed commit == HEAD, the
-  year's `sbt --batch 'testOnly *'`, and the exact `DayNN - partP:` runner
-  answer. Pass `--year`, `--day`, `--part`, `--answer`, optional `--commit`,
-  `--repo` (defaults to `AOC_REPO_DIR`), and `--skip-sbt` to skip the slow
-  sbt checks. Exit 0 only when all checks pass.
+The company package owns verification logic. Set `AOC_COMPANY_PACKAGE_DIR` to
+its deployed root (default `/paperclip/company-packages/pcc-aoc-solver-scala`).
+Runtime skill-loader directories may omit scripts. Inspect existing bundled
+helpers before creating a new one; these checkout entry points only delegate.
+
+- `scripts/verify_review_block.py --issue-file /scratch/issue.json
+  --body-file /scratch/report.md` checks identity, the submitter receipt's full
+  solution commit, and explicit solver-log provenance coverage. Fetch the full
+  issue JSON first. Complete the actual tool-log audit before declaring clearance.
+- `scripts/verify_review_evidence.py --year YYYY --day NN --part P
+  --answer ANSWER --commit FULL_SHA` delegates to the publisher's verify mode:
+  formatting, active assigned-day tests, exact runner answer and clean
+  HEAD/tracking/live-remote equality before and after checks. Commit is required;
+  there is no skip-tests option. Run before making review improvements.
+- For noncomputational finales, follow the authenticated completion checks in
+  the company skills instead of inventing code or a publication receipt.
 
 ## Making changes
 
