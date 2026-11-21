@@ -29,12 +29,16 @@ helpers before creating a new one; these checkout entry points only delegate.
   HEAD/tracking/live-remote equality before and after checks. Commit is required;
   there is no skip-tests option. Run before making review improvements.
 - `scripts/extract_review_provenance.py --run-id RUN_ID [--issue-id ISSUE_ID]
-  [--commit FULL_SHA]`
+  [--commit FULL_SHA] [--day NN]`
   pulls a solver run's evidence from the authenticated API: run metadata,
   logBytes, parsed tool-call counts, files touched, bash commands, any
   external URLs, and a decoded-log keyword scan for solution-source signals.
   `--issue-id` alone lists the issue's runs so you can pick the solver run;
   `--log-file FILE` scans a saved redacted log excerpt offline (no fragment).
+  `--day NN` scopes the keyword scan to the reviewed day, adding day-specific
+  patterns ("day NN solution", a `dayNN`/`day-NN` GitHub path, ...) on top of
+  the generic cross-day scan; use it for every review so day-specific solution
+  signals are not missed.
   `--commit FULL_SHA` binds the audited run to the reviewed commit (searches
   tool inputs/outputs for the full hash) and exits non-zero when the reviewed
   commit is absent from the log, so a run that did not produce/publish it

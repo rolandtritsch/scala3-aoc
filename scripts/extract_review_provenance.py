@@ -29,6 +29,12 @@ Inputs
                          produce/publish the reviewed commit cannot clear
                          provenance silently.
   --no-keyword-scan      Disable the decoded-log keyword contamination scan.
+  --day NN               Scope the keyword scan to the reviewed day: adds
+                         day-specific solution-source patterns (e.g. "day 4
+                         solution", a day04 GitHub repository path) on top of
+                         the generic scan. The generic scan alone only covers
+                         cross-day sites (Reddit, StackOverflow, ...) and the
+                         old hard-coded Day02 patterns.
   --find-solver --year YYYY --day NN --part P --commit FULL_SHA
                          Locate the solve issue for the given year/day/part in
                          this company, list its runs, audit each succeeded run
@@ -164,6 +170,8 @@ def external_urls(text):
 # Solution-source signals the reviewer must triage. "editorial"/"walkthrough"
 # also appear in the company skills' provenance warnings, so each hit is
 # printed with the tool or text chunk it came from for the reviewer to judge.
+# Day-specific patterns are added per reviewed day so e.g. "day 4 solution"
+# or a day04 GitHub repository is flagged, not just Day02.
 KEYWORDS = (
     r"reddit\.com",
     r"stackoverflow",
@@ -173,15 +181,35 @@ KEYWORDS = (
     r"aoc-solutions",
     r"answer list",
     r"spreadsheet of answers",
-    r"github\.com/[^'\"]*/[^'\"]*day[_-]?0?2",
-    r"solution for day 2",
-    r"day 2 solution",
 )
 
 
-def keyword_hits(records, limit=200):
+def day_keywords(day):
+    """Return day-specific solution-source regexes for the reviewed day.
+
+    Catches "day NN solution", "solution for day NN", "day NN answer", and
+    solution repositories whose path names the day (day04, day-04, day4, ...).
+    Patterns are kept narrow to avoid self-referential false positives (the
+    solver's own handoff legitimately says "Day04 ... solution commit"). The
+    generic KEYWORDS above still catch cross-day sites (Reddit, SO, ...).
+    """
+    d1 = str(day)
+    return (
+        rf"github\.com/[^'\"]*/[^'\"]*day[_-]?0?{day}\b",
+        rf"\bday\s+{d1}\s+solution\b",
+        rf"\bsolution\s+for\s+day\s+{d1}\b",
+        rf"\bday\s+{d1}\s+answer\b",
+        rf"\banswer\s+for\s+day\s+{d1}\b",
+    )
+
+
+def keyword_hits(records, day=None, limit=200):
     """Return (keyword, source_label, snippet) hits from decoded tool inputs
-    and text chunks. `source_label` is the tool name or "text"."""
+    and text chunks. `source_label` is the tool name or "text". When `day` is
+    given, day-specific solution patterns are added to the generic scan."""
+    keywords = list(KEYWORDS)
+    if day:
+        keywords.extend(day_keywords(day))
     hits = []
     seen = set()
     for rec in records:
@@ -203,7 +231,7 @@ def keyword_hits(records, limit=200):
         else:
             continue
         low = text.lower()
-        for kw in KEYWORDS:
+        for kw in keywords:
             for m in re.finditer(kw, low):
                 if len(seen) >= limit:
                     return hits
@@ -312,7 +340,7 @@ def find_solver_run(year, day, part, commit):
 
 
 def summarize(run_id=None, issue_id=None, log_records=None, commit=None,
-              scan_keywords=True):
+              scan_keywords=True, day=None):
     if issue_id:
         runs = api_get(f"/api/issues/{issue_id}/runs")
         print("Runs for issue {0}:".format(issue_id))
@@ -391,7 +419,7 @@ def summarize(run_id=None, issue_id=None, log_records=None, commit=None,
         print("  {0}".format(cmd))
 
     if scan_keywords:
-        hits = keyword_hits(records)
+        hits = keyword_hits(records, day=day)
         if hits:
             print("\nKeyword scan hits (triage each: solution-source signal or benign):")
             for kw, source, snippet in hits:
@@ -448,7 +476,8 @@ def main(argv=None):
     parser.add_argument("--find-solver", action="store_true",
                         help="locate the solve issue's run bound to --commit")
     parser.add_argument("--year", type=int, help="year for --find-solver")
-    parser.add_argument("--day", type=int, help="day for --find-solver")
+    parser.add_argument("--day", type=int,
+                       help="day for --find-solver or to scope the keyword scan")
     parser.add_argument("--part", type=int, help="part for --find-solver")
     parser.add_argument("--commit", metavar="FULL_SHA",
                         help="reviewed solution commit to bind to this run")
@@ -476,13 +505,13 @@ def main(argv=None):
             except ValueError:
                 continue
         return summarize(issue_id=args.issue_id, log_records=records,
-                         commit=args.commit,
+                         commit=args.commit, day=args.day,
                          scan_keywords=not args.no_keyword_scan)
 
     if not args.run_id and not args.issue_id:
         parser.error("provide --run-id, --issue-id, or --log-file")
     return summarize(args.run_id, args.issue_id, commit=args.commit,
-                     scan_keywords=not args.no_keyword_scan)
+                     scan_keywords=not args.no_keyword_scan, day=args.day)
 
 
 if __name__ == "__main__":
