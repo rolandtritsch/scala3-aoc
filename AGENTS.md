@@ -38,7 +38,10 @@ helpers before creating a new one; these checkout entry points only delegate.
   `--commit FULL_SHA` binds the audited run to the reviewed commit (searches
   tool inputs/outputs for the full hash) and exits non-zero when the reviewed
   commit is absent from the log, so a run that did not produce/publish it
-  cannot clear provenance silently.
+  cannot clear provenance silently. API credentials are resolved from
+  `AOC_PAPERCLIP_API_URL`/`AOC_PAPERCLIP_API_KEY` when present (the
+  host-verified pair in bridge/queue runs) and fall back to the standard
+  `PAPERCLIP_API_URL`/`PAPERCLIP_API_KEY`, so no manual export is needed.
   It prints a fenced JSON fragment for the `provenance.solverRuns[]` entry of
   the aoc-review-result block. It only reads; the reviewer still inspects the
   log to complete the contamination audit.

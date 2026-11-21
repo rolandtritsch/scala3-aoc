@@ -38,7 +38,10 @@ Inputs
                          then try each run until --commit binds" step.
 
 Environment (auto-injected): PAPERCLIP_API_URL, PAPERCLIP_API_KEY,
-PAPERCLIP_COMPANY_ID.
+PAPERCLIP_COMPANY_ID. In bridge/queue environments the run's `AOC_PAPERCLIP_*`
+variables carry the host-API credentials that actually verify against
+`PAPERCLIP_API_URL`, so those are preferred when present; otherwise the script
+falls back to the standard `PAPERCLIP_*` pair.
 
 Output
 ------
@@ -68,10 +71,32 @@ import urllib.request
 from collections import Counter
 from urllib.error import HTTPError, URLError
 
-API = os.environ.get("PAPERCLIP_API_URL", "").rstrip("/")
-KEY = os.environ.get("PAPERCLIP_API_KEY", "")
 MAX_CALL = 1024 * 1024  # log endpoint max 1 MiB per call
 ALLOWED_API_HOSTS = {"paperclip.tritsch.org", "paperclip.ing"}
+
+
+def resolve_api():
+    """Return (base_url, key) preferring the host-verified AOC_* pair.
+
+    In bridge/queue run environments the injected `PAPERCLIP_API_KEY` is a
+    short-lived bridge token that does not verify against the host API, while
+    the `AOC_PAPERCLIP_API_URL`/`AOC_PAPERCLIP_API_KEY` pair carries the real
+    host credentials. Prefer those when present so reviewers do not have to
+    export them by hand; otherwise fall back to the standard pair.
+    """
+    pairs = (
+        ("AOC_PAPERCLIP_API_URL", "AOC_PAPERCLIP_API_KEY"),
+        ("PAPERCLIP_API_URL", "PAPERCLIP_API_KEY"),
+    )
+    for url_var, key_var in pairs:
+        base = os.environ.get(url_var, "").rstrip("/")
+        key = os.environ.get(key_var, "")
+        if base and key:
+            return base, key
+    raise SystemExit("PAPERCLIP_API_URL and PAPERCLIP_API_KEY are required")
+
+
+API, KEY = resolve_api()
 
 
 def api_get(path):
@@ -228,9 +253,15 @@ def commit_binding(records, full_sha):
     return full_hits, short_only
 
 
+def resolve_company_id():
+    """Return the company id, preferring the AOC_* bridge variant when set."""
+    return (os.environ.get("AOC_PAPERCLIP_COMPANY_ID")
+            or os.environ.get("PAPERCLIP_COMPANY_ID", ""))
+
+
 def find_solve_issue(year, day, part):
     """Return the id of this company's `AoC YYYY DayNN partP: solve` issue."""
-    company = os.environ.get("PAPERCLIP_COMPANY_ID", "")
+    company = resolve_company_id()
     if not company:
         raise SystemExit("PAPERCLIP_COMPANY_ID is required for --find-solver")
     title = "AoC {0} Day{1:02d} part{2}: solve".format(year, day, part)
