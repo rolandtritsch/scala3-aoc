@@ -22,4 +22,16 @@ class Day04Test extends munit.ScalaCheckSuite:
     val input = readFile("inputs/Day04.txt")
     assertEquals(part1(input), 254575)
 
+  test("Day04 - part2 - empty key is rejected"):
+    intercept[IllegalArgumentException](part2(""))
+
+  test("Day04 - part2 - found hash actually has the required prefix"):
+    val n = part2("bgvyzdsv")
+    assert(md5Hex("bgvyzdsv" + n).startsWith("000000"), s"hash of bgvyzdsv$n lacks six zeroes")
+    assert(!md5Hex("bgvyzdsv" + (n - 1)).startsWith("000000"), s"n-1 already matches")
+
+  test("Day04 - part2 - real input"):
+    val input = readFile("inputs/Day04.txt")
+    assertEquals(part2(input), 1038736)
+
 end Day04Test
