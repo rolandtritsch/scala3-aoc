@@ -12,56 +12,34 @@
 - `scripts/` holds reusable workflow helpers. `skills/` holds distilled
   workflow skills with their own `SKILL.md`.
 
-## Workflow helpers
+## Company execution
 
-The company package owns verification logic. Set `AOC_COMPANY_PACKAGE_DIR` to
-its deployed root (default `/paperclip/company-packages/pcc-aoc-solver-scala`).
-Runtime skill-loader directories may omit scripts. Inspect existing bundled
-helpers before creating a new one; these checkout entry points only delegate.
+The current company has CTO, Gatherer, Solver, and Submitter roles. There is
+no Reviewer, source audit, or algorithm assessment. Keep the instruction to
+solve from first principles without claiming independently audited provenance.
 
-- `scripts/verify_review_block.py --issue-file /scratch/issue.json
-  --body-file /scratch/report.md` checks identity, the submitter receipt's full
-  solution commit, and explicit solver-log provenance coverage. Fetch the full
-  issue JSON first. Complete the actual tool-log audit before declaring clearance.
-- `scripts/verify_review_evidence.py --year YYYY --day NN --part P
-  --answer ANSWER --commit FULL_SHA` delegates to the publisher's verify mode:
-  formatting, active assigned-day tests, exact runner answer and clean
-  HEAD/tracking/live-remote equality before and after checks. Commit is required;
-  there is no skip-tests option. Run before making review improvements.
-- `scripts/extract_review_provenance.py --run-id RUN_ID [--issue-id ISSUE_ID]
-  [--commit FULL_SHA] [--day NN]`
-  pulls a solver run's evidence from the authenticated API: run metadata,
-  logBytes, parsed tool-call counts, files touched, bash commands, any
-  external URLs, and a decoded-log keyword scan for solution-source signals.
-  `--issue-id` alone lists the issue's runs so you can pick the solver run;
-  `--log-file FILE` scans a saved redacted log excerpt offline (no fragment).
-  `--day NN` scopes the keyword scan to the reviewed day, adding day-specific
-  patterns ("day NN solution", a `dayNN`/`day-NN` GitHub path, ...) on top of
-  the generic cross-day scan; use it for every review so day-specific solution
-  signals are not missed.
-  `--commit FULL_SHA` binds the audited run to the reviewed commit (searches
-  tool inputs/outputs for the full hash) and exits non-zero when the reviewed
-  commit is absent from the log, so a run that did not produce/publish it
-  cannot clear provenance silently. API credentials are resolved from
-  `AOC_PAPERCLIP_API_URL`/`AOC_PAPERCLIP_API_KEY` when present (the
-  host-verified pair in bridge/queue runs) and fall back to the standard
-  `PAPERCLIP_API_URL`/`PAPERCLIP_API_KEY`, so no manual export is needed.
-  It prints a fenced JSON fragment for the `provenance.solverRuns[]` entry of
-  the aoc-review-result block. It only reads; the reviewer still inspects the
-  log to complete the contamination audit.
-  `--find-solver --year YYYY --day NN --part P --commit FULL_SHA` automates
-  the initial lookup: it locates this company's `AoC YYYY DayNN partP: solve`
-  issue, audits every succeeded run for the reviewed commit, and prints the
-provenance fragment for the run(s) that reference it (exits non-zero when
-   none binds). Use it to avoid hand-grepping issue titles and trying runs one
-   by one. When this company has no current-cycle `solve` issue for the part,
-   it prints a reconcile diagnostic (exit 2): the review is CTO-reconciled
-   historical accepted work whose original solver derivation log predates the
-   current cycle and is not retrievable here. That is a genuine provenance
-   evidence gap: record provenance `"unknown"` (or escalate to the CTO) rather
-   than certifying `"clear"` from the CTO reconcile run alone.
-- For noncomputational finales, follow the authenticated completion checks in
-  the company skills instead of inventing code or a publication receipt.
+Executable company helpers arrive as the complete imported `aoc-runtime`
+skill. Use `AOC_RUNTIME_DIR` and the assigned `AOC_REPO_DIR`; the image has
+no baked company package. Publish with:
+
+```bash
+python3 "$AOC_RUNTIME_DIR/scripts/entry.py" publish --answer ANSWER --files YEAR/path ...
+```
+
+Only CTO assigns stages and advances progress. `.aoc/owner.json` binds the
+repository to one company generation. `.aoc/progress.json` records verified
+per-part completion against the authenticated AoC account. `LAST.md` is
+historical and must not control selection. The workspace is a cache, never
+an authority for acceptance or published state.
+
+The helper verifies formatting, positive executed assigned-day tests,
+full-year tests, exact runner output, and publication. It records the result
+before closing the stage; notification occurs after releasing the mutation
+lock. Never create a downstream issue or advance the index manually.
+
+Legacy review/provenance scripts under `scripts/` are historical tools, not
+required company stages. Do not run them to gate progress. For finales, follow
+only the authenticated site's actual interaction; never invent an answer.
 
 ## Making changes
 
@@ -79,9 +57,9 @@ Run commands inside the affected year directory. For the template:
 
 ```bash
 cd 0000
-sbt --batch 'scalafmtAll; scalafmtSbt'
-sbt --batch 'clean; compile; testOnly *'
-sbt --batch 'scalafmtCheckAll; scalafmtSbtCheck; run'
+sbt --server --batch 'scalafmtAll; scalafmtSbt'
+sbt --server --batch 'clean; compile; testOnly *'
+sbt --server --batch 'scalafmtCheckAll; scalafmtSbtCheck; run'
 ```
 
 Confirm the test output reports executed tests and zero failures. Use
