@@ -287,7 +287,7 @@ def resolve_company_id():
             or os.environ.get("PAPERCLIP_COMPANY_ID", ""))
 
 
-def find_solve_issue(year, day, part):
+def find_solve_issue(year, day, part, none_reason=None):
     """Return the id of this company's `AoC YYYY DayNN partP: solve` issue."""
     company = resolve_company_id()
     if not company:
@@ -297,14 +297,37 @@ def find_solve_issue(year, day, part):
     for issue in issues:
         if issue.get("title") == title:
             return issue.get("id")
+    if none_reason:
+        raise SystemExit(none_reason)
     raise SystemExit("no solve issue found with title: {0}".format(title))
 
 
 def find_solver_run(year, day, part, commit):
     """Audit every succeeded run of the solve issue and report the one(s)
     whose decoded log references the reviewed commit. Prints the provenance
-    fragment for the bound run and returns 0, or 1 when none binds."""
-    issue_id = find_solve_issue(year, day, part)
+    fragment for the bound run and returns 0, or 1 when none binds.
+
+    When this company has no current-cycle `AoC YYYY DayNN partP: solve`
+    issue, the review is reconciled historical accepted work (CTO re-recorded
+    an existing repo solution; the original solve predates the current cycle
+    and lives in a prior company instance). Its solver derivation log is not
+    retrievable here, so provenance cannot be certified "clear" from a current
+    tool-log audit. Print that evidence-gap diagnostic and return 2."""
+    try:
+        issue_id = find_solve_issue(year, day, part)
+    except SystemExit:
+        print("No current-cycle solve issue for AoC {0} Day{1:02d} part{2}."
+              .format(year, day, part))
+        print("This is reconciled historical accepted work: the CTO re-recorded an")
+        print("existing repository solution whose original solve predates the current")
+        print("cycle (prior company instance). Its solver derivation log is not")
+        print("retrievable from this company, so the solver-run provenance evidence")
+        print("for this review is a genuine gap.")
+        print("Correct disposition: verify correctness independently, then record the")
+        print("aoc-review-result with provenance status \"unknown\" (or escalate the")
+        print("missing evidence to the CTO). Do NOT certify \"clear\" from the CTO")
+        print("reconcile run alone.")
+        return 2
     print("Solve issue: {0}".format(issue_id))
     runs = api_get("/api/issues/{0}/runs".format(issue_id))
     bound = []

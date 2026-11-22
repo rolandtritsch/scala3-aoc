@@ -52,9 +52,14 @@ helpers before creating a new one; these checkout entry points only delegate.
   `--find-solver --year YYYY --day NN --part P --commit FULL_SHA` automates
   the initial lookup: it locates this company's `AoC YYYY DayNN partP: solve`
   issue, audits every succeeded run for the reviewed commit, and prints the
-  provenance fragment for the run(s) that reference it (exits non-zero when
-  none binds). Use it to avoid hand-grepping issue titles and trying runs one
-  by one.
+provenance fragment for the run(s) that reference it (exits non-zero when
+   none binds). Use it to avoid hand-grepping issue titles and trying runs one
+   by one. When this company has no current-cycle `solve` issue for the part,
+   it prints a reconcile diagnostic (exit 2): the review is CTO-reconciled
+   historical accepted work whose original solver derivation log predates the
+   current cycle and is not retrievable here. That is a genuine provenance
+   evidence gap: record provenance `"unknown"` (or escalate to the CTO) rather
+   than certifying `"clear"` from the CTO reconcile run alone.
 - For noncomputational finales, follow the authenticated completion checks in
   the company skills instead of inventing code or a publication receipt.
 
