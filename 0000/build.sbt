@@ -9,28 +9,20 @@ ThisBuild / scalafixDependencies += "com.github.xuwei-k" %% "scalafix-rules" % "
 
 lazy val root = (project in file(".")).settings(
   name := "scala3-aoc-0000",
-  scalacOptions ++= Seq("-Wunused:imports", "-Werror", "-deprecation"),
+  scalacOptions ++= Seq("-Wunused:imports", "-Werror", "-deprecation", "-Wvalue-discard"),
   libraryDependencies ++= Seq(
-    "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
-    "ch.qos.logback" % "logback-classic" % "1.5.18",
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.2.0",
     "org.scala-lang.modules" %% "scala-collection-contrib" % "0.4.0",
-    "org.scala-graph" %% "graph-core" % "2.0.3",
     "org.scalanlp" %% "breeze" % "2.1.0",
     "org.tritsch" %% "scala-corner" % "1.0.4",
-    "org.scalameta" %% "munit" % "1.1.1" % Test,
-    "org.scalameta" %% "munit-scalacheck" % "1.1.0" % Test,
-    "org.typelevel" %% "spire" % "0.18.0" % Test,
+    "dev.zio" %% "zio" % "2.1.13",
+    "dev.zio" %% "zio-test" % "2.1.13" % Test,
+    "dev.zio" %% "zio-test-sbt" % "2.1.13" % Test,
   ),
   // Note: `com.eed3si9n.eval` (scala toolbox) from the 2024 blueprint is
   // intentionally dropped: it was only used by Day24 and pins artifacts
   // to an old Scala minor version.
-  testFrameworks += new TestFramework("munit.Framework"),
+  testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   Test / fork := true,
   Test / javaOptions ++= Seq("-Xss1G", "-Xmx10G"),
-  // Uncomment to focus on / skip tagged tests (see Day00Test for tags).
-  // Test / testOptions += Tests.Argument("+l", "--include-tags=only"),
-  // Test / testOptions += Tests.Argument("+l", "--exclude-tags=slow"),
 )
-
-Test / testOptions += Tests.Argument("-l", "--exclude-tags=ignore")

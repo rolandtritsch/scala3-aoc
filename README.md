@@ -4,14 +4,14 @@ Solutions to [Advent of Code][aoc] in Scala 3, organized by year.
 
 ```text
 scala3-aoc/
-  0000/   Day00 template and reusable utilities
+  0000/   Day00 template
   YYYY/   Solutions for a specific year
 ```
 
 Each year is an independent sbt project. `0000` is reserved for the template;
-it contains a Fibonacci example with sample inputs and tests, plus grid,
-position, graph, and search utilities. It was extracted from the initial
-Day00 setup in [scala3-aoc-2025][blueprint], with subsequent build fixes.
+it contains a Fibonacci example with sample inputs and tests. It was
+extracted from the initial Day00 setup in [scala3-aoc-2025][blueprint], with
+subsequent build fixes.
 
 ## Run the template
 
@@ -42,9 +42,10 @@ rsync -a --exclude=target --exclude=project/project --exclude=.bsp \
 
 Replace `YYYY` with the year. Rename `aoc0000` to `aocYYYY` in the source and
 test directory names and Scala package declarations. Update the project name
-in `YYYY/build.sbt`, then add daily solutions, inputs, and tests alongside
-Day00. Run sbt from that year's directory. Add the year to the CI matrix so
-its tests run on pushes and pull requests.
+in `YYYY/build.sbt`, then add each day's solutions under `aocYYYY/dayNN` and
+its tests under the matching test package. Add puzzle inputs to
+`src/main/resources/inputs`. Run sbt from that year's directory. Add the year
+to the CI matrix so its tests run on pushes and pull requests.
 
 See [AGENTS.md][] for change and verification guidance.
 
