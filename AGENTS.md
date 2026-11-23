@@ -76,6 +76,17 @@ and their tests), in every `YYYY/` project and the `0000/` template.
 - Tests use `zio-test` (`ZIOSpecDefault`, `assertTrue`), not `munit`. A test
   that calls `readFile` runs it as a ZIO effect inside the test body; it does
   not call it as a plain synchronous function.
+- Log via `ZIO.log*` (`ZIO.logDebug` for diagnostic detail, `ZIO.logError`
+  for failures), never a per-class `Logger`. `readFile` is already an
+  effect, so it logs its own filename/line/parsed-value detail internally.
+  `parse`, `part1`, and `part2` stay pure (see below), so their
+  inputs/results are logged from the calling effect instead — typically
+  `Main`, right after `readFile` succeeds and around each `part1`/`part2`
+  call. Log a day's failure with `.tapError(e => ZIO.logError(...))` at the
+  point it's bound into the pipeline. No `zio-logging`/`slf4j`/`logback`
+  dependency is needed for this: ZIO's default console logger handles
+  `ZIO.log*` out of the box, and that heavier stack belongs to a
+  production-service template, not this CLI.
 
 ### Favor functions and ADTs over classes and methods
 

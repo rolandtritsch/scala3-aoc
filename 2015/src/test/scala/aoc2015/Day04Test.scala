@@ -19,6 +19,17 @@ object Day04Test extends ZIOSpecDefault:
     test("part1 - empty key is rejected"):
       assertTrue(part1("").isLeft)
     ,
+    test("part1 failure logs an error via tapError"):
+      for
+        exit <- ZIO.fromEither(part1("")).tapError(e => ZIO.logError(s"part1 failed: $e")).exit
+        logs <- ZTestLogger.logOutput
+      yield assertTrue(
+        exit.isFailure,
+        logs.exists(entry =>
+          entry.logLevel == LogLevel.Error && entry.message().contains("part1 failed")
+        ),
+      )
+    ,
     test("part1 - found hash actually has the required prefix"):
       assertTrue(part1("bgvyzdsv") == Right(254575))
     ,

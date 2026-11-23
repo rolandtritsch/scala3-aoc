@@ -39,7 +39,8 @@ object Day02:
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
       val lines = source.getLines().map(_.trim).filter(_.nonEmpty).toSeq
-      ZIO.foreach(lines)(line => ZIO.fromEither(parseLine(filename, line)))
+      ZIO.logDebug(s"filename: $filename") *>
+        ZIO.foreach(lines)(line => ZIO.fromEither(parseLine(filename, line)))
     }
   end readFile
 

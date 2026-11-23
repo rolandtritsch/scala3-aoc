@@ -36,9 +36,13 @@ object Day00:
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.foreach(source.getLines().toSeq) { line =>
-        ZIO.fromOption(line.trim.toIntOption)
-          .orElseFail(AocError.ParseError(filename, s"expected an integer, got: $line"))
+      ZIO.logDebug(s"filename: $filename") *> ZIO.foreach(source.getLines().toSeq) { line =>
+        for
+          _ <- ZIO.logDebug(s"line: $line")
+          parsed <- ZIO.fromOption(line.trim.toIntOption)
+            .orElseFail(AocError.ParseError(filename, s"expected an integer, got: $line"))
+          _ <- ZIO.logDebug(s"parsed: $parsed")
+        yield parsed
       }
     }
   end readFile

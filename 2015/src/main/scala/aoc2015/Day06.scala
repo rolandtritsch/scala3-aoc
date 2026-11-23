@@ -37,8 +37,9 @@ object Day06:
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.attempt(source.getLines().map(_.trim).filter(_.nonEmpty).toSeq)
-        .mapError(AocError.FileReadError(filename, _))
+      ZIO.logDebug(s"filename: $filename") *>
+        ZIO.attempt(source.getLines().map(_.trim).filter(_.nonEmpty).toSeq)
+          .mapError(AocError.FileReadError(filename, _))
     }
   end readFile
 
