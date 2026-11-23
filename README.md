@@ -4,14 +4,14 @@ Solutions to [Advent of Code][aoc] in Scala 3, organized by year.
 
 ```text
 scala3-aoc/
-  0000/   Day00 template and reusable utilities
+  0000/   Day00 template
   YYYY/   Solutions for a specific year
 ```
 
 Each year is an independent sbt project. `0000` is reserved for the template;
-it contains a Fibonacci example with sample inputs and tests, plus grid,
-position, graph, and search utilities. It was extracted from the initial
-Day00 setup in [scala3-aoc-2025][blueprint], with subsequent build fixes.
+it contains a Fibonacci example with sample inputs and tests. It was
+extracted from the initial Day00 setup in [scala3-aoc-2025][blueprint], with
+subsequent build fixes.
 
 ## Run the template
 

@@ -4,9 +4,9 @@
 
 - `0000/` is the reusable template, with the `aoc0000` package.
 - `YYYY/` contains one year's independent sbt project and `aocYYYY` package.
-- Each project keeps solutions under `src/main/scala/aocYYYY`, shared
-  utilities under `src/main/scala/util`, inputs under
-  `src/main/resources/inputs`, and tests under `src/test/scala`.
+- Each project keeps solutions under `src/main/scala/aocYYYY`, inputs under
+  `src/main/resources/inputs`, and tests under `src/test/scala`. There is no
+  shared `util/` framework; write what each day needs in its own package.
 - `problems/` holds puzzle descriptions. Keep Day00 as the runnable example.
 - Build configuration and tool versions belong to each year's directory.
 - `scripts/` holds reusable workflow helpers. `skills/` holds distilled
@@ -102,10 +102,9 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   pixel/brightness grid) is acceptable — it is not a `var` — but iterate it
   with a `for`-comprehension or recursion, never a `while` loop driven by
   `var` counters.
-- The shared `util/` framework (`Grid`, `Bfs`, `Dfs`, `GridGraph`,
-  `WDGridGraph`) predates these guardrails and no current day depends on it.
-  Bring a utility in line with this section only once a day actually starts
-  using it; this is not a mandate to refactor `util/` up front.
+- There is no shared `util/` framework. If a later day needs a grid, graph,
+  or search structure, write it in that day's own package, following these
+  same guardrails, rather than reviving a general-purpose shared module.
 
 ## Verification
 
