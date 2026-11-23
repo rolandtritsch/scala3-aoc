@@ -1,40 +1,42 @@
 package aoc2015
 
 import aoc2015.Day02.*
+import zio.*
+import zio.test.*
 
-class Day02Test extends munit.ScalaCheckSuite:
+object Day02Test extends ZIOSpecDefault:
 
-  test("Day02 - part1 - official samples"):
-    assertEquals(wrappingPaper((2, 3, 4)), 58)
-    assertEquals(wrappingPaper((1, 1, 10)), 43)
-
-  test("Day02 - part1 - cube"):
-    assertEquals(wrappingPaper((1, 1, 1)), 7)
-
-  test("Day02 - part1 - two equal dimensions"):
-    assertEquals(wrappingPaper((2, 2, 3)), 36)
-
-  test("Day02 - part1 - readFile"):
-    val obtained = readFile("inputs/Day02.txt")
-    assertEquals(obtained.length, 1000)
-    assertEquals(obtained.head, (20, 3, 11))
-
-  test("Day02 - part1 - real input"):
-    val input = readFile("inputs/Day02.txt")
-    assertEquals(part1(input), 1606483)
-
-  test("Day02 - part2 - official samples"):
-    assertEquals(ribbon((2, 3, 4)), 34)
-    assertEquals(ribbon((1, 1, 10)), 14)
-
-  test("Day02 - part2 - cube"):
-    assertEquals(ribbon((1, 1, 1)), 5)
-
-  test("Day02 - part2 - two equal dimensions"):
-    assertEquals(ribbon((2, 2, 3)), 20)
-
-  test("Day02 - part2 - real input"):
-    val input = readFile("inputs/Day02.txt")
-    assertEquals(part2(input), 3842356)
+  def spec: Spec[Any, Any] = suite("Day02")(
+    test("part1 - official samples"):
+      assertTrue(wrappingPaper((2, 3, 4)) == 58, wrappingPaper((1, 1, 10)) == 43)
+    ,
+    test("part1 - cube"):
+      assertTrue(wrappingPaper((1, 1, 1)) == 7)
+    ,
+    test("part1 - two equal dimensions"):
+      assertTrue(wrappingPaper((2, 2, 3)) == 36)
+    ,
+    test("part1 - readFile"):
+      readFile("inputs/Day02.txt")
+        .map(obtained => assertTrue(obtained.length == 1000, obtained.head == (20, 3, 11)))
+    ,
+    test("part1 - real input"):
+      readFile("inputs/Day02.txt").map(input => assertTrue(part1(input) == 1606483))
+    ,
+    test("part2 - official samples"):
+      assertTrue(ribbon((2, 3, 4)) == 34, ribbon((1, 1, 10)) == 14)
+    ,
+    test("part2 - cube"):
+      assertTrue(ribbon((1, 1, 1)) == 5)
+    ,
+    test("part2 - two equal dimensions"):
+      assertTrue(ribbon((2, 2, 3)) == 20)
+    ,
+    test("part2 - real input"):
+      readFile("inputs/Day02.txt").map(input => assertTrue(part2(input) == 3842356))
+    ,
+    test("parseLine - rejects malformed line"):
+      assertTrue(parseLine("test", "2x3").isLeft, parseLine("test", "2x3xfour").isLeft),
+  )
 
 end Day02Test

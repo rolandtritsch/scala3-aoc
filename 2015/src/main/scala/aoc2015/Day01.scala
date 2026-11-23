@@ -1,6 +1,6 @@
 package aoc2015
 
-import com.typesafe.scalalogging.Logger
+import zio.*
 
 /** Day01 - Not Quite Lisp
   *
@@ -13,56 +13,50 @@ import com.typesafe.scalalogging.Logger
   * the basement.
   */
 object Day01:
-  val logger: Logger = Logger(this.getClass.getName)
 
-  /** @return the instruction string read from the given resource file. */
-  def readFile(filename: String): String =
+  /** @return
+    *   the instruction string read from the given resource file, or an [[AocError]] if the resource
+    *   is unreadable.
+    */
+  def readFile(filename: String): ZIO[Any, AocError, String] =
     import scala.io.Source
 
-    require(filename.nonEmpty, "filename.nonEmpty")
-    logger.debug(s"filename: ${filename}")
-
-    val source = Source.fromResource(filename)
-    try source.mkString
-    finally source.close()
-    end try
+    ZIO.acquireReleaseWith(
+      ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
+    )(source => ZIO.succeed(source.close())) { source =>
+      ZIO.attempt(source.mkString).mapError(AocError.FileReadError(filename, _))
+    }
   end readFile
 
   /** @return
     *   the final floor after following every instruction, where `(` is +1 and `)` is -1.
     */
-  def part1(instructions: String): Int =
-    logger.debug(s"instructions length: ${instructions.length}")
-
-    instructions.foldLeft(0)((floor, c) =>
-      c match
-        case '(' => floor + 1
-        case ')' => floor - 1
-        case _   => floor
-    )
+  def part1(instructions: String): Int = instructions.foldLeft(0)((floor, c) =>
+    c match
+      case '(' => floor + 1
+      case ')' => floor - 1
+      case _   => floor
+  )
   end part1
 
   /** @return
     *   the 1-based position of the first instruction that sends Santa into the basement (floor -1),
     *   or -1 if he never enters the basement. Scans the instructions once, tracking the running
-    *   floor until it first reaches -1; `(` is +1 and `)` is -1.
+    *   floor until it first reaches -1; `(` is +1 and `)` is -1. The scan is tail-recursive so no
+    *   `var` tracks the running floor or position.
     */
   def part2(instructions: String): Int =
-    logger.debug(s"instructions length: ${instructions.length}")
+    @scala.annotation.tailrec
+    def go(i: Int, floor: Int): Int =
+      if i >= instructions.length then -1
+      else
+        val nextFloor = instructions(i) match
+          case '(' => floor + 1
+          case ')' => floor - 1
+          case _   => floor
+        if nextFloor == -1 then i + 1 else go(i + 1, nextFloor)
 
-    var floor = 0
-    var position = 0
-    var enteringBasement = false
-    for c <- instructions if !enteringBasement do
-      c match
-        case '(' => floor += 1
-        case ')' => floor -= 1
-        case _   => ()
-      position += 1
-      if floor == -1 then enteringBasement = true
-    end for
-
-    if enteringBasement then position else -1
+    go(0, 0)
   end part2
 
 end Day01

@@ -18,19 +18,19 @@ lazy val root = (project in file(".")).settings(
     "org.scala-graph" %% "graph-core" % "2.0.3",
     "org.scalanlp" %% "breeze" % "2.1.0",
     "org.tritsch" %% "scala-corner" % "1.0.4",
+    "dev.zio" %% "zio" % "2.1.13",
+    "dev.zio" %% "zio-test" % "2.1.13" % Test,
+    "dev.zio" %% "zio-test-sbt" % "2.1.13" % Test,
+    // munit stays only for the pre-existing util/ framework tests (Bfs, Dfs,
+    // Grid, GridGraph, WDGridGraph, Position); day solutions use zio-test.
     "org.scalameta" %% "munit" % "1.1.1" % Test,
     "org.scalameta" %% "munit-scalacheck" % "1.1.0" % Test,
-    "org.typelevel" %% "spire" % "0.18.0" % Test,
   ),
   // Note: `com.eed3si9n.eval` (scala toolbox) from the 2024 blueprint is
   // intentionally dropped: it was only used by Day24 and pins artifacts
   // to an old Scala minor version.
-  testFrameworks += new TestFramework("munit.Framework"),
+  testFrameworks ++=
+    Seq(new TestFramework("zio.test.sbt.ZTestFramework"), new TestFramework("munit.Framework")),
   Test / fork := true,
   Test / javaOptions ++= Seq("-Xss1G", "-Xmx10G"),
-  // Uncomment to focus on / skip tagged tests (see Day00Test for tags).
-  // Test / testOptions += Tests.Argument("+l", "--include-tags=only"),
-  // Test / testOptions += Tests.Argument("+l", "--exclude-tags=slow"),
 )
-
-Test / testOptions += Tests.Argument("-l", "--exclude-tags=ignore")

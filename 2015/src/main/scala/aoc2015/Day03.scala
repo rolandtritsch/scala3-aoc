@@ -1,6 +1,6 @@
 package aoc2015
 
-import com.typesafe.scalalogging.Logger
+import zio.*
 
 /** Day03 - Perfectly Spherical Houses in a Vacuum
   *
@@ -16,19 +16,18 @@ import com.typesafe.scalalogging.Logger
   */
 object Day03:
 
-  val logger: Logger = Logger(this.getClass.getName)
-
-  /** @return the direction string read from the given resource file. */
-  def readFile(filename: String): String =
+  /** @return
+    *   the direction string read from the given resource file, or an [[AocError]] if the resource
+    *   is unreadable.
+    */
+  def readFile(filename: String): ZIO[Any, AocError, String] =
     import scala.io.Source
 
-    require(filename.nonEmpty, "filename.nonEmpty")
-    logger.debug(s"filename: ${filename}")
-
-    val source = Source.fromResource(filename)
-    try source.mkString
-    finally source.close()
-    end try
+    ZIO.acquireReleaseWith(
+      ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
+    )(source => ZIO.succeed(source.close())) { source =>
+      ZIO.attempt(source.mkString).mapError(AocError.FileReadError(filename, _))
+    }
   end readFile
 
   /** @return
@@ -54,8 +53,6 @@ object Day03:
     *   unchanged. Runs in O(n) time and O(n) extra space for n moves.
     */
   def part1(directions: String): Int =
-    logger.debug(s"directions length: ${directions.length}")
-
     val origin = (0, 0)
     val visited = directions.foldLeft((Set(origin), origin)) { case ((houses, pos), c) =>
       val next = step(pos, c)
@@ -73,8 +70,6 @@ object Day03:
     *   O(n) extra space for n moves.
     */
   def part2(directions: String): Int =
-    logger.debug(s"directions length: ${directions.length}")
-
     val origin = (0, 0)
     val visited = directions.zipWithIndex
       .foldLeft((Set(origin), origin, origin)) { case ((houses, santa, robo), (c, i)) =>

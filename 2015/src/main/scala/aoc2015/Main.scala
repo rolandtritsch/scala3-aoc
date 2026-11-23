@@ -1,34 +1,43 @@
 package aoc2015
 
-@main
-def solve() =
+import zio.*
 
-  val input00 = Day00.readFile("inputs/Day00.txt")
-  println(s"Day00 - part1: ${Day00.part1(input00)}")
-  println(s"Day00 - part2: ${Day00.part2(input00)}")
+object Main extends ZIOAppDefault:
 
-  val input01 = Day01.readFile("inputs/Day01.txt")
-  println(s"Day01 - part1: ${Day01.part1(input01)}")
-  println(s"Day01 - part2: ${Day01.part2(input01)}")
+  private val program: ZIO[Any, AocError, Unit] =
+    for
+      input00 <- Day00.readFile("inputs/Day00.txt")
+      _ <- Console.printLine(s"Day00 - part1: ${Day00.part1(input00)}").orDie
+      _ <- Console.printLine(s"Day00 - part2: ${Day00.part2(input00)}").orDie
 
-  val input02 = Day02.readFile("inputs/Day02.txt")
-  println(s"Day02 - part1: ${Day02.part1(input02)}")
-  println(s"Day02 - part2: ${Day02.part2(input02)}")
+      input01 <- Day01.readFile("inputs/Day01.txt")
+      _ <- Console.printLine(s"Day01 - part1: ${Day01.part1(input01)}").orDie
+      _ <- Console.printLine(s"Day01 - part2: ${Day01.part2(input01)}").orDie
 
-  val input03 = Day03.readFile("inputs/Day03.txt")
-  println(s"Day03 - part1: ${Day03.part1(input03)}")
-  println(s"Day03 - part2: ${Day03.part2(input03)}")
+      input02 <- Day02.readFile("inputs/Day02.txt")
+      _ <- Console.printLine(s"Day02 - part1: ${Day02.part1(input02)}").orDie
+      _ <- Console.printLine(s"Day02 - part2: ${Day02.part2(input02)}").orDie
 
-  val input04 = Day04.readFile("inputs/Day04.txt")
-  println(s"Day04 - part1: ${Day04.part1(input04)}")
-  println(s"Day04 - part2: ${Day04.part2(input04)}")
+      input03 <- Day03.readFile("inputs/Day03.txt")
+      _ <- Console.printLine(s"Day03 - part1: ${Day03.part1(input03)}").orDie
+      _ <- Console.printLine(s"Day03 - part2: ${Day03.part2(input03)}").orDie
 
-  val input05 = Day05.readFile("inputs/Day05.txt")
-  println(s"Day05 - part1: ${Day05.part1(input05)}")
-  println(s"Day05 - part2: ${Day05.part2(input05)}")
+      input04 <- Day04.readFile("inputs/Day04.txt")
+      part1Day04 <- ZIO.fromEither(Day04.part1(input04))
+      _ <- Console.printLine(s"Day04 - part1: $part1Day04").orDie
+      part2Day04 <- ZIO.fromEither(Day04.part2(input04))
+      _ <- Console.printLine(s"Day04 - part2: $part2Day04").orDie
 
-  val input06 = Day06.readFile("inputs/Day06.txt")
-  println(s"Day06 - part1: ${Day06.part1(input06)}")
-  println(s"Day06 - part2: ${Day06.part2(input06)}")
+      input05 <- Day05.readFile("inputs/Day05.txt")
+      _ <- Console.printLine(s"Day05 - part1: ${Day05.part1(input05)}").orDie
+      _ <- Console.printLine(s"Day05 - part2: ${Day05.part2(input05)}").orDie
 
-end solve
+      input06 <- Day06.readFile("inputs/Day06.txt")
+      part1Day06 <- ZIO.fromEither(Day06.part1(input06))
+      _ <- Console.printLine(s"Day06 - part1: $part1Day06").orDie
+      part2Day06 <- ZIO.fromEither(Day06.part2(input06))
+      _ <- Console.printLine(s"Day06 - part2: $part2Day06").orDie
+    yield ()
+
+  def run: ZIO[Any, Any, Unit] = program
+end Main

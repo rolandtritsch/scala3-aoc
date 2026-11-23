@@ -1,6 +1,6 @@
 package aoc2015
 
-import com.typesafe.scalalogging.Logger
+import zio.*
 
 /** Day05 - Doesn't He Have Intern-Elves For This?
   *
@@ -32,25 +32,22 @@ import com.typesafe.scalalogging.Logger
   */
 object Day05:
 
-  val logger: Logger = Logger(this.getClass.getName)
-
   private val vowels: Set[Char] = "aeiou".toSet
   private val forbidden: Set[String] = Set("ab", "cd", "pq", "xy")
 
   /** @return
     *   the individual strings read from the given resource file, one per non-empty line, with
-    *   surrounding whitespace removed.
+    *   surrounding whitespace removed, or an [[AocError]] if the resource is unreadable.
     */
-  def readFile(filename: String): Seq[String] =
+  def readFile(filename: String): ZIO[Any, AocError, Seq[String]] =
     import scala.io.Source
 
-    require(filename.nonEmpty, "filename.nonEmpty")
-    logger.debug(s"filename: ${filename}")
-
-    val source = Source.fromResource(filename)
-    try source.getLines().map(_.trim).filter(_.nonEmpty).toSeq
-    finally source.close()
-    end try
+    ZIO.acquireReleaseWith(
+      ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
+    )(source => ZIO.succeed(source.close())) { source =>
+      ZIO.attempt(source.getLines().map(_.trim).filter(_.nonEmpty).toSeq)
+        .mapError(AocError.FileReadError(filename, _))
+    }
   end readFile
 
   /** @return true if `s` contains at least three of the vowels `aeiou`. */
@@ -100,10 +97,7 @@ object Day05:
     *   constant number of times, so this runs in O(n) time and O(1) extra space for n input
     *   strings.
     */
-  def part1(strings: Seq[String]): Int =
-    logger.debug(s"strings count: ${strings.length}")
-
-    strings.count(isNice)
+  def part1(strings: Seq[String]): Int = strings.count(isNice)
   end part1
 
   /** @return
@@ -112,10 +106,7 @@ object Day05:
     *   between. Each string is inspected a constant number of times, so this runs in O(n * L²) time
     *   and O(L) extra space for n input strings of average length L.
     */
-  def part2(strings: Seq[String]): Int =
-    logger.debug(s"strings count: ${strings.length}")
-
-    strings.count(isNicePart2)
+  def part2(strings: Seq[String]): Int = strings.count(isNicePart2)
   end part2
 
 end Day05

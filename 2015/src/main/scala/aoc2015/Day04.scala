@@ -1,6 +1,6 @@
 package aoc2015
 
-import com.typesafe.scalalogging.Logger
+import zio.*
 
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
@@ -20,21 +20,18 @@ import java.security.MessageDigest
   */
 object Day04:
 
-  val logger: Logger = Logger(this.getClass.getName)
-
   /** @return
-    *   the secret key read from the given resource file, with surrounding whitespace removed.
+    *   the secret key read from the given resource file, with surrounding whitespace removed, or an
+    *   [[AocError]] if the resource is unreadable.
     */
-  def readFile(filename: String): String =
+  def readFile(filename: String): ZIO[Any, AocError, String] =
     import scala.io.Source
 
-    require(filename.nonEmpty, "filename.nonEmpty")
-    logger.debug(s"filename: ${filename}")
-
-    val source = Source.fromResource(filename)
-    try source.mkString.trim
-    finally source.close()
-    end try
+    ZIO.acquireReleaseWith(
+      ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
+    )(source => ZIO.succeed(source.close())) { source =>
+      ZIO.attempt(source.mkString.trim).mapError(AocError.FileReadError(filename, _))
+    }
   end readFile
 
   /** @return the lowercase hexadecimal representation of the MD5 digest of `s`. */
@@ -60,24 +57,20 @@ object Day04:
 
   /** @return
     *   the lowest positive integer `n` such that the MD5 hex digest of `secretKey + n` starts with
-    *   five zeroes (`00000`).
+    *   five zeroes (`00000`), or an [[AocError]] if `secretKey` is empty.
     */
-  def part1(secretKey: String): Int =
-    require(secretKey.nonEmpty, "secretKey.nonEmpty")
-    logger.debug(s"secretKey: ${secretKey}")
-
-    findLowest(secretKey, "00000")
+  def part1(secretKey: String): Either[AocError, Int] =
+    if secretKey.isEmpty then Left(AocError.ValidationError("secretKey must not be empty"))
+    else Right(findLowest(secretKey, "00000"))
   end part1
 
   /** @return
     *   the lowest positive integer `n` such that the MD5 hex digest of `secretKey + n` starts with
-    *   six zeroes (`000000`).
+    *   six zeroes (`000000`), or an [[AocError]] if `secretKey` is empty.
     */
-  def part2(secretKey: String): Int =
-    require(secretKey.nonEmpty, "secretKey.nonEmpty")
-    logger.debug(s"secretKey: ${secretKey}")
-
-    findLowest(secretKey, "000000")
+  def part2(secretKey: String): Either[AocError, Int] =
+    if secretKey.isEmpty then Left(AocError.ValidationError("secretKey must not be empty"))
+    else Right(findLowest(secretKey, "000000"))
   end part2
 
 end Day04
