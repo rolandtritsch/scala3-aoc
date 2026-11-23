@@ -30,14 +30,21 @@ object Day01:
   end readFile
 
   /** @return
-    *   the final floor after following every instruction, where `(` is +1 and `)` is -1.
+    *   the final floor after following every instruction, where `(` is +1 and `)` is -1. The scan
+    *   is tail-recursive so no `var` tracks the running floor.
     */
-  def part1(instructions: String): Int = instructions.foldLeft(0)((floor, c) =>
-    c match
-      case '(' => floor + 1
-      case ')' => floor - 1
-      case _   => floor
-  )
+  def part1(instructions: String): Int =
+    @scala.annotation.tailrec
+    def go(i: Int, floor: Int): Int =
+      if i >= instructions.length then floor
+      else
+        val nextFloor = instructions(i) match
+          case '(' => floor + 1
+          case ')' => floor - 1
+          case _   => floor
+        go(i + 1, nextFloor)
+
+    go(0, 0)
   end part1
 
   /** @return
