@@ -9,7 +9,7 @@ ThisBuild / scalafixDependencies += "com.github.xuwei-k" %% "scalafix-rules" % "
 
 lazy val root = (project in file(".")).settings(
   name := "scala3-aoc-0000",
-  scalacOptions ++= Seq("-Wunused:imports", "-Werror", "-deprecation"),
+  scalacOptions ++= Seq("-Wunused:imports", "-Werror", "-deprecation", "-Wvalue-discard"),
   libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.2.0",
     "org.scala-lang.modules" %% "scala-collection-contrib" % "0.4.0",

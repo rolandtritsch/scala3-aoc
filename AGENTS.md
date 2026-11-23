@@ -116,6 +116,18 @@ and their tests), in every `YYYY/` project and the `0000/` template.
 - There is no shared `util/` framework. If a later day needs a grid, graph,
   or search structure, write it in that day's own package, following these
   same guardrails, rather than reviving a general-purpose shared module.
+- `no var`/`no while`/`no throw`/`no null`/`no return` are machine-enforced
+  via scalafix's built-in `DisableSyntax` rule (configured in
+  `.scalafix.conf`), not just documented here. WartRemover was evaluated as
+  an alternative but has no published build compatible with this repo's
+  pinned sbt 2.0.x line (only an old `2.0.0-M4` milestone exists); revisit if
+  that changes. Run `sbt scalafixAll --check` to verify.
+- `.scalafix.conf` also loads a handful of `io.github.migiside/zio-scalafix`
+  rules (`PreferZIOAs`, `PreferZIOOrElseFail`, etc.) that rewrite common
+  non-idiomatic ZIO patterns. That project isn't published to Maven Central,
+  so the rules are referenced as raw source URLs pinned to a commit SHA —
+  scalafix compiles them at lint time. Bump the SHA deliberately; don't
+  float on a branch.
 
 ## Verification
 
@@ -126,6 +138,7 @@ cd 0000
 sbt --server --batch 'scalafmtAll; scalafmtSbt'
 sbt --server --batch 'clean; compile; testOnly *'
 sbt --server --batch 'scalafmtCheckAll; scalafmtSbtCheck; run'
+sbt --server --batch 'scalafixAll --check'
 ```
 
 Confirm the test output reports executed tests and zero failures. Use

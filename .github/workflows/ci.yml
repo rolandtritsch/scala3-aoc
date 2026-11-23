@@ -28,3 +28,5 @@ jobs:
         run: sbt --batch 'scalafmtCheckAll; scalafmtSbtCheck'
       - name: Build and run every test suite
         run: sbt --batch 'clean; compile; testOnly *'
+      - name: Check scalafix rules
+        run: sbt --batch 'scalafixAll --check'

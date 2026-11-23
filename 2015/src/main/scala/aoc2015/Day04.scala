@@ -1,9 +1,9 @@
 package aoc2015
 
-import zio.*
-
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
+
+import zio.*
 
 /** Day04 - The Ideal Stocking Stuffer
   *

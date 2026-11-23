@@ -40,12 +40,14 @@ object Day04Test extends ZIOSpecDefault:
       assertTrue(part2("").isLeft)
     ,
     test("part2 - found hash actually has the required prefix"):
-      part2("bgvyzdsv") match
-        case Right(n) => assertTrue(
+      part2("bgvyzdsv").fold(
+        error => assertNever(s"expected a result, got: $error"),
+        n =>
+          assertTrue(
             md5Hex("bgvyzdsv" + n).startsWith("000000"),
             !md5Hex("bgvyzdsv" + (n - 1)).startsWith("000000"),
-          )
-        case Left(error) => assertNever(s"expected a result, got: $error")
+          ),
+      )
     ,
     test("part2 - real input"):
       readFile("inputs/Day04.txt").map(input => assertTrue(part2(input) == Right(1038736))),
