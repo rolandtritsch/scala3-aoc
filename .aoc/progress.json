@@ -394,28 +394,29 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "254575",
-        "commit": "06e302c0015d07ef18414be7f42075a4b682c7a3",
+        "commit": "14294868cf6560b12f1e261b597c71a670edf7b3",
         "day": 4,
         "files": {
-          "2015/.scalafix.conf": "11c7225e274163bbfe3e7504ee7f21a9ff1ec5a412c915d2f1908749a27ccab0",
-          "2015/.scalafmt.conf": "adfeda8211c5e2cd23a299b34d0c8f99142b9b96e662763bb27623203e66c785",
+          "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
+          "2015/.scalafix/FunctionEndMarkers.scala": "53d0291feef3fe3c14ba911c96db50858209fd642baa6b1a73ad4804787c4742",
+          "2015/.scalafmt.conf": "b2791fe044d79a5cfceffb0f4f5afabce5a9c7874b56b5dce073e01972117b24",
           "2015/.tool-versions": "e083b84be3727290ae24bd48449cb66a3d852defdfc47f14c56e9d6e75adf73a",
-          "2015/build.sbt": "99bb40032843113550285ed17cc6e7539b7de680ba3ccfbd54c4905911ce21c8",
+          "2015/build.sbt": "7ec7b8e21edea9e8a61c3eff571f49085adf8fb0e9abc8ff7804182450966c6d",
           "2015/project/build.properties": "bfd375a2714acd417f17bf18c09b3dc6536d7c6044c31e0bfdc5e8e7f4f2b60a",
           "2015/project/plugins.sbt": "ee72ba122b2ede40deea3a52f362f7cee293e74e1ae4384618fe1ce9e0b7455e",
           "2015/src/main/resources/inputs/Day04.txt": "104f7d1d359ec318df0a2bfbc08390bfd9453eecf2002ef24fc368fbea035c74",
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
-          "2015/src/main/scala/aoc2015/Day04.scala": "2d5755107098194f897cf2ef42127295f8b31a89f623c7a2dfd9b4ae8f67ced7",
+          "2015/src/main/scala/aoc2015/day04/Mining.scala": "ff94d1aa5b288e803097695173f5d4cdd89233f7044c3af869b5652795bd5f24",
+          "2015/src/main/scala/aoc2015/day04/Part1.scala": "7013a7ad6e7b9167613d3fb71d4ac3ff6682b1640325aaecddadbb76d299cbe5",
+          "2015/src/main/scala/aoc2015/day04/Part2.scala": "ac998f2b4780d35c60d237d35c4e229747a6a1e1f9b08a26afc85079ac38cd66",
+          "2015/src/main/scala/aoc2015/day04/ReadFile.scala": "31ee279a3cd123b02407f32646dff568d8eefb93348999bb52863ca845fdda3a",
+          "2015/src/main/scala/aoc2015/day04/SecretKey.scala": "980fe842d784c6746172653f6f40c5cf650ab0c9d7aa86baae69da8940819739",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
-          "2015/src/main/scala/util/Bfs.scala": "e870c28a437961018676907e5bd655d9b0c7149d7d96c6713223823b3a9a4fb7",
-          "2015/src/main/scala/util/DPosition.scala": "a2eb12b1ba40fe048136a43036a92645761bfc536cb7191c0d546d393f3be6f1",
-          "2015/src/main/scala/util/Dfs.scala": "f73551b3674fa5a9ca3690f06756dc8d3a0092680da6f934934cd8daf99f3ca8",
-          "2015/src/main/scala/util/Grid.scala": "37784a082ba8cc6ffed774d7cb46039fcd6ef52c841a87584258c71aeb288e24",
-          "2015/src/main/scala/util/GridGraph.scala": "1f66244e1c97c3cc0586b1e4c39d020c61b63808a4f07dfd70cc007cf2b427e5",
-          "2015/src/main/scala/util/Path.scala": "cfb35fb2bf09560d7d585a3ffe8d94f5767afd198fdce17dfe37f4dda724a29c",
-          "2015/src/main/scala/util/Position.scala": "bbfce55c8df36cb2550506cee7ed36f3dee7b675981328c5c86eb9fc17f667e5",
-          "2015/src/main/scala/util/WDGridGraph.scala": "c76d8f7d59383107d64a584ea980c00218aae33507381b7298ff94c40ff37cbe",
-          "2015/src/main/scala/util/package.scala": "1d779f8adb2c0657e700a385309fa70c23e57274821cf35c4236c072aa566bfc",
+          "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
+          "2015/src/main/scala/aoc2015/util/ParseLines.scala": "8362451fb368de6d6e74427fa23a800d3619e54b3bd4e88a41d9d23fbba335a7",
+          "2015/src/main/scala/aoc2015/util/Position.scala": "f8c5a0dace9d6579f50aaf0bf20f35eac219c79aa49e464066458f97d30588be",
+          "2015/src/main/scala/aoc2015/util/ReadResource.scala": "c7cb5ab1c6015659318c69b864b68827060bc29434b43ca7b086be8337e5d7ba",
+          "2015/src/test/resources/inputs/Day04Invalid.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
           "2015/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
           "2015/src/test/resources/tests/GridTest-Medium.txt": "2e27b2bc827961a77653f5152cb73ee9b3e0986c56bd149769d64fa5fde35475",
@@ -425,13 +426,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/Day04Test.scala": "f5eb0f1c71ab60e00e9303d57912156fbb5eab64f4dae3dd838abf34dc5d98c4",
-          "2015/src/test/scala/util/BfsTest.scala": "6c5e5052c249f972068e4e6599b8793d528d26375b6463e2ad65b62d5d94793a",
-          "2015/src/test/scala/util/DfsTest.scala": "cc88cb47a71bd3e3069262891e989325921fef9d2fbcfcc53cc0539cf7d991b8",
-          "2015/src/test/scala/util/GridGraphTest.scala": "b548e9c1df4b27f6bb072dea60d02a2ef3549e6f4841beb22809110970854adb",
-          "2015/src/test/scala/util/GridTest.scala": "206a1286fa854e40db5ebe5c3ba4a76eca77abe74904f86d39481fd8b1675f63",
-          "2015/src/test/scala/util/PositionTest.scala": "1819ad4845133b89ed5de71d16fffe0342218eee080e25c1956595514161108b",
-          "2015/src/test/scala/util/WDGridGraphTest.scala": "523ba44f8fd13ef6afdad427628fb2d8363d06ab718d96abd11a8c4663d4736d"
+          "2015/src/test/scala/aoc2015/day04/Day04Test.scala": "b45b87cb1996e413e1013ac38b31e6e141abd424258037921f7856a5055ab241"
         },
         "formatting": "passed",
         "owner": {
@@ -442,7 +437,12 @@
         "runner": "passed",
         "schema": 1,
         "tests": "passed",
-        "verifiedAt": "2026-11-22T14:26:15.149606+00:00",
+        "verification": {
+          "tree": "5d145c4cc4cc412fb2495a96a6c6dd3b72aebe13",
+          "yearChecksAt": "2026-11-23T18:29:10.438482+00:00",
+          "yearChecksCommit": "7dc66004850f3ad82def05e894efaaaf7cb16bed"
+        },
+        "verifiedAt": "2026-11-23T18:30:37.075662+00:00",
         "year": 2015
       },
       "site": {
@@ -452,7 +452,7 @@
           "1038736"
         ],
         "complete": 2,
-        "observedAt": "2026-11-22T14:25:00.764891+00:00"
+        "observedAt": "2026-11-23T18:29:53.504598+00:00"
       }
     },
     "2015/04/2": {
