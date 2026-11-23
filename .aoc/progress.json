@@ -326,28 +326,31 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "2360",
-        "commit": "ca0bd7813f90f1fdf0070ce9aee4b8bd50c9d75e",
+        "commit": "e6541caa2a63d2e65da50adac1cb59922163dddc",
         "day": 3,
         "files": {
-          "2015/.scalafix.conf": "11c7225e274163bbfe3e7504ee7f21a9ff1ec5a412c915d2f1908749a27ccab0",
-          "2015/.scalafmt.conf": "adfeda8211c5e2cd23a299b34d0c8f99142b9b96e662763bb27623203e66c785",
+          "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
+          "2015/.scalafix/FunctionEndMarkers.scala": "53d0291feef3fe3c14ba911c96db50858209fd642baa6b1a73ad4804787c4742",
+          "2015/.scalafmt.conf": "b2791fe044d79a5cfceffb0f4f5afabce5a9c7874b56b5dce073e01972117b24",
           "2015/.tool-versions": "e083b84be3727290ae24bd48449cb66a3d852defdfc47f14c56e9d6e75adf73a",
-          "2015/build.sbt": "99bb40032843113550285ed17cc6e7539b7de680ba3ccfbd54c4905911ce21c8",
+          "2015/build.sbt": "7ec7b8e21edea9e8a61c3eff571f49085adf8fb0e9abc8ff7804182450966c6d",
           "2015/project/build.properties": "bfd375a2714acd417f17bf18c09b3dc6536d7c6044c31e0bfdc5e8e7f4f2b60a",
           "2015/project/plugins.sbt": "ee72ba122b2ede40deea3a52f362f7cee293e74e1ae4384618fe1ce9e0b7455e",
           "2015/src/main/resources/inputs/Day03.txt": "75175db93543aec7260d2655c0bf65a3f3a4db761c49334ef13005cab5b82f06",
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
-          "2015/src/main/scala/aoc2015/Day03.scala": "062184a144d2f483ea1c3b391ab966fb165ee1efc561942e20ef1e30eedf2f1f",
+          "2015/src/main/scala/aoc2015/day03/Direction.scala": "bdd10230916f8a15a37b3dc4256821af52356094d38a1366442568fa8efba4eb",
+          "2015/src/main/scala/aoc2015/day03/Parse.scala": "f966b005d38a72c8d85d473b76881c0e03b380c522f64296cf11808e7dbb3e9b",
+          "2015/src/main/scala/aoc2015/day03/Part1.scala": "8f10593363a1307739ed1f95bb019911c498efe4eae28e09e8c24d7686d00183",
+          "2015/src/main/scala/aoc2015/day03/Part2.scala": "944c45b647f9be9b5d6a844beeb206239553d4ef944320e3a9dfc5bde4a15e4e",
+          "2015/src/main/scala/aoc2015/day03/ReadFile.scala": "924fb1e258d7d143aefc9999daa9358e2ae4b4d5cdcf7231370df7da07166d9d",
+          "2015/src/main/scala/aoc2015/day03/Routes.scala": "1e47a67f10b314ee00fb80df8cfdb945436c3b6a2907a0d93652c14ea8b2c656",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
-          "2015/src/main/scala/util/Bfs.scala": "e870c28a437961018676907e5bd655d9b0c7149d7d96c6713223823b3a9a4fb7",
-          "2015/src/main/scala/util/DPosition.scala": "a2eb12b1ba40fe048136a43036a92645761bfc536cb7191c0d546d393f3be6f1",
-          "2015/src/main/scala/util/Dfs.scala": "f73551b3674fa5a9ca3690f06756dc8d3a0092680da6f934934cd8daf99f3ca8",
-          "2015/src/main/scala/util/Grid.scala": "37784a082ba8cc6ffed774d7cb46039fcd6ef52c841a87584258c71aeb288e24",
-          "2015/src/main/scala/util/GridGraph.scala": "1f66244e1c97c3cc0586b1e4c39d020c61b63808a4f07dfd70cc007cf2b427e5",
-          "2015/src/main/scala/util/Path.scala": "cfb35fb2bf09560d7d585a3ffe8d94f5767afd198fdce17dfe37f4dda724a29c",
-          "2015/src/main/scala/util/Position.scala": "bbfce55c8df36cb2550506cee7ed36f3dee7b675981328c5c86eb9fc17f667e5",
-          "2015/src/main/scala/util/WDGridGraph.scala": "c76d8f7d59383107d64a584ea980c00218aae33507381b7298ff94c40ff37cbe",
-          "2015/src/main/scala/util/package.scala": "1d779f8adb2c0657e700a385309fa70c23e57274821cf35c4236c072aa566bfc",
+          "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
+          "2015/src/main/scala/aoc2015/util/ParseLines.scala": "8362451fb368de6d6e74427fa23a800d3619e54b3bd4e88a41d9d23fbba335a7",
+          "2015/src/main/scala/aoc2015/util/Position.scala": "f8c5a0dace9d6579f50aaf0bf20f35eac219c79aa49e464066458f97d30588be",
+          "2015/src/main/scala/aoc2015/util/ReadResource.scala": "c7cb5ab1c6015659318c69b864b68827060bc29434b43ca7b086be8337e5d7ba",
+          "2015/src/test/resources/inputs/Day03Invalid.txt": "75898d1889f3d47ce42324b4597d2eb9788276d1f7151af262e54ef0a81af869",
+          "2015/src/test/resources/inputs/Day03Whitespace.txt": "34afc08e95a2933e3954b54989b8eed74e2089d9460b64506f82e57b03428c33",
           "2015/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
           "2015/src/test/resources/tests/GridTest-Medium.txt": "2e27b2bc827961a77653f5152cb73ee9b3e0986c56bd149769d64fa5fde35475",
@@ -357,13 +360,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/Day03Test.scala": "820b420a8ff88e998e85f5c392a39771ca5e34915e96ae390a417de424f4f290",
-          "2015/src/test/scala/util/BfsTest.scala": "6c5e5052c249f972068e4e6599b8793d528d26375b6463e2ad65b62d5d94793a",
-          "2015/src/test/scala/util/DfsTest.scala": "cc88cb47a71bd3e3069262891e989325921fef9d2fbcfcc53cc0539cf7d991b8",
-          "2015/src/test/scala/util/GridGraphTest.scala": "b548e9c1df4b27f6bb072dea60d02a2ef3549e6f4841beb22809110970854adb",
-          "2015/src/test/scala/util/GridTest.scala": "206a1286fa854e40db5ebe5c3ba4a76eca77abe74904f86d39481fd8b1675f63",
-          "2015/src/test/scala/util/PositionTest.scala": "1819ad4845133b89ed5de71d16fffe0342218eee080e25c1956595514161108b",
-          "2015/src/test/scala/util/WDGridGraphTest.scala": "523ba44f8fd13ef6afdad427628fb2d8363d06ab718d96abd11a8c4663d4736d"
+          "2015/src/test/scala/aoc2015/day03/Day03Test.scala": "d9a31a9b243d8b2c7dc7dc06e433650444b0e88e50abfae28ed691bda4529c92"
         },
         "formatting": "passed",
         "owner": {
@@ -374,7 +371,12 @@
         "runner": "passed",
         "schema": 1,
         "tests": "passed",
-        "verifiedAt": "2026-11-22T14:24:57.530074+00:00",
+        "verification": {
+          "tree": "5d145c4cc4cc412fb2495a96a6c6dd3b72aebe13",
+          "yearChecksAt": "2026-11-23T18:29:10.438482+00:00",
+          "yearChecksCommit": "7dc66004850f3ad82def05e894efaaaf7cb16bed"
+        },
+        "verifiedAt": "2026-11-23T18:29:49.890763+00:00",
         "year": 2015
       },
       "site": {
@@ -384,7 +386,7 @@
           "2360"
         ],
         "complete": 2,
-        "observedAt": "2026-11-22T14:23:59.826431+00:00"
+        "observedAt": "2026-11-23T18:29:48.209183+00:00"
       }
     },
     "2015/04/1": {
