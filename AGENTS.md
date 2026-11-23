@@ -4,10 +4,14 @@
 
 - `0000/` is the reusable template, with the `aoc0000` package.
 - `YYYY/` contains one year's independent sbt project and `aocYYYY` package.
-- Each project keeps solutions under `src/main/scala/aocYYYY`, inputs under
-  `src/main/resources/inputs`, and tests under `src/test/scala`. There is no
-  shared puzzle-helper framework; write what each day needs in its own package.
-  Each project's `aocYYYY.util` package holds its shared `AocError` enum.
+- Each project keeps a day's solutions under `src/main/scala/aocYYYY/dayNN`,
+  inputs under `src/main/resources/inputs`, and tests under
+  `src/test/scala/aocYYYY/dayNN`.
+- Each `dayNN` package contains `Part1.scala`, `Part2.scala`, `ReadFile.scala`,
+  and any other implementation files needed for that day.
+- Implementation used by more than one day belongs in that project's
+  `aocYYYY.util` package, including `AocError` and resource loading. Each year
+  remains independent; the template uses `aoc0000.day00` and `aoc0000.util`.
 - `problems/` holds puzzle descriptions. Keep Day00 as the runnable example.
 - Build configuration and tool versions belong to each year's directory.
 - `scripts/` holds reusable workflow helpers. `skills/` holds distilled
@@ -54,8 +58,29 @@ the template.
 
 ## Coding guardrails
 
-These rules apply to all new and changed solution code (`DayNN.scala`, `Main.scala`,
-and their tests), in every `YYYY/` project and the `0000/` template.
+These rules apply to all new and changed solution code (day packages, `util`,
+`Main.scala`, and their tests), in every `YYYY/` project and the `0000/` template.
+
+### Organize implementations by day and part
+
+- Give every day a zero-padded `aocYYYY.dayNN` package and matching directory.
+  Do not put a monolithic `DayNN` object in the year's root package.
+- Put the pure `part1` function and its exclusive helpers in `Part1.scala`;
+  put `part2` and its exclusive helpers in `Part2.scala`. Prefer package-level
+  functions over wrapper objects that only provide a namespace.
+- Every day has `ReadFile.scala`, exposing its typed ZIO `readFile` function.
+  Keep domain types, pure parsing, and helpers shared by that day's parts in
+  appropriately named files within the same `dayNN` package.
+- Keep the ZIO application entrypoint in the year's `Main.scala`. Read and
+  validate each day's input once, then pass that value to both pure parts;
+  the part functions do not load their own files.
+- Move implementation used across day boundaries into `aocYYYY.util`. Days
+  must not import implementation from other day packages. Keep implementation
+  used by only one day in that day's package; extract actual shared code rather
+  than speculative abstractions.
+- Match test packages and directories to their implementation packages. Preserve
+  domain validation when splitting files: constrained constructors and generated
+  `copy` methods must remain inaccessible to callers that could bypass it.
 
 ### ZIO is mandatory for effects
 
@@ -170,10 +195,9 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   pixel/brightness grid) is acceptable — it is not a `var` — but iterate it
   with a `for`-comprehension or recursion, never a `while` loop driven by
   `var` counters.
-- The `util` package holds the project's shared `AocError` type. If a later day
-  needs a grid, graph, or search structure, write it in that day's own package,
-  following these same guardrails, rather than adding a general-purpose shared
-  puzzle-helper framework.
+- Put a grid, graph, or search structure in its day's package while only that
+  day uses it. Move it to `util` when it is used across day boundaries, following
+  the same guardrails.
 - `no var`/`no while`/`no throw`/`no null`/`no return` are machine-enforced
   via scalafix's built-in `DisableSyntax` rule (configured in
   `.scalafix.conf`), not just documented here. WartRemover was evaluated as

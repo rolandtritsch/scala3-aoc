@@ -42,9 +42,10 @@ rsync -a --exclude=target --exclude=project/project --exclude=.bsp \
 
 Replace `YYYY` with the year. Rename `aoc0000` to `aocYYYY` in the source and
 test directory names and Scala package declarations. Update the project name
-in `YYYY/build.sbt`, then add daily solutions, inputs, and tests alongside
-Day00. Run sbt from that year's directory. Add the year to the CI matrix so
-its tests run on pushes and pull requests.
+in `YYYY/build.sbt`, then add each day's solutions under `aocYYYY/dayNN` and
+its tests under the matching test package. Add puzzle inputs to
+`src/main/resources/inputs`. Run sbt from that year's directory. Add the year
+to the CI matrix so its tests run on pushes and pull requests.
 
 See [AGENTS.md][] for change and verification guidance.
 
