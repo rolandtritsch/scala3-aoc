@@ -5,73 +5,62 @@ import java.security.MessageDigest
 
 import zio.*
 
-/** Day04 - The Ideal Stocking Stuffer
-  *
-  * Santa needs to find MD5 hashes whose hexadecimal representation starts with a run of zeroes. The
-  * input to the hash is a secret key (the puzzle input) immediately followed by a decimal number
-  * with no leading zeroes. The numbers are tried in increasing order `1, 2, 3, ...`, and the first
-  * one whose hash has the required prefix is the answer.
-  *
-  * part1: the lowest positive integer `n` such that the MD5 hex digest of `key + n` starts with
-  * five zeroes (`00000`).
-  *
-  * part2: the lowest positive integer `n` such that the MD5 hex digest of `key + n` starts with six
-  * zeroes (`000000`).
-  */
+/** Day04 - The Ideal Stocking Stuffer. */
 object Day04:
 
-  /** @return
-    *   the secret key read from the given resource file, with surrounding whitespace removed, or an
-    *   [[AocError]] if the resource is unreadable.
-    */
-  def readFile(filename: String): ZIO[Any, AocError, String] =
+  opaque type SecretKey = String
+
+  /** The key is text, but its type guarantees it is one non-empty token. */
+  def parse(filename: String, input: String): Either[AocError, SecretKey] =
+    val key = input.trim
+    if key.nonEmpty && !key.exists(_.isWhitespace) then Right(key)
+    else
+      Left(
+        AocError
+          .ParseError(filename, "expected one non-empty secret key without internal whitespace")
+      )
+    end if
+
+  end parse
+
+  def readFile(filename: String): ZIO[Any, AocError, SecretKey] =
     import scala.io.Source
 
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.logDebug(s"filename: $filename") *> ZIO.attempt(source.mkString.trim)
-        .mapError(AocError.FileReadError(filename, _))
+      for
+        _ <- ZIO.logDebug(s"filename: $filename")
+        input <- ZIO.attempt(source.mkString).mapError(AocError.FileReadError(filename, _))
+        key <- ZIO.fromEither(parse(filename, input))
+        _ <- ZIO.logDebug(s"parsed: $key")
+      yield key
     }
+
   end readFile
 
-  /** @return the lowercase hexadecimal representation of the MD5 digest of `s`. */
+  /** A fresh digest is local to each call; no mutable resource escapes. */
   def md5Hex(s: String): String =
     val digest = MessageDigest.getInstance("MD5").digest(s.getBytes(StandardCharsets.UTF_8))
     digest.map(b => f"${b & 0xff}%02x").mkString
-  end md5Hex
 
-  /** @return
-    *   the lowest positive integer `n` such that the MD5 hex digest of `secretKey + n` starts with
-    *   `prefix`. It scans candidates `1, 2, 3, ...` in increasing order (positive, no leading
-    *   zeroes), computing one MD5 digest of a short string per candidate and returning the first
-    *   match, which is therefore also the lowest match. The scan is tail-recursive so it does not
-    *   grow the call stack regardless of how far the answer lies. Runs in O(a * len) time, where
-    *   `a` is the answer and `len` is the length of the secret key, using O(1) extra space.
+  /** Search positive Int candidates in order, failing explicitly rather than wrapping at
+    * Int.MaxValue.
     */
-  private def findLowest(secretKey: String, prefix: String): Int =
+  private def findLowest(secretKey: SecretKey, prefix: String): Either[AocError, Int] =
     @scala.annotation.tailrec
-    def search(n: Int): Int = if md5Hex(secretKey + n).startsWith(prefix) then n else search(n + 1)
+    def search(n: Int): Either[AocError, Int] =
+      if md5Hex(secretKey + n).startsWith(prefix) then Right(n)
+      else if n == Int.MaxValue then
+        Left(AocError.ValidationError("no matching positive Int candidate"))
+      else search(n + 1)
 
     search(1)
+
   end findLowest
 
-  /** @return
-    *   the lowest positive integer `n` such that the MD5 hex digest of `secretKey + n` starts with
-    *   five zeroes (`00000`), or an [[AocError]] if `secretKey` is empty.
-    */
-  def part1(secretKey: String): Either[AocError, Int] =
-    if secretKey.isEmpty then Left(AocError.ValidationError("secretKey must not be empty"))
-    else Right(findLowest(secretKey, "00000"))
-  end part1
+  def part1(secretKey: SecretKey): Either[AocError, Int] = findLowest(secretKey, "00000")
 
-  /** @return
-    *   the lowest positive integer `n` such that the MD5 hex digest of `secretKey + n` starts with
-    *   six zeroes (`000000`), or an [[AocError]] if `secretKey` is empty.
-    */
-  def part2(secretKey: String): Either[AocError, Int] =
-    if secretKey.isEmpty then Left(AocError.ValidationError("secretKey must not be empty"))
-    else Right(findLowest(secretKey, "000000"))
-  end part2
+  def part2(secretKey: SecretKey): Either[AocError, Int] = findLowest(secretKey, "000000")
 
 end Day04

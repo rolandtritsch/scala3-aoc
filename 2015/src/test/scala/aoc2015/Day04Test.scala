@@ -7,6 +7,17 @@ import zio.test.*
 object Day04Test extends ZIOSpecDefault:
 
   def spec: Spec[Any, Any] = suite("Day04")(
+    test("parse - surrounding whitespace is removed"):
+      assertTrue(parse("sample", " abcdef\n") == parse("sample", "abcdef"))
+    ,
+    test("readFile - empty key fails at the boundary"):
+      readFile("inputs/Day04Invalid.txt").either.map(result =>
+        assertTrue(result.left.exists {
+          case AocError.ParseError("inputs/Day04Invalid.txt", _) => true
+          case _                                                 => false
+        })
+      )
+    ,
     test("md5Hex - independent RFC 1321 vectors"):
       assertTrue(
         md5Hex("") == "d41d8cd98f00b204e9800998ecf8427e",
@@ -14,33 +25,37 @@ object Day04Test extends ZIOSpecDefault:
       )
     ,
     test("part1 - official samples"):
-      assertTrue(part1("abcdef") == Right(609043), part1("pqrstuv") == Right(1048970))
+      assertTrue(
+        parse("sample", "abcdef").flatMap(part1) == Right(609043),
+        parse("sample", "pqrstuv").flatMap(part1) == Right(1048970),
+      )
     ,
-    test("part1 - empty key is rejected"):
-      assertTrue(part1("").isLeft)
+    test("parse - empty key is rejected"):
+      assertTrue(parse("sample", "").isLeft)
     ,
-    test("part1 failure logs an error via tapError"):
+    test("input failure logs an error via tapError"):
       for
-        exit <- ZIO.fromEither(part1("")).tapError(e => ZIO.logError(s"part1 failed: $e")).exit
+        exit <- ZIO.fromEither(parse("sample", "")).tapError(e => ZIO.logError(s"input failed: $e"))
+          .exit
         logs <- ZTestLogger.logOutput
       yield assertTrue(
         exit.isFailure,
         logs.exists(entry =>
-          entry.logLevel == LogLevel.Error && entry.message().contains("part1 failed")
+          entry.logLevel == LogLevel.Error && entry.message().contains("input failed")
         ),
       )
     ,
     test("part1 - found hash actually has the required prefix"):
-      assertTrue(part1("bgvyzdsv") == Right(254575))
+      assertTrue(parse("sample", "bgvyzdsv").flatMap(part1) == Right(254575))
     ,
     test("part1 - real input"):
       readFile("inputs/Day04.txt").map(input => assertTrue(part1(input) == Right(254575)))
     ,
-    test("part2 - empty key is rejected"):
-      assertTrue(part2("").isLeft)
+    test("parse - whitespace-only or multiple keys are rejected"):
+      assertTrue(parse("sample", " \n\t").isLeft, parse("sample", "abc def").isLeft)
     ,
     test("part2 - found hash actually has the required prefix"):
-      part2("bgvyzdsv").fold(
+      parse("sample", "bgvyzdsv").flatMap(part2).fold(
         error => assertNever(s"expected a result, got: $error"),
         n =>
           assertTrue(

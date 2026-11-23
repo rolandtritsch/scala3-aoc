@@ -2,61 +2,63 @@ package aoc2015
 
 import zio.*
 
-/** Day00 - dummy/template (Fibonacci)
-  *
-  * Input files (`Day00.txt`, `Day00Test.txt`) contain one integer per line:
-  *   - first line: n for part1 (10)
-  *   - last line: n for part2 (1000)
-  *
-  * part1: fib(10) = 55 part2: fib(1000) =
-  * 43466557686937456435688527675040625802564660517371780402481729089536555417949051890403879840079255169295922593080322634775209689623239873322471161642996440906533187938298969649928516003704476137795166849228875
-  *
-  * Uses [[BigInt]] because fib(1000) does not fit into Int/Long. Standard definition: fib(0) = 0,
-  * fib(1) = 1.
-  */
+/** Day00 - runnable Fibonacci example. The first and last non-negative indices select each part. */
 object Day00:
 
-  /** @return fib(n) with fib(0) = 0, fib(1) = 1 */
-  def fib(n: Int): BigInt =
-    require(n >= 0, "n >= 0")
+  opaque type Index = Int
+  final case class Input(first: Index, last: Index)
 
-    @scala.annotation.tailrec
-    def go(i: Int, a: BigInt, b: BigInt): BigInt = if i >= n then a else go(i + 1, b, a + b)
+  def parseIndex(filename: String, line: String, lineNumber: Int = 1): Either[AocError, Index] =
+    line.trim.toIntOption.filter(_ >= 0).toRight(
+      AocError.ParseError(filename, s"line $lineNumber: expected a non-negative Int index: $line")
+    )
 
-    go(0, 0, 1)
-  end fib
-
-  /** @return
-    *   the file for the given filename as parsed elements, or an [[AocError]] if the resource is
-    *   unreadable or a line is not an integer.
+  /** At least one index is required; a single index selects the same Fibonacci number for both
+    * parts.
     */
-  def readFile(filename: String): ZIO[Any, AocError, Seq[Int]] =
+  def parse(filename: String, input: String): Either[AocError, Input] = input.linesIterator
+    .zipWithIndex
+    .foldLeft[Either[AocError, Seq[Index]]](Right(Seq.empty)) { case (result, (line, index)) =>
+      for
+        indices <- result
+        parsed <- parseIndex(filename, line, index + 1)
+      yield parsed +: indices
+    }.flatMap { reversed =>
+      (reversed.lastOption, reversed.headOption) match
+        case (Some(first), Some(last)) => Right(Input(first, last))
+        case _ => Left(AocError.ParseError(filename, "expected at least one Fibonacci index"))
+    }
+
+  def readFile(filename: String): ZIO[Any, AocError, Input] =
     import scala.io.Source
 
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.logDebug(s"filename: $filename") *> ZIO.foreach(source.getLines().toSeq) { line =>
-        for
-          _ <- ZIO.logDebug(s"line: $line")
-          parsed <- ZIO.fromOption(line.trim.toIntOption)
-            .orElseFail(AocError.ParseError(filename, s"expected an integer, got: $line"))
-          _ <- ZIO.logDebug(s"parsed: $parsed")
-        yield parsed
-      }
+      for
+        _ <- ZIO.logDebug(s"filename: $filename")
+        input <- ZIO.attempt(source.mkString).mapError(AocError.FileReadError(filename, _))
+        _ <- ZIO.foreachDiscard(input.linesIterator.zipWithIndex.toSeq) { (line, index) =>
+          ZIO.logDebug(s"line ${index + 1}: $line")
+        }
+        parsed <- ZIO.fromEither(parse(filename, input))
+        _ <- ZIO.logDebug(s"parsed: $parsed")
+      yield parsed
     }
+
   end readFile
 
-  /** @return fib(input(0)), i.e. fib(10) = 55 for the dummy input */
-  def part1(is: Seq[Int]): BigInt =
-    require(is.nonEmpty, "is.nonEmpty")
-    fib(is.head)
-  end part1
+  /** The Index type guarantees a non-negative iteration count. BigInt keeps the result exact. */
+  def fib(n: Index): BigInt =
+    @scala.annotation.tailrec
+    def go(i: Int, a: BigInt, b: BigInt): BigInt = if i >= n then a else go(i + 1, b, a + b)
 
-  /** @return fib(input.last), i.e. fib(1000) for the dummy input */
-  def part2(is: Seq[Int]): BigInt =
-    require(is.nonEmpty, "is.nonEmpty")
-    fib(is.last)
-  end part2
+    go(0, 0, 1)
+
+  end fib
+
+  def part1(input: Input): BigInt = fib(input.first)
+
+  def part2(input: Input): BigInt = fib(input.last)
 
 end Day00

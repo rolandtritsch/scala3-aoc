@@ -1,12 +1,39 @@
 package aoc2015
 
 import aoc2015.Day05.*
-import zio.*
 import zio.test.*
 
 object Day05Test extends ZIOSpecDefault:
 
   def spec: Spec[Any, Any] = suite("Day05")(
+    test("parse - lowercase text and surrounding whitespace"):
+      assertTrue(
+        parse("sample", " aaa ") == Right("aaa"),
+        Seq("", "AAA", "abc1", "ab cd", "é").forall(line => parse("sample", line).isLeft),
+      )
+    ,
+    test("readFile - invalid word includes its location"):
+      readFile("inputs/Day05Invalid.txt").either.map(result =>
+        assertTrue(result.left.exists {
+          case AocError.ParseError("inputs/Day05Invalid.txt", message) => message.contains("line 2")
+          case _                                                       => false
+        })
+      )
+    ,
+    test("hasRepeatingPair - agrees with exhaustive short-word reference"):
+      val words = (0 to 8).flatMap(length =>
+        (0 until (1 << length)).map { bits =>
+          (0 until length).map(i => if (bits & (1 << i)) == 0 then 'a' else 'b').mkString
+        }
+      )
+      assertTrue(words.forall { word =>
+        val reference = (0 until word.length - 1).exists(i =>
+          (i + 2 until word.length - 1)
+            .exists(j => word.substring(i, i + 2) == word.substring(j, j + 2))
+        )
+        hasRepeatingPair(word) == reference
+      })
+    ,
     test("part1 - official samples"):
       assertTrue(
         isNice("ugknbfddgicrmopn"),
@@ -59,8 +86,9 @@ object Day05Test extends ZIOSpecDefault:
       assertTrue(!isNice("aabbccddee"))
     ,
     test("readFile"):
-      readFile("inputs/Day05.txt")
-        .map(obtained => assertTrue(obtained.length == 1000, obtained.head == "zgsnvdmlfuplrubt"))
+      readFile("inputs/Day05.txt").map(obtained =>
+        assertTrue(obtained.length == 1000, obtained.headOption.contains("zgsnvdmlfuplrubt"))
+      )
     ,
     test("part1 - real input"):
       readFile("inputs/Day05.txt").map(input => assertTrue(part1(input) == 238))
@@ -108,7 +136,7 @@ object Day05Test extends ZIOSpecDefault:
       assertTrue(isNicePart2("xxyxx"))
     ,
     test("part2 - real input"):
-      readFile("inputs/Day05.txt").map(input => assertTrue(part2(input) > 0)),
+      readFile("inputs/Day05.txt").map(input => assertTrue(part2(input) == 69)),
   )
 
 end Day05Test

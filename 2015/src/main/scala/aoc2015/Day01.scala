@@ -59,11 +59,11 @@ object Day01:
 
   /** @return
     *   the running floor after each instruction, in order, with the starting floor 0 as the first
-    *   element (before any instruction is applied). Shared by [[part1]] and [[part2]] so neither
-    *   duplicates the scan: `part1` is its last element, `part2` is the position of its first -1.
+    *   element (before any instruction is applied). LazyList lets part2 stop at the first basement
+    *   visit. Both parts share this construction, but each call performs its own scan.
     */
-  private def floors(instructions: Seq[Move]): LazyList[Int] =
-    instructions.to(LazyList).scanLeft(0)(step)
+  private def floors(instructions: Seq[Move]): LazyList[Int] = instructions.to(LazyList)
+    .scanLeft(0)(step)
 
   /** @return the final floor after following every instruction. */
   def part1(instructions: Seq[Move]): Int = floors(instructions).last

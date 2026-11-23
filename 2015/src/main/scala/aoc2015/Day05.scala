@@ -32,23 +32,42 @@ import zio.*
   */
 object Day05:
 
-  private val vowels: Set[Char] = "aeiou".toSet
-  private val forbidden: Set[String] = Set("ab", "cd", "pq", "xy")
+  private val vowels: String = "aeiou"
+  private val forbidden: Seq[String] = Seq("ab", "cd", "pq", "xy")
 
-  /** @return
-    *   the individual strings read from the given resource file, one per non-empty line, with
-    *   surrounding whitespace removed, or an [[AocError]] if the resource is unreadable.
+  /** Strings are the domain here. Blank lines are ignored; non-empty lines must be lowercase words.
     */
+  def parse(filename: String, line: String, lineNumber: Int = 1): Either[AocError, String] =
+    val word = line.trim
+    if word.nonEmpty && word.forall(c => c >= 'a' && c <= 'z') then Right(word)
+    else
+      Left(
+        AocError
+          .ParseError(filename, s"line $lineNumber: expected a non-empty lowercase word: $line")
+      )
+    end if
+
+  end parse
+
   def readFile(filename: String): ZIO[Any, AocError, Seq[String]] =
     import scala.io.Source
 
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.logDebug(s"filename: $filename") *>
-        ZIO.attempt(source.getLines().map(_.trim).filter(_.nonEmpty).toSeq)
-          .mapError(AocError.FileReadError(filename, _))
+      for
+        _ <- ZIO.logDebug(s"filename: $filename")
+        lines <- ZIO.attempt(source.getLines().toSeq).mapError(AocError.FileReadError(filename, _))
+        words <- ZIO.foreach(lines.zipWithIndex.filter(_._1.trim.nonEmpty)) { (line, index) =>
+          for
+            _ <- ZIO.logDebug(s"line ${index + 1}: $line")
+            word <- ZIO.fromEither(parse(filename, line, index + 1))
+            _ <- ZIO.logDebug(s"parsed: $word")
+          yield word
+        }
+      yield words
     }
+
   end readFile
 
   /** @return true if `s` contains at least three of the vowels `aeiou`. */
@@ -70,14 +89,22 @@ object Day05:
   def isNice(s: String): Boolean = hasThreeVowels(s) && hasDoubleLetter(s) && hasNoForbidden(s)
   end isNice
 
-  /** @return
-    *   true if `s` contains some pair of two letters that appears at least twice without
-    *   overlapping. Two occurrences of the same pair must be separated by at least one character so
-    *   they do not share a letter.
+  /** Remember each pair's earliest index so overlapping occurrences cannot hide a later valid
+    * match. A Map provides efficient lookup by pair instead of comparing every pair of positions.
     */
   def hasRepeatingPair(s: String): Boolean =
-    val pairs = s.sliding(2).toSeq
-    pairs.indices.exists(i => pairs.indices.drop(i + 2).exists(j => pairs(i) == pairs(j)))
+    @scala.annotation.tailrec
+    def search(index: Int, firstSeen: Map[String, Int]): Boolean =
+      if index >= s.length - 1 then false
+      else
+        val pair = s.substring(index, index + 2)
+        firstSeen.get(pair) match
+          case Some(first) if index - first >= 2 => true
+          case Some(_)                           => search(index + 1, firstSeen)
+          case None => search(index + 1, firstSeen.updated(pair, index))
+
+    search(0, Map.empty)
+
   end hasRepeatingPair
 
   /** @return
@@ -92,22 +119,11 @@ object Day05:
   def isNicePart2(s: String): Boolean = hasRepeatingPair(s) && hasRepeatWithGap(s)
   end isNicePart2
 
-  /** @return
-    *   the number of nice strings in `strings`: those containing at least three vowels, at least
-    *   one doubled letter, and none of the forbidden substrings. Each string is inspected a
-    *   constant number of times, so this runs in O(n) time and O(1) extra space for n input
-    *   strings.
+  /** Count words satisfying all three original niceness rules. Work is linear in total text length.
     */
   def part1(strings: Seq[String]): Int = strings.count(isNice)
-  end part1
 
-  /** @return
-    *   the number of nice strings in `strings` under the two revised rules: containing at least one
-    *   non-overlapping repeating pair and at least one repeated letter with exactly one letter
-    *   between. Each string is inspected a constant number of times, so this runs in O(n * L²) time
-    *   and O(L) extra space for n input strings of average length L.
-    */
+  /** Count words satisfying both revised rules. Pair lookups avoid a quadratic pair comparison. */
   def part2(strings: Seq[String]): Int = strings.count(isNicePart2)
-  end part2
 
 end Day05

@@ -2,143 +2,112 @@ package aoc2015
 
 import zio.*
 
-/** Day06 - Probably a Fire Hazard
-  *
-  * Santa deploys one million lights in a 1000x1000 grid, each numbered from 0 to 999 in each
-  * direction, and follows a sequence of instructions that turn lights on, turn them off, or toggle
-  * them. Every instruction names an inclusive rectangular range, given as the coordinates of two
-  * opposite corners, and all lights start switched off.
-  *
-  * part1: after following all the instructions in order, the number of lights that are on.
-  *
-  * part2: the fine print explains that `turn on` actually increases a light's brightness by one,
-  * `turn off` decreases it by one (to a minimum of zero), and `toggle` increases it by two. The
-  * answer is the total brightness of all the lights added together.
-  */
+/** Day06 - Probably a Fire Hazard. */
 object Day06:
 
   private val gridSide: Int = 1000
 
-  /** The operation an instruction applies to every light inside its range. */
   enum Action:
     case TurnOn, TurnOff, Toggle
-  end Action
 
-  private val instructionPattern =
-    """^(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)$""".r
+  final case class Position(x: Int, y: Int)
+  final case class Instruction private[Day06] (action: Action, from: Position, to: Position)
 
-  /** @return
-    *   the instructions read from the given resource file, one per non-empty line, with surrounding
-    *   whitespace removed, or an [[AocError]] if the resource is unreadable.
+  private val instructionPattern = """(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)""".r
+
+  /** Validate numeric conversion, grid bounds, and corner ordering before constructing an
+    * instruction.
     */
-  def readFile(filename: String): ZIO[Any, AocError, Seq[String]] =
+  def parse(filename: String, line: String, lineNumber: Int = 1): Either[AocError, Instruction] =
+    def invalid(reason: String): Left[AocError, Nothing] =
+      Left(AocError.ParseError(filename, s"line $lineNumber: $reason: $line"))
+
+    line.trim match
+      case instructionPattern(operation, rawX1, rawY1, rawX2, rawY2) =>
+        val action = operation match
+          case "turn on"  => Right(Action.TurnOn)
+          case "turn off" => Right(Action.TurnOff)
+          case "toggle"   => Right(Action.Toggle)
+          case _          => invalid("unrecognized operation")
+        val coordinates =
+          (rawX1.toIntOption, rawY1.toIntOption, rawX2.toIntOption, rawY2.toIntOption) match
+            case (Some(x1), Some(y1), Some(x2), Some(y2))
+              if x1 >= 0 && y1 >= 0 && x2 < gridSide && y2 < gridSide && x1 <= x2 && y1 <= y2 =>
+              Right((Position(x1, y1), Position(x2, y2)))
+            case _ => invalid("expected ordered corners within 0..999")
+        for
+          parsedAction <- action
+          (from, to) <- coordinates
+        yield Instruction(parsedAction, from, to)
+      case _ => invalid("unrecognized instruction")
+    end match
+
+  end parse
+
+  /** Blank lines are ignored; both parts receive the same validated instructions. */
+  def readFile(filename: String): ZIO[Any, AocError, Seq[Instruction]] =
     import scala.io.Source
 
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.logDebug(s"filename: $filename") *>
-        ZIO.attempt(source.getLines().map(_.trim).filter(_.nonEmpty).toSeq)
-          .mapError(AocError.FileReadError(filename, _))
+      for
+        _ <- ZIO.logDebug(s"filename: $filename")
+        lines <- ZIO.attempt(source.getLines().toSeq).mapError(AocError.FileReadError(filename, _))
+        instructions <- ZIO.foreach(lines.zipWithIndex.filter(_._1.trim.nonEmpty)) { (line, index) =>
+          for
+            _ <- ZIO.logDebug(s"line ${index + 1}: $line")
+            instruction <- ZIO.fromEither(parse(filename, line, index + 1))
+            _ <- ZIO.logDebug(s"parsed: $instruction")
+          yield instruction
+        }
+      yield instructions
     }
+
   end readFile
 
-  /** @return
-    *   the action and the inclusive opposite corners `(x1, y1)` and `(x2, y2)` parsed from `line`,
-    *   or an [[AocError]] if `line` does not match an instruction.
-    */
-  def parse(line: String): Either[AocError, (Action, Int, Int, Int, Int)] =
-    line match
-      case instructionPattern(op, x1, y1, x2, y2) =>
-        val action = op match
-          case "turn on"  => Action.TurnOn
-          case "turn off" => Action.TurnOff
-          case "toggle"   => Action.Toggle
-        Right((action, x1.toInt, y1.toInt, x2.toInt, y2.toInt))
-      case _ => Left(AocError.ParseError("", s"Unrecognized instruction: $line"))
-    end match
-  end parse
+  private def switched(on: Boolean, action: Action): Boolean = action match
+    case Action.TurnOn  => true
+    case Action.TurnOff => false
+    case Action.Toggle  => !on
 
-  /** Applies `action` to every cell of `lights` inside the inclusive rectangle `(x1, y1)` to
-    * `(x2, y2)`, mutating the grid in place. `lights` is a local O(1)-space accumulator, not a
-    * `var`; the nested range iterates without any loop counter variable.
-    */
-  private def applyRange(
-      lights: Array[Boolean],
-      action: Action,
-      x1: Int,
-      y1: Int,
-      x2: Int,
-      y2: Int,
-  ): Unit = for
-    y <- y1 to y2
-    x <- x1 to x2
-  do
-    val i = y * gridSide + x
-    action match
-      case Action.TurnOn  => lights(i) = true
-      case Action.TurnOff => lights(i) = false
-      case Action.Toggle  => lights(i) = !lights(i)
-    end match
-  end applyRange
+  private def brightness(current: Long, action: Action): Long = action match
+    case Action.TurnOn  => current + 1
+    case Action.TurnOff => (current - 1).max(0L)
+    case Action.Toggle  => current + 2
 
-  /** Adds `delta` to every cell of `lights` inside the inclusive rectangle `(x1, y1)` to
-    * `(x2, y2)`, clamped at a minimum of zero, mutating the grid in place.
+  /** Arrays provide constant-time cell updates without copying the million-cell grid. Mutation
+    * stays local, so evaluating either part cannot change its input or another run.
     */
-  private def applyBrightness(
-      lights: Array[Int],
-      delta: Int,
-      x1: Int,
-      y1: Int,
-      x2: Int,
-      y2: Int,
-  ): Unit = for
-    y <- y1 to y2
-    x <- x1 to x2
-  do
-    val i = y * gridSide + x
-    lights(i) = math.max(0, lights(i) + delta)
-  end applyBrightness
-
-  /** @return
-    *   the number of lights that are on after applying every instruction in order, or an
-    *   [[AocError]] if any instruction fails to parse. Lights start off; `turn on` switches a light
-    *   on, `turn off` switches it off, and `toggle` flips it. Each instruction updates every cell
-    *   inside its inclusive rectangle, so the grid is stored as a mutable array of
-    *   `gridSide * gridSide` booleans and the answer is the number of `true` entries. Runs in O(n *
-    *   A) time for n instructions covering on average A cells, using O(1) extra space beyond the
-    *   grid.
-    */
-  def part1(instructions: Seq[String]): Either[AocError, Int] =
+  def part1(instructions: Seq[Instruction]): Int =
     val lights = Array.fill[Boolean](gridSide * gridSide)(false)
-    instructions.foldLeft[Either[AocError, Unit]](Right(())) { (acc, line) =>
-      for
-        _ <- acc
-        (action, x1, y1, x2, y2) <- parse(line)
-      yield applyRange(lights, action, x1, y1, x2, y2)
-    }.map(_ => lights.count(identity))
+    for
+      instruction <- instructions
+      y <- instruction.from.y to instruction.to.y
+      x <- instruction.from.x to instruction.to.x
+    do
+      val index = y * gridSide + x // Parsed corners guarantee a valid array index.
+      lights(index) = switched(lights(index), instruction.action)
+    end for
+    lights.count(identity)
+
   end part1
 
-  /** @return
-    *   the total brightness of all lights after applying every instruction in order under the
-    *   revised semantics, or an [[AocError]] if any instruction fails to parse. Lights start at
-    *   brightness zero; `turn on` adds one, `turn off` subtracts one but never below zero, and
-    *   `toggle` adds two. The grid is stored as a mutable array of `gridSide * gridSide` integers
-    *   and the answer is their sum. Runs in O(n * A) time for n instructions covering on average A
-    *   cells, using O(1) extra space beyond the grid.
+  /** Long brightness and totals avoid Int overflow across large instruction sequences. A local
+    * array provides constant-time cell updates, as in part1.
     */
-  def part2(instructions: Seq[String]): Either[AocError, Int] =
-    val lights = Array.fill[Int](gridSide * gridSide)(0)
-    instructions.foldLeft[Either[AocError, Unit]](Right(())) { (acc, line) =>
-      for
-        _ <- acc
-        (action, x1, y1, x2, y2) <- parse(line)
-        delta = action match
-          case Action.TurnOn  => 1
-          case Action.TurnOff => -1
-          case Action.Toggle  => 2
-      yield applyBrightness(lights, delta, x1, y1, x2, y2)
-    }.map(_ => lights.sum)
+  def part2(instructions: Seq[Instruction]): Long =
+    val lights = Array.fill[Long](gridSide * gridSide)(0L)
+    for
+      instruction <- instructions
+      y <- instruction.from.y to instruction.to.y
+      x <- instruction.from.x to instruction.to.x
+    do
+      val index = y * gridSide + x // Parsed corners guarantee a valid array index.
+      lights(index) = brightness(lights(index), instruction.action)
+    end for
+    lights.sum
+
   end part2
 
 end Day06
