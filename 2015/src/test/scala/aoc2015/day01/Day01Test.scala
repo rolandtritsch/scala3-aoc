@@ -77,5 +77,6 @@ object Day01Test extends ZIOSpecDefault:
     test("part2 - real input"):
       readFile("inputs/Day01.txt").map(input => assertTrue(part2(input) == 1771)),
   )
+  end spec
 
 end Day01Test

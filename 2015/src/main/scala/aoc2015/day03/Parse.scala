@@ -17,3 +17,4 @@ def parse(filename: String, input: String): Either[AocError, Seq[Direction]] = i
             )
       }
   }.map(_.reverse)
+end parse

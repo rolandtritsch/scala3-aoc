@@ -4,7 +4,6 @@ package aoc2015.day01
 private def step(floor: Int, move: Move): Int = move match
   case Move.Up   => floor + 1
   case Move.Down => floor - 1
-end step
 
 /** @return
   *   the running floor after each instruction, in order, with the starting floor 0 as the first

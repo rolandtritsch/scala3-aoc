@@ -19,7 +19,8 @@ object Present:
           Left(
             AocError.ParseError(filename, s"line $lineNumber: dimensions must be positive: $line")
           )
-        end if
       case _ => Left(AocError.ParseError(filename, s"line $lineNumber: expected LxWxH: $line"))
+
+  end parseLine
 
 end Present

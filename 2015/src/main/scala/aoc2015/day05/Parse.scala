@@ -11,6 +11,5 @@ def parse(filename: String, line: String, lineNumber: Int = 1): Either[AocError,
     Left(
       AocError.ParseError(filename, s"line $lineNumber: expected a non-empty lowercase word: $line")
     )
-  end if
 
 end parse

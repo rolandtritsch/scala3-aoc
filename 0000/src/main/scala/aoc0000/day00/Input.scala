@@ -18,3 +18,4 @@ def parse(filename: String, input: String): Either[AocError, Input] = input.line
       case (Some(first), Some(last)) => Right(Input(first, last))
       case _ => Left(AocError.ParseError(filename, "expected at least one Fibonacci index"))
   }
+end parse

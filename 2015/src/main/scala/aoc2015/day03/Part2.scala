@@ -6,5 +6,3 @@ def part2(directions: Seq[Direction]): Int =
     if index % 2 == 0 then Left(direction) else Right(direction)
   }
   (visited(santa) union visited(robo)).size
-
-end part2

@@ -82,6 +82,24 @@ These rules apply to all new and changed solution code (day packages, `util`,
   domain validation when splitting files: constrained constructors and generated
   `copy` methods must remain inaccessible to callers that could bypass it.
 
+### End markers follow formatted function length
+
+- Named functions (`def`) spanning six or more formatted lines must end with
+  `end functionName`. Functions spanning five or fewer lines must omit that
+  marker. This includes local functions and methods.
+- Count from the `def` keyword through the last line of its body, including
+  internal blank lines and comments, but excluding annotations, documentation,
+  trailing blank lines, and the function's own end marker.
+- Run Scalafmt first, then `scalafixAll --check`. The local `FunctionEndMarkers`
+  Scalafix rule checks every function, including expression chains and local
+  functions. Add or remove a function's marker when this check reports an error.
+- Scalafmt's end-marker insertion and removal are disabled: its span includes
+  annotations, which can conflict with this rule. Scalafix is the authority for
+  function markers; do not exempt a function because the formatter left it
+  unchanged.
+- Non-function markers (`end if`, `end match`, `end for`, and type/object markers)
+  are outside this function-length rule. Keep them where they clarify scope.
+
 ### ZIO is mandatory for effects
 
 - Every entrypoint is `object Main extends ZIOAppDefault`. Do not write a plain
@@ -230,6 +248,12 @@ sbt --server --batch 'clean; compile; testOnly *'
 sbt --server --batch 'scalafmtCheckAll; scalafmtSbtCheck; run'
 sbt --server --batch 'scalafixAll --check'
 ```
+
+The end-marker rule is shipped in each project's `.scalafix/` directory so
+copied templates and year projects can lint independently. Local rule sources
+use the Scala 2 syntax required by Scalafix's source compiler. To verify its
+boundary cases from the repository root, run
+`python3 scripts/test_function_end_markers.py YEAR`.
 
 Confirm the test output reports executed tests and zero failures. Use
 `testOnly *` because the pinned sbt thin client can select `testQuick` for

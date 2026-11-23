@@ -12,7 +12,6 @@ def parse(filename: String, input: String): Either[AocError, SecretKey] =
     Left(
       AocError.ParseError(filename, "expected one non-empty secret key without internal whitespace")
     )
-  end if
 
 end parse
 

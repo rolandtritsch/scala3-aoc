@@ -16,6 +16,7 @@ object Day06Test extends ZIOSpecDefault:
         instruction <- parse("sample", line)
       yield instruction +: instructions
     }.map(_.reverse)
+  end parsed
 
   private def solvePart1(lines: Seq[String]): Either[AocError, Int] = parsed(lines).map(part1)
   private def solvePart2(lines: Seq[String]): Either[AocError, Long] = parsed(lines).map(part2)
@@ -152,5 +153,6 @@ object Day06Test extends ZIOSpecDefault:
     test("part2 - real input"):
       readFile("inputs/Day06.txt").map(input => assertTrue(part2(input) == 15343601L)),
   )
+  end spec
 
 end Day06Test

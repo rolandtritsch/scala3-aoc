@@ -10,3 +10,4 @@ def parseLines[A](filename: String, input: String)(
       value <- parseLine(filename, line, index + 1)
     yield value +: values
   }.map(_.reverse)
+end parseLines

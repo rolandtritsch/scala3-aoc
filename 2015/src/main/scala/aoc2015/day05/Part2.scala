@@ -14,6 +14,8 @@ def hasRepeatingPair(s: String): Boolean =
         case Some(_)                           => search(index + 1, firstSeen)
         case None                              => search(index + 1, firstSeen.updated(pair, index))
 
+  end search
+
   search(0, Map.empty)
 
 end hasRepeatingPair
@@ -24,11 +26,9 @@ end hasRepeatingPair
   */
 def hasRepeatWithGap(s: String): Boolean = s.sliding(3)
   .exists(triple => triple.length == 3 && triple(0) == triple(2))
-end hasRepeatWithGap
 
 /** @return true if `s` satisfies both part-2 niceness rules. */
 def isNicePart2(s: String): Boolean = hasRepeatingPair(s) && hasRepeatWithGap(s)
-end isNicePart2
 
 /** Count words satisfying both revised rules. Pair lookups avoid a quadratic pair comparison. */
 def part2(strings: Seq[String]): Int = strings.count(isNicePart2)

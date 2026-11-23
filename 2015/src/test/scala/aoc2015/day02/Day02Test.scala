@@ -83,5 +83,6 @@ object Day02Test extends ZIOSpecDefault:
     test("parseLine - rejects malformed line"):
       assertTrue(parseLine("test", "2x3").isLeft, parseLine("test", "2x3xfour").isLeft),
   )
+  end spec
 
 end Day02Test
