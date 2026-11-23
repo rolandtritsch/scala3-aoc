@@ -1,5 +1,6 @@
 package aoc2015
 
+import aoc2015.util.AocError
 import zio.*
 
 /** Day05 - Doesn't He Have Intern-Elves For This?

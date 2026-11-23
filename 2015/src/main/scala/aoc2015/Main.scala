@@ -1,5 +1,6 @@
 package aoc2015
 
+import aoc2015.util.AocError
 import zio.*
 
 object Main extends ZIOAppDefault:

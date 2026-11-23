@@ -1,6 +1,7 @@
 package aoc2015
 
 import aoc2015.Day01.*
+import aoc2015.util.AocError
 import zio.test.*
 
 object Day01Test extends ZIOSpecDefault:

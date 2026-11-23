@@ -1,4 +1,4 @@
-package aoc0000
+package aoc0000.util
 
 /** A typed, recoverable failure while reading or parsing a day's input.
   *

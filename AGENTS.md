@@ -6,7 +6,8 @@
 - `YYYY/` contains one year's independent sbt project and `aocYYYY` package.
 - Each project keeps solutions under `src/main/scala/aocYYYY`, inputs under
   `src/main/resources/inputs`, and tests under `src/test/scala`. There is no
-  shared `util/` framework; write what each day needs in its own package.
+  shared puzzle-helper framework; write what each day needs in its own package.
+  Each project's `aocYYYY.util` package holds its shared `AocError` enum.
 - `problems/` holds puzzle descriptions. Keep Day00 as the runnable example.
 - Build configuration and tool versions belong to each year's directory.
 - `scripts/` holds reusable workflow helpers. `skills/` holds distilled
@@ -67,8 +68,9 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   unrecognized instruction, an empty secret key) are typed values, not thrown
   exceptions. Effectful code fails the ZIO error channel (`ZIO.fail`,
   `ZIO.fromEither`); pure code that can fail returns `Either`/`Option`. Define
-  one `AocError` enum per `YYYY` project (see `AocError.scala`) and use it as
-  the error type everywhere a day can fail.
+  one `AocError` enum per project in `aocYYYY.util` (see `util/AocError.scala`)
+  and use it as the error type everywhere a day can fail. The template uses
+  `aoc0000.util.AocError`.
 - `require(...)` is reserved for invariants that only a bug in this code could
   violate (a value already guaranteed by its caller's contract), never for
   validating puzzle input or file contents. If the condition depends on what
@@ -168,9 +170,10 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   pixel/brightness grid) is acceptable — it is not a `var` — but iterate it
   with a `for`-comprehension or recursion, never a `while` loop driven by
   `var` counters.
-- There is no shared `util/` framework. If a later day needs a grid, graph,
-  or search structure, write it in that day's own package, following these
-  same guardrails, rather than reviving a general-purpose shared module.
+- The `util` package holds the project's shared `AocError` type. If a later day
+  needs a grid, graph, or search structure, write it in that day's own package,
+  following these same guardrails, rather than adding a general-purpose shared
+  puzzle-helper framework.
 - `no var`/`no while`/`no throw`/`no null`/`no return` are machine-enforced
   via scalafix's built-in `DisableSyntax` rule (configured in
   `.scalafix.conf`), not just documented here. WartRemover was evaluated as

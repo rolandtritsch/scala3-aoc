@@ -1,6 +1,7 @@
 package aoc2015
 
 import aoc2015.Day04.*
+import aoc2015.util.AocError
 import zio.*
 import zio.test.*
 

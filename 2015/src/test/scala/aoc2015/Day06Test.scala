@@ -3,6 +3,7 @@ package aoc2015
 import scala.compiletime.testing.typeCheckErrors
 
 import aoc2015.Day06.*
+import aoc2015.util.AocError
 import zio.test.*
 
 object Day06Test extends ZIOSpecDefault:

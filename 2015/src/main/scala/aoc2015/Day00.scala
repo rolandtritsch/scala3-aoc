@@ -1,5 +1,6 @@
 package aoc2015
 
+import aoc2015.util.AocError
 import zio.*
 
 /** Day00 - runnable Fibonacci example. The first and last non-negative indices select each part. */

@@ -3,6 +3,7 @@ package aoc2015
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 
+import aoc2015.util.AocError
 import zio.*
 
 /** Day04 - The Ideal Stocking Stuffer. */
