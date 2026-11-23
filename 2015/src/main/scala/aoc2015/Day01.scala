@@ -14,29 +14,47 @@ import zio.*
   */
 object Day01:
 
+  enum Move:
+    case Up, Down
+
+  /** Parse parentheses into moves, ignoring whitespace and rejecting other characters. */
+  def parse(filename: String, input: String): Either[AocError, Seq[Move]] = input.zipWithIndex
+    .foldLeft[Either[AocError, Seq[Move]]](Right(Seq.empty)) { case (result, (character, index)) =>
+      result.flatMap { moves =>
+        character match
+          case '('                 => Right(Move.Up +: moves)
+          case ')'                 => Right(Move.Down +: moves)
+          case c if c.isWhitespace => Right(moves)
+          case c                   => Left(
+              AocError.ParseError(filename, s"unexpected character '$c' at position ${index + 1}")
+            )
+      }
+    }.map(_.reverse)
+  end parse
+
   /** @return
-    *   the instruction string read from the given resource file, or an [[AocError]] if the resource
-    *   is unreadable.
+    *   the moves parsed from the given resource file, or an [[AocError]] if the resource is
+    *   unreadable or contains an invalid instruction.
     */
-  def readFile(filename: String): ZIO[Any, AocError, String] =
+  def readFile(filename: String): ZIO[Any, AocError, Seq[Move]] =
     import scala.io.Source
 
     ZIO.acquireReleaseWith(
       ZIO.attempt(Source.fromResource(filename)).mapError(AocError.FileReadError(filename, _))
     )(source => ZIO.succeed(source.close())) { source =>
-      ZIO.logDebug(s"filename: $filename") *> ZIO.attempt(source.mkString)
-        .mapError(AocError.FileReadError(filename, _))
+      for
+        _ <- ZIO.logDebug(s"filename: $filename")
+        input <- ZIO.attempt(source.mkString).mapError(AocError.FileReadError(filename, _))
+        moves <- ZIO.fromEither(parse(filename, input))
+        _ <- ZIO.logDebug(s"parsed: $moves")
+      yield moves
     }
   end readFile
 
-  /** @return
-    *   the floor reached by moving one unit from `floor` in the direction `c`, where `(` is +1 and
-    *   `)` is -1, and any other character leaves the floor unchanged.
-    */
-  private def step(floor: Int, c: Char): Int = c match
-    case '(' => floor + 1
-    case ')' => floor - 1
-    case _   => floor
+  /** @return the floor reached after applying one move. */
+  private def step(floor: Int, move: Move): Int = move match
+    case Move.Up   => floor + 1
+    case Move.Down => floor - 1
   end step
 
   /** @return
@@ -44,24 +62,18 @@ object Day01:
     *   element (before any instruction is applied). Shared by [[part1]] and [[part2]] so neither
     *   duplicates the scan: `part1` is its last element, `part2` is the position of its first -1.
     */
-  private def floors(instructions: String): LazyList[Int] = instructions.to(LazyList)
-    .scanLeft(0)(step)
-  end floors
+  private def floors(instructions: Seq[Move]): LazyList[Int] =
+    instructions.to(LazyList).scanLeft(0)(step)
 
   /** @return the final floor after following every instruction. */
-  def part1(instructions: String): Int = floors(instructions).last
-  end part1
+  def part1(instructions: Seq[Move]): Int = floors(instructions).last
 
   /** @return
     *   the 1-based position of the first instruction that sends Santa into the basement (floor -1),
-    *   or -1 if he never enters the basement. The index (after dropping the starting floor) of the
-    *   first -1 in [[floors]] is exactly the count of instructions applied so far, i.e. the 1-based
-    *   position of that instruction; `LazyList.indexWhere` already returns -1 when there is no
-    *   match, matching the "never enters the basement" case directly.
+    *   or -1 if he never enters the basement. Since [[floors]] includes the starting floor at index
+    *   0, each subsequent index equals the number of instructions applied. `LazyList.indexWhere`
+    *   returns -1 when there is no match.
     */
-  def part2(instructions: String): Int = floors(instructions).drop(1).indexWhere(_ == -1) match
-    case -1 => -1
-    case i  => i + 1
-  end part2
+  def part2(instructions: Seq[Move]): Int = floors(instructions).indexWhere(_ == -1)
 
 end Day01

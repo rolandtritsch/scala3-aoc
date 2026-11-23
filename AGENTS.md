@@ -99,6 +99,8 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   constructor with side effects.
 - Keep `parse`, `part1`, and `part2` pure and total once their input is
   already validated; push IO and validation to `readFile`.
+- Use `Seq` until you have a good reason to use something else. When choosing
+  another collection, leave a comment in the code explaining why.
 
 ### No `var`; prefer tail recursion
 
