@@ -596,28 +596,28 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "69",
-        "commit": "6f56c2b67839642cb6a3ac72766882a114726505",
+        "commit": "8c5bbcc30cb57fe2b7b71c040d7ee64b8e00d093",
         "day": 5,
         "files": {
-          "2015/.scalafix.conf": "11c7225e274163bbfe3e7504ee7f21a9ff1ec5a412c915d2f1908749a27ccab0",
-          "2015/.scalafmt.conf": "adfeda8211c5e2cd23a299b34d0c8f99142b9b96e662763bb27623203e66c785",
+          "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
+          "2015/.scalafix/FunctionEndMarkers.scala": "53d0291feef3fe3c14ba911c96db50858209fd642baa6b1a73ad4804787c4742",
+          "2015/.scalafmt.conf": "b2791fe044d79a5cfceffb0f4f5afabce5a9c7874b56b5dce073e01972117b24",
           "2015/.tool-versions": "e083b84be3727290ae24bd48449cb66a3d852defdfc47f14c56e9d6e75adf73a",
-          "2015/build.sbt": "99bb40032843113550285ed17cc6e7539b7de680ba3ccfbd54c4905911ce21c8",
+          "2015/build.sbt": "7ec7b8e21edea9e8a61c3eff571f49085adf8fb0e9abc8ff7804182450966c6d",
           "2015/project/build.properties": "bfd375a2714acd417f17bf18c09b3dc6536d7c6044c31e0bfdc5e8e7f4f2b60a",
           "2015/project/plugins.sbt": "ee72ba122b2ede40deea3a52f362f7cee293e74e1ae4384618fe1ce9e0b7455e",
           "2015/src/main/resources/inputs/Day05.txt": "3bf6e8b73a096b909f09f15cc22c1034ea8f7093b1e9036f73b7f61f785ab977",
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
-          "2015/src/main/scala/aoc2015/Day05.scala": "685860ceb6ac4ea395fa4fe290179c7d2ee659a872b8ad9d035839203c90fce3",
+          "2015/src/main/scala/aoc2015/day05/Parse.scala": "537b91ca0df4d445669959f98add9fc3b9fd9609d480e7dc8baa36f891673c53",
+          "2015/src/main/scala/aoc2015/day05/Part1.scala": "3d33dcb23905d6b6fca956df8db08f758de7cec949b2d08914bc8ebfaf2aa059",
+          "2015/src/main/scala/aoc2015/day05/Part2.scala": "3e6be6bec151dc200ca53a786d0d2429c2fd1c24c275debc8ad534d83088c260",
+          "2015/src/main/scala/aoc2015/day05/ReadFile.scala": "f0101b443fde7368a9b82492d824fdef91fcc3d76060284e3f1daad7f6446c19",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
-          "2015/src/main/scala/util/Bfs.scala": "e870c28a437961018676907e5bd655d9b0c7149d7d96c6713223823b3a9a4fb7",
-          "2015/src/main/scala/util/DPosition.scala": "a2eb12b1ba40fe048136a43036a92645761bfc536cb7191c0d546d393f3be6f1",
-          "2015/src/main/scala/util/Dfs.scala": "f73551b3674fa5a9ca3690f06756dc8d3a0092680da6f934934cd8daf99f3ca8",
-          "2015/src/main/scala/util/Grid.scala": "37784a082ba8cc6ffed774d7cb46039fcd6ef52c841a87584258c71aeb288e24",
-          "2015/src/main/scala/util/GridGraph.scala": "1f66244e1c97c3cc0586b1e4c39d020c61b63808a4f07dfd70cc007cf2b427e5",
-          "2015/src/main/scala/util/Path.scala": "cfb35fb2bf09560d7d585a3ffe8d94f5767afd198fdce17dfe37f4dda724a29c",
-          "2015/src/main/scala/util/Position.scala": "bbfce55c8df36cb2550506cee7ed36f3dee7b675981328c5c86eb9fc17f667e5",
-          "2015/src/main/scala/util/WDGridGraph.scala": "c76d8f7d59383107d64a584ea980c00218aae33507381b7298ff94c40ff37cbe",
-          "2015/src/main/scala/util/package.scala": "1d779f8adb2c0657e700a385309fa70c23e57274821cf35c4236c072aa566bfc",
+          "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
+          "2015/src/main/scala/aoc2015/util/ParseLines.scala": "8362451fb368de6d6e74427fa23a800d3619e54b3bd4e88a41d9d23fbba335a7",
+          "2015/src/main/scala/aoc2015/util/Position.scala": "f8c5a0dace9d6579f50aaf0bf20f35eac219c79aa49e464066458f97d30588be",
+          "2015/src/main/scala/aoc2015/util/ReadResource.scala": "c7cb5ab1c6015659318c69b864b68827060bc29434b43ca7b086be8337e5d7ba",
+          "2015/src/test/resources/inputs/Day05Invalid.txt": "6a690a0f7b17c1e5d94af116f882ccadb7cdb0fec8c4ac8d566d40737df0ce69",
           "2015/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
           "2015/src/test/resources/tests/GridTest-Medium.txt": "2e27b2bc827961a77653f5152cb73ee9b3e0986c56bd149769d64fa5fde35475",
@@ -627,13 +627,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/Day05Test.scala": "16e4c541f5aca1134965b1e9dbe0ea11f0c0b43d13a05e04102cbf265ee0aefe",
-          "2015/src/test/scala/util/BfsTest.scala": "6c5e5052c249f972068e4e6599b8793d528d26375b6463e2ad65b62d5d94793a",
-          "2015/src/test/scala/util/DfsTest.scala": "cc88cb47a71bd3e3069262891e989325921fef9d2fbcfcc53cc0539cf7d991b8",
-          "2015/src/test/scala/util/GridGraphTest.scala": "b548e9c1df4b27f6bb072dea60d02a2ef3549e6f4841beb22809110970854adb",
-          "2015/src/test/scala/util/GridTest.scala": "206a1286fa854e40db5ebe5c3ba4a76eca77abe74904f86d39481fd8b1675f63",
-          "2015/src/test/scala/util/PositionTest.scala": "1819ad4845133b89ed5de71d16fffe0342218eee080e25c1956595514161108b",
-          "2015/src/test/scala/util/WDGridGraphTest.scala": "523ba44f8fd13ef6afdad427628fb2d8363d06ab718d96abd11a8c4663d4736d"
+          "2015/src/test/scala/aoc2015/day05/Day05Test.scala": "6f66fa211fbe7209bbc5927602f846441a798718436be69c1eddfff49a4a2988"
         },
         "formatting": "passed",
         "owner": {
@@ -644,7 +638,12 @@
         "runner": "passed",
         "schema": 1,
         "tests": "passed",
-        "verifiedAt": "2026-11-23T07:20:09.394632+00:00",
+        "verification": {
+          "tree": "5d145c4cc4cc412fb2495a96a6c6dd3b72aebe13",
+          "yearChecksAt": "2026-11-23T18:29:10.438482+00:00",
+          "yearChecksCommit": "7dc66004850f3ad82def05e894efaaaf7cb16bed"
+        },
+        "verifiedAt": "2026-11-23T18:31:16.146557+00:00",
         "year": 2015
       },
       "site": {
@@ -654,7 +653,7 @@
           "69"
         ],
         "complete": 2,
-        "observedAt": "2026-11-23T07:20:13.676282+00:00"
+        "observedAt": "2026-11-23T18:31:14.501068+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. You have completed Day 5! You can [Shareon Bluesky Twitter Mastodon] this victory or [Return to Your Advent Calendar]."
     },
