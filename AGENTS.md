@@ -97,10 +97,63 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   that hide mutable fields behind methods. `parse`-style functions return the
   parsed ADT (or `Either[AocError, ADT]`), not a class instance built by a
   constructor with side effects.
-- Keep `parse`, `part1`, and `part2` pure and total once their input is
-  already validated; push IO and validation to `readFile`.
 - Use `Seq` until you have a good reason to use something else. When choosing
-  another collection, leave a comment in the code explaining why.
+  another collection, leave a comment in the code explaining why, including
+  when laziness enables early termination.
+
+### Parse and type input at the boundary
+
+- Convert raw input into validated domain values in `readFile`. For a sequence
+  of domain values, return `ZIO[Any, AocError, Seq[DomainValue]]`; return another
+  domain type when the puzzle's structure warrants it.
+- Define meaningful domain types before implementing the solution. Use enums
+  for closed alternatives, case classes for structured values, and opaque types
+  where distinguishing otherwise identical primitive types prevents mistakes.
+- Translate input symbols into domain values immediately. For example, Day01
+  returns `Seq[Move]`, with `Move.Up` and `Move.Down`, rather than parentheses
+  as a `String`.
+- Keep raw strings only when text itself is the domain value. Do not encode
+  already-understood instructions, directions, or states as strings, characters,
+  integers, or booleans.
+- Validate all input-dependent assumptions before `readFile` succeeds. Neither
+  `part1` nor `part2` should interpret raw syntax or discover malformed input.
+- Keep parsing pure and separately testable: `parse` returns
+  `Either[AocError, DomainValue]`. Lift its result into ZIO inside `readFile`,
+  which owns file IO and orchestrates validation.
+- Report invalid input through `AocError`, with the filename and useful line or
+  character position. Never silently discard an unrecognized instruction.
+- Handle whitespace deliberately according to the input format. Ignore it only
+  when it has no domain meaning.
+
+### Keep solution functions pure and total
+
+- `part1` and `part2` accept validated domain values and return explicitly typed
+  answers. They perform no IO, logging, or raw-input parsing.
+- Match domain enums exhaustively. Avoid wildcard cases that hide an unhandled
+  domain alternative.
+- Represent legitimate "no result" outcomes explicitly, normally with `Option`.
+  Use a sentinel such as `-1` only when it is an intentional, documented answer
+  contract. Use `Either[AocError, Answer]` for recoverable computation failures.
+- Avoid partial operations such as unchecked indexing, `.get`, `.head`, or
+  `.last` unless the function's construction or validated input guarantees they
+  are safe.
+
+### Express the algorithm directly
+
+- Prefer transformations such as `map`, `foldLeft`, `scanLeft`, and `indexWhere`
+  when they express the algorithm clearly.
+- Use `foldLeft` when only the final accumulated value is needed; use `scanLeft`
+  when intermediate states are needed.
+- Extract a small, pure transition function when both parts apply the same
+  domain rules. Share domain logic without forcing both parts into an unsuitable
+  algorithm; do not require every puzzle to use Day01's `scanLeft` approach.
+- Derive positions from sequence structure where possible. Avoid separate
+  counters and flags when an index or search operation already expresses the
+  result.
+- Prefer searches that stop once the answer is known. Avoid guards that suppress
+  updates while still traversing the remaining input.
+- Avoid unnecessary intermediate collections and repeated computations while
+  keeping the implementation readable.
 
 ### No `var`; prefer tail recursion
 
@@ -132,6 +185,14 @@ and their tests), in every `YYYY/` project and the `0000/` template.
   float on a branch.
 
 ## Verification
+
+- Test parsing separately from solving: domain mapping, malformed input,
+  permitted whitespace, and boundary cases.
+- Preserve official examples and real-input answer checks.
+- Explain non-obvious invariants in code comments, such as why a sequence index
+  equals an instruction number.
+- Keep performance comments precise: sharing a helper shares code; it does not
+  necessarily share a computed result.
 
 Run commands inside the affected year directory. For the template:
 
