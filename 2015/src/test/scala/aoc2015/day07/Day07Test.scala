@@ -79,6 +79,16 @@ object Day07Test extends ZIOSpecDefault:
     test("part1 - left shift takes a literal operand"):
       parseAll(Seq("1 LSHIFT 15 -> x", "x -> a")).map(instr => assertTrue(part1(instr) == 32768))
     ,
+    test("part2 - override wire b changes the signal"):
+      parseAll(Seq("1 -> b", "b LSHIFT 1 -> a")).map(instr => assertTrue(part2(instr) == 4))
+    ,
+    test("part2 - override feeds a dependent gate"):
+      parseAll(Seq("8 -> b", "b RSHIFT 1 -> c", "c -> a"))
+        .map(instr => assertTrue(part2(instr) == 2))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day07.txt").map(instructions => assertTrue(part2(instructions) == 2797))
+    ,
     test("readFile - invalid gate reports line"):
       readFile("inputs/Day07Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {

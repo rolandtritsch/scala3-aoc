@@ -10,6 +10,13 @@ final case class Instruction private (gate: Gate, output: String)
 
 object Instruction:
 
+  /** Build an instruction that feeds a literal value directly to a wire.
+    *
+    * Used by part two to override wire `b` with the first run's signal. The value is masked to 16
+    * bits when the circuit is evaluated, so any non-negative value is safe here.
+    */
+  def literal(value: Int, output: String): Instruction = Instruction(Gate.Literal(value), output)
+
   private def isWire(token: String): Boolean = token.nonEmpty &&
     token.forall(c => c >= 'a' && c <= 'z')
 
