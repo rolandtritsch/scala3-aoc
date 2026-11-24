@@ -57,6 +57,13 @@ object Day14Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day14.txt").map(reindeer => assertTrue(part1(reindeer) == 2655))
     ,
+    test("pointsAfter - official sample at 1000 seconds"):
+      readFile("inputs/Day14Boundary.txt")
+        .map(reindeer => assertTrue(pointsAfter(reindeer, 1000) == 689))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day14.txt").map(reindeer => assertTrue(part2(reindeer) == 1059))
+    ,
     test("readFile - malformed line reports the offending line"):
       readFile("inputs/Day14Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
