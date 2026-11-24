@@ -40,6 +40,21 @@ object Day15Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day15.txt").map(ingredients => assertTrue(part1(ingredients) == 21367368))
     ,
+    test("calories - official two-ingredient example totals 500"):
+      readFile("inputs/Day15Boundary.txt").map { ingredients =>
+        assertTrue(
+          calories(ingredients, Seq(40, 60)) == 500,
+          calories(ingredients, Seq(44, 56)) == 520,
+        )
+      }
+    ,
+    test("part2 - official sample best 500-calorie score of 57600000"):
+      readFile("inputs/Day15Boundary.txt")
+        .map(ingredients => assertTrue(part2(ingredients) == 57600000))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day15.txt").map(ingredients => assertTrue(part2(ingredients) == 1766400))
+    ,
     test("readFile - malformed line reports the offending line"):
       readFile("inputs/Day15Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {

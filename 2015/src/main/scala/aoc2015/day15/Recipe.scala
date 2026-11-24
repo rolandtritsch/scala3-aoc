@@ -39,3 +39,12 @@ def score(ingredients: Seq[Ingredient], amounts: Seq[Int]): Int =
     .sum
   capacity.max(0) * durability.max(0) * flavor.max(0) * texture.max(0)
 end score
+
+/** The total calorie count of combining the ingredients using the given amounts.
+  *
+  * Calories sum `amount * ingredient.calories` across all ingredients and, unlike the other
+  * properties, is never floored at zero. Part two uses this total to keep only cookies with an
+  * exact calorie target.
+  */
+def calories(ingredients: Seq[Ingredient], amounts: Seq[Int]): Int = ingredients.zip(amounts)
+  .map((ingredient, amount) => amount * ingredient.calories).sum
