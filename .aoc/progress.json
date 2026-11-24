@@ -2202,7 +2202,7 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "1638",
-        "commit": "0d83a14b197140396ba7050dc55d7f160de208b0",
+        "commit": "6553d8a4e6ea50bd319acf0453a543cd291f37b0",
         "day": 17,
         "files": {
           "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
@@ -2216,6 +2216,7 @@
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/main/scala/aoc2015/day17/Liters.scala": "88d662fb8cd3349a8ed9411a6b94ca0816f48fc613a3559fe7cc719c6222e012",
           "2015/src/main/scala/aoc2015/day17/Part1.scala": "d29fdb3a3030f4d8022c82fb7fd530c5aad5f38839f0ab3a95f7deffe0410d73",
+          "2015/src/main/scala/aoc2015/day17/Part2.scala": "688caa8457e988b5906b13f8277e50513186dd0e7b968de3c799a19eaf85ca7a",
           "2015/src/main/scala/aoc2015/day17/ReadFile.scala": "29afe5c357be4bfd680e504c8bc3a18d9db68114595138e63382c06a1734bc06",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
           "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
@@ -2233,7 +2234,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/day17/Day17Test.scala": "4ad457f2316f0e46ba8961c8389f07ee045987567ddde8f36114a754df772c69"
+          "2015/src/test/scala/aoc2015/day17/Day17Test.scala": "e5cb8b3dc8ede9afa9742feca30c4d12841de3be35430fd9a41a7cef169b9547"
         },
         "formatting": "passed",
         "owner": {
@@ -2245,11 +2246,11 @@
         "schema": 1,
         "tests": "passed",
         "verification": {
-          "tree": "a6b420cd0c86c9d3bb9e15360f5ba3ffd28ea7c9",
-          "yearChecksAt": "2026-11-24T18:33:22.203374+00:00",
-          "yearChecksCommit": "0d83a14b197140396ba7050dc55d7f160de208b0"
+          "tree": "a13840f537c896534d37eeb4159ad582e46c22fd",
+          "yearChecksAt": "2026-11-24T20:04:54.321447+00:00",
+          "yearChecksCommit": "6553d8a4e6ea50bd319acf0453a543cd291f37b0"
         },
-        "verifiedAt": "2026-11-24T18:33:22.835675+00:00",
+        "verifiedAt": "2026-11-24T20:04:54.903417+00:00",
         "year": 2015
       },
       "site": {
@@ -2258,7 +2259,7 @@
           "1638"
         ],
         "complete": 1,
-        "observedAt": "2026-11-24T18:33:24.209821+00:00"
+        "observedAt": "2026-11-24T20:00:17.248712+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
     }
