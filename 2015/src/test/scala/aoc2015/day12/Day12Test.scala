@@ -44,6 +44,24 @@ object Day12Test extends ZIOSpecDefault:
     test("part1 - boundary input answer"):
       readFile("inputs/Day12Boundary.txt").map(json => assertTrue(part1(json) == 35L))
     ,
+    test("part2 - official examples"):
+      assertTrue(
+        Seq(
+          "[1,2,3]" -> 6L,
+          "[1,{\"c\":\"red\",\"b\":2},3]" -> 4L,
+          "{\"d\":\"red\",\"e\":[1,2,3,4],\"f\":5}" -> 0L,
+          "[1,\"red\",5]" -> 6L,
+        ).forall { case (input, expected) =>
+          Json.parse("sample", input).map(part2) == Right(expected)
+        }
+      )
+    ,
+    test("part2 - boundary input answer"):
+      readFile("inputs/Day12Boundary.txt").map(json => assertTrue(part2(json) == 35L))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day12.txt").map(json => assertTrue(part2(json) == 87842L))
+    ,
     test("readFile - malformed document reports its position"):
       readFile("inputs/Day12Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
