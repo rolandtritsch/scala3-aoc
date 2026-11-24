@@ -41,6 +41,21 @@ object Day08Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day08.txt").map(literals => assertTrue(part1(literals) == 1350))
     ,
+    test("encodedLength - matches the official re-encoded examples"):
+      assertTrue(
+        StringLiteral.parse("sample", "\"\"").map(encodedLength) == Right(6),
+        StringLiteral.parse("sample", "\"abc\"").map(encodedLength) == Right(9),
+        StringLiteral.parse("sample", "\"aaa\\\"aaa\"").map(encodedLength) == Right(16),
+        StringLiteral.parse("sample", "\"\\x27\"").map(encodedLength) == Right(11),
+        StringLiteral.parse("sample", "\"a\\\\b\"").map(encodedLength) == Right(12),
+      )
+    ,
+    test("part2 - official sample difference of 19"):
+      readFile("inputs/Day08Boundary.txt").map(literals => assertTrue(part2(literals) == 19))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day08.txt").map(literals => assertTrue(part2(literals) == 2085))
+    ,
     test("readFile - malformed escape reports the offending line"):
       readFile("inputs/Day08Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
