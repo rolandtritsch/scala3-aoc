@@ -32,6 +32,24 @@ object Day16Test extends ZIOSpecDefault:
         consistentWithTape(AuntSue(3, Map(Attribute.Akitas -> 0, Attribute.Vizslas -> 0))),
       )
     ,
+    test("consistentWithRanges - ranges override exact matches for four attributes"):
+      assertTrue(
+        consistentWithRanges(AuntSue(1, Map(Attribute.Cats -> 8, Attribute.Trees -> 4))),
+        consistentWithRanges(AuntSue(2, Map(Attribute.Pomeranians -> 2, Attribute.Goldfish -> 4))),
+        consistentWithRanges(AuntSue(3, Map(Attribute.Children -> 3, Attribute.Cars -> 2))),
+        !consistentWithRanges(AuntSue(4, Map(Attribute.Cats -> 7))),
+        !consistentWithRanges(AuntSue(5, Map(Attribute.Trees -> 3))),
+        !consistentWithRanges(AuntSue(6, Map(Attribute.Pomeranians -> 3))),
+        !consistentWithRanges(AuntSue(7, Map(Attribute.Goldfish -> 5))),
+        !consistentWithRanges(AuntSue(8, Map(Attribute.Children -> 4))),
+      )
+    ,
+    test("part2 - boundary input identifies Sue 4"):
+      readFile("inputs/Day16Boundary.txt").map(sues => assertTrue(part2(sues) == Right(4)))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day16.txt").map(sues => assertTrue(part2(sues) == Right(260)))
+    ,
     test("part1 - boundary input identifies Sue 1"):
       readFile("inputs/Day16Boundary.txt").map(sues => assertTrue(part1(sues) == Right(1)))
     ,
