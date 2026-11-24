@@ -1366,7 +1366,7 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "cqjxxyzz",
-        "commit": "2da261871b19964ca40755104593318dd1c6ad89",
+        "commit": "d3892ebb841715ab8617e52ac299c686ad29578d",
         "day": 11,
         "files": {
           "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
@@ -1378,8 +1378,9 @@
           "2015/project/plugins.sbt": "ee72ba122b2ede40deea3a52f362f7cee293e74e1ae4384618fe1ce9e0b7455e",
           "2015/src/main/resources/inputs/Day11.txt": "d9b12d16d343479081210fb809dec851685f30dd66abd1d6b39ce5caf7a2af30",
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
-          "2015/src/main/scala/aoc2015/day11/Part1.scala": "d4cd129267f935d056028c674d02fe6268369deca0b3aaea2e34b2390b7a7a24",
-          "2015/src/main/scala/aoc2015/day11/Password.scala": "a92b90a3af8bc2a9fd9330bf41d9dbe575c20359843055671b0f4d4cb453e245",
+          "2015/src/main/scala/aoc2015/day11/Part1.scala": "0ba6529be0c9abd71e266e14bc73de7e42d58dca1387f687a118b6e43526ae7e",
+          "2015/src/main/scala/aoc2015/day11/Part2.scala": "a1efb2528eebf5d4ddfd52b13898c6c801bbb0210e88f9ac99048158b98611c2",
+          "2015/src/main/scala/aoc2015/day11/Password.scala": "05088b7aceb2de959705ed6247cc50aa4f9324295b9260ed4e0837bcd8d0c92a",
           "2015/src/main/scala/aoc2015/day11/ReadFile.scala": "4b25a869c1076406f871ddc3c487f92142e6402f9c3f804f0feaae9bab828415",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
           "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
@@ -1397,7 +1398,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/day11/Day11Test.scala": "0b397a6de51295f1205238107d3279e358366a45e4b32fbe3e54d5f4dff80152"
+          "2015/src/test/scala/aoc2015/day11/Day11Test.scala": "7134d3c6745e3e340f52aa2787f0d64edf74b689a56f127aac6967d7ed7e71eb"
         },
         "formatting": "passed",
         "owner": {
@@ -1409,20 +1410,21 @@
         "schema": 1,
         "tests": "passed",
         "verification": {
-          "tree": "09f3eb3e2d9bfedb269219b555997b149a730f5b",
-          "yearChecksAt": "2026-11-24T10:26:46.011920+00:00",
-          "yearChecksCommit": "2da261871b19964ca40755104593318dd1c6ad89"
+          "tree": "a8f02c445048a6df64f16e3b50fd5c18dc8ffeaa",
+          "yearChecksAt": "2026-11-24T12:04:43.533113+00:00",
+          "yearChecksCommit": "d3892ebb841715ab8617e52ac299c686ad29578d"
         },
-        "verifiedAt": "2026-11-24T10:26:46.716087+00:00",
+        "verifiedAt": "2026-11-24T12:04:44.236719+00:00",
         "year": 2015
       },
       "site": {
         "account": "b412c0ed92a2fe625f069cc5c6e27115bc25830227e8b4d96cbfa2b5f5eaa3e1",
         "answers": [
-          "cqjxxyzz"
+          "cqjxxyzz",
+          "cqkaabcc"
         ],
-        "complete": 1,
-        "observedAt": "2026-11-24T10:26:48.109576+00:00"
+        "complete": 2,
+        "observedAt": "2026-11-24T12:00:18.634803+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
     },
