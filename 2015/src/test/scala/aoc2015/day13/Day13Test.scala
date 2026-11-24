@@ -33,6 +33,12 @@ object Day13Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day13.txt").map(preferences => assertTrue(part1(preferences) == 709))
     ,
+    test("part2 - sample with host optimally seated"):
+      readFile("inputs/Day13Boundary.txt").map(preferences => assertTrue(part2(preferences) == 286))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day13.txt").map(preferences => assertTrue(part2(preferences) == 668))
+    ,
     test("readFile - malformed line reports the offending line"):
       readFile("inputs/Day13Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
