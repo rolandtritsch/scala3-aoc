@@ -30,6 +30,12 @@ object Day09Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day09.txt").map(distances => assertTrue(part1(distances) == 141))
     ,
+    test("part2 - official sample longest route of 982"):
+      readFile("inputs/Day09Boundary.txt").map(distances => assertTrue(part2(distances) == 982))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day09.txt").map(distances => assertTrue(part2(distances) == 736))
+    ,
     test("readFile - malformed line reports the offending line"):
       readFile("inputs/Day09Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
