@@ -1702,6 +1702,76 @@
         "observedAt": "2026-11-24T13:38:19.786727+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
+    },
+    "2015/13/2": {
+      "at": "2026-11-24T13:58:31.308205+00:00",
+      "attempt": 0,
+      "kind": "computational",
+      "outcome": "accepted",
+      "receipt": {
+        "answer": "668",
+        "commit": "035724a363286431a4ecc3e515b485a6f1249496",
+        "day": 13,
+        "files": {
+          "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
+          "2015/.scalafix/FunctionEndMarkers.scala": "53d0291feef3fe3c14ba911c96db50858209fd642baa6b1a73ad4804787c4742",
+          "2015/.scalafmt.conf": "b2791fe044d79a5cfceffb0f4f5afabce5a9c7874b56b5dce073e01972117b24",
+          "2015/.tool-versions": "e083b84be3727290ae24bd48449cb66a3d852defdfc47f14c56e9d6e75adf73a",
+          "2015/build.sbt": "7ec7b8e21edea9e8a61c3eff571f49085adf8fb0e9abc8ff7804182450966c6d",
+          "2015/project/build.properties": "bfd375a2714acd417f17bf18c09b3dc6536d7c6044c31e0bfdc5e8e7f4f2b60a",
+          "2015/project/plugins.sbt": "ee72ba122b2ede40deea3a52f362f7cee293e74e1ae4384618fe1ce9e0b7455e",
+          "2015/src/main/resources/inputs/Day13.txt": "a8610959b8c1388f53a7720828c8a1cad08b1c95661d198e01157fc83ef08605",
+          "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
+          "2015/src/main/scala/aoc2015/day13/Part1.scala": "d1197469c73d1438796cc13884cd185abd8f3823e4698b8c315f1b28ef2a93d4",
+          "2015/src/main/scala/aoc2015/day13/Part2.scala": "98b942df4fd79ad67752de97062b305ead64dba30a14b1ca314a5cea1b21b87a",
+          "2015/src/main/scala/aoc2015/day13/Preference.scala": "205e75ed3529cb8f910a811aae40be061739ba265e3ceb98db785eccfbd0b983",
+          "2015/src/main/scala/aoc2015/day13/ReadFile.scala": "a1e52ed49162a1d93bc6a500ae3b92cf36341aefaca9c60a04a5880bed025946",
+          "2015/src/main/scala/aoc2015/day13/Seating.scala": "708105ab969643cf01ca606561a512bdfbb30f699b0f6a1f595e4597b129f7b7",
+          "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
+          "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
+          "2015/src/main/scala/aoc2015/util/ParseLines.scala": "8362451fb368de6d6e74427fa23a800d3619e54b3bd4e88a41d9d23fbba335a7",
+          "2015/src/main/scala/aoc2015/util/Position.scala": "f8c5a0dace9d6579f50aaf0bf20f35eac219c79aa49e464066458f97d30588be",
+          "2015/src/main/scala/aoc2015/util/ReadResource.scala": "c7cb5ab1c6015659318c69b864b68827060bc29434b43ca7b086be8337e5d7ba",
+          "2015/src/test/resources/inputs/Day13Boundary.txt": "e8a31bd2511e70d33efbed5322f09a49bf020faf088ec53b130fbc254dcecd16",
+          "2015/src/test/resources/inputs/Day13Invalid.txt": "f4490a6436380e7007c69382424d07abd11d1a18b96c0bd04501808c452c0499",
+          "2015/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
+          "2015/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
+          "2015/src/test/resources/tests/GridTest-Medium.txt": "2e27b2bc827961a77653f5152cb73ee9b3e0986c56bd149769d64fa5fde35475",
+          "2015/src/test/resources/tests/GridTest-NoBoundaries.txt": "e21a84e37c3f59650ffe6b261953862eca119b910519932f5a1c0f777b0d3786",
+          "2015/src/test/resources/tests/GridTest-NoPath.txt": "76f7bb89a1980b16596f64c8e4785ae72cec1b5dd573dcb44ee91bfef3b9567e",
+          "2015/src/test/resources/tests/GridTest-Simple.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
+          "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
+          "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
+          "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
+          "2015/src/test/scala/aoc2015/day13/Day13Test.scala": "e5a1188620effaca4264a4e875dde5f7643d8f53fac036fbed4f0b8b6c64cb20"
+        },
+        "formatting": "passed",
+        "owner": {
+          "company": "1f5735e4-3815-4ff1-b782-05b2444288d2",
+          "generation": "b116b0b2-f5c7-4725-a8e3-ab2b9360b837"
+        },
+        "part": 2,
+        "runner": "passed",
+        "schema": 1,
+        "tests": "passed",
+        "verification": {
+          "tree": "4f33880a6dadd8663a8f6a4eceae4cee4f8a1420",
+          "yearChecksAt": "2026-11-24T13:58:29.525605+00:00",
+          "yearChecksCommit": "035724a363286431a4ecc3e515b485a6f1249496"
+        },
+        "verifiedAt": "2026-11-24T13:58:30.219676+00:00",
+        "year": 2015
+      },
+      "site": {
+        "account": "b412c0ed92a2fe625f069cc5c6e27115bc25830227e8b4d96cbfa2b5f5eaa3e1",
+        "answers": [
+          "709",
+          "668"
+        ],
+        "complete": 2,
+        "observedAt": "2026-11-24T13:58:31.703553+00:00"
+      },
+      "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. You have completed Day 13! You can [Shareon Bluesky Twitter Mastodon] this victory or [Return to Your Advent Calendar]."
     }
   },
   "schema": 1
