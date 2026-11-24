@@ -1,0 +1,2 @@
+Sue 1: children: 3, cats: 7, goldfish: 5
+Sue 2: pomeranians: many, akitas: 0, vizslas: 0
