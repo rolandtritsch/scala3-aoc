@@ -2060,7 +2060,7 @@
       "outcome": "accepted",
       "receipt": {
         "answer": "373",
-        "commit": "0b4a302b1df5bc4c590f81b27a60e0957b257b31",
+        "commit": "fe2c35b752177730a7114fd809329d6f5eeaf54e",
         "day": 16,
         "files": {
           "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
@@ -2075,6 +2075,7 @@
           "2015/src/main/scala/aoc2015/day16/Attribute.scala": "124770a7c5ca67d930dcf0d879168ebaa6abf3aec273a2c407062db4486f1ca0",
           "2015/src/main/scala/aoc2015/day16/AuntSue.scala": "556b013f4c0a183404876f2dcf194de4d46d38eacc07b8a1c2d09805c9930eb1",
           "2015/src/main/scala/aoc2015/day16/Part1.scala": "22145ae1ca9312e56e474b17f73ef7aa2e151cd7ffffe74568d4c35cd201facb",
+          "2015/src/main/scala/aoc2015/day16/Part2.scala": "4f7d27cd5f1a0156375fdc01217864d81fef7f89e61f349992c7caa72846192e",
           "2015/src/main/scala/aoc2015/day16/ReadFile.scala": "626fe0a8437fafc84cac1827c4df66ce6d3151e31fb2dbd659081ef517555769",
           "2015/src/main/scala/aoc2015/day16/TickerTape.scala": "a7af141697051d502d172a88eeb3d31018a2b2fb2111d231be6feb4f47e4bec8",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
@@ -2082,7 +2083,7 @@
           "2015/src/main/scala/aoc2015/util/ParseLines.scala": "8362451fb368de6d6e74427fa23a800d3619e54b3bd4e88a41d9d23fbba335a7",
           "2015/src/main/scala/aoc2015/util/Position.scala": "f8c5a0dace9d6579f50aaf0bf20f35eac219c79aa49e464066458f97d30588be",
           "2015/src/main/scala/aoc2015/util/ReadResource.scala": "c7cb5ab1c6015659318c69b864b68827060bc29434b43ca7b086be8337e5d7ba",
-          "2015/src/test/resources/inputs/Day16Boundary.txt": "9a1ecca5910434d59fa008caf4af1eb5f51dc739c486291e175fd8dd92af4d2a",
+          "2015/src/test/resources/inputs/Day16Boundary.txt": "94683b1725d98e78d5ef8fb5a558aa2a4ec889f9209a569640902babf5c9b4af",
           "2015/src/test/resources/inputs/Day16Invalid.txt": "e3e58afae435caf19ff118b86f491ca99cf7687d3491cd9aa4885557c4f2d632",
           "2015/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
@@ -2093,7 +2094,7 @@
           "2015/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
           "2015/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
           "2015/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
-          "2015/src/test/scala/aoc2015/day16/Day16Test.scala": "f92db6f31558b0a142434d988ee9d2b84448f1146d37b89c37dbaa298d10cf60"
+          "2015/src/test/scala/aoc2015/day16/Day16Test.scala": "f69fdbc1f4b3627ea8f1d17cfb06e156c7de203d7b3a06f86c400b916d658829"
         },
         "formatting": "passed",
         "owner": {
@@ -2105,20 +2106,21 @@
         "schema": 1,
         "tests": "passed",
         "verification": {
-          "tree": "0d7e34d07c874de11e3b4e555d97f3230e442eb0",
-          "yearChecksAt": "2026-11-24T17:06:12.668133+00:00",
-          "yearChecksCommit": "0b4a302b1df5bc4c590f81b27a60e0957b257b31"
+          "tree": "70a8af126e8338eb612ad72813ba5899793b2ba0",
+          "yearChecksAt": "2026-11-24T18:04:57.222347+00:00",
+          "yearChecksCommit": "fe2c35b752177730a7114fd809329d6f5eeaf54e"
         },
-        "verifiedAt": "2026-11-24T17:06:13.302444+00:00",
+        "verifiedAt": "2026-11-24T18:04:57.958571+00:00",
         "year": 2015
       },
       "site": {
         "account": "b412c0ed92a2fe625f069cc5c6e27115bc25830227e8b4d96cbfa2b5f5eaa3e1",
         "answers": [
-          "373"
+          "373",
+          "260"
         ],
-        "complete": 1,
-        "observedAt": "2026-11-24T17:06:14.710913+00:00"
+        "complete": 2,
+        "observedAt": "2026-11-24T18:00:19.443664+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
     },
