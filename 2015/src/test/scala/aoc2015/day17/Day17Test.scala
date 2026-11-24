@@ -26,6 +26,13 @@ object Day17Test extends ZIOSpecDefault:
     test("part1 - real input answer"):
       readFile("inputs/Day17.txt").map(capacities => assertTrue(part1(capacities) == 1638))
     ,
+    test("minimalCombinations - official example uses two containers three ways"):
+      readFile("inputs/Day17Boundary.txt")
+        .map(capacities => assertTrue(minimalCombinations(capacities, 25) == 3))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day17.txt").map(capacities => assertTrue(part2(capacities) == 17))
+    ,
     test("readFile - malformed line reports the offending line"):
       readFile("inputs/Day17Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
