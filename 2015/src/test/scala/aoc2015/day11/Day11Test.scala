@@ -31,6 +31,19 @@ object Day11Test extends ZIOSpecDefault:
       readFile("inputs/Day11Boundary.txt")
         .map(password => assertTrue(part1(password) == "abcdffaa"))
     ,
+    test("part2 - official examples"):
+      assertTrue(
+        part2(Password.parse("sample", "abcdefgh").toOption.get) == "abcdffbb",
+        part2(Password.parse("sample", "ghijklmn").toOption.get) == "ghjbbcdd",
+      )
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day11.txt").map(password => assertTrue(part2(password) == "cqkaabcc"))
+    ,
+    test("part2 - boundary input answer"):
+      readFile("inputs/Day11Boundary.txt")
+        .map(password => assertTrue(part2(password) == "abcdffbb"))
+    ,
     test("readFile - non-lowercase input reports its position"):
       readFile("inputs/Day11Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {

@@ -72,3 +72,20 @@ private def hasNoAmbiguousLetters(password: Password): Boolean = !password
 private def hasTwoPairs(password: Password): Boolean =
   val pairs = password.sliding(2).collect { case Vector(a, b) if a == b => a }
   pairs.distinct.size >= 2
+
+/** The next valid corporate password strictly after `password`.
+  *
+  * Starting from `password`, increment repeatedly until a candidate satisfies all three rules at
+  * once: it contains an increasing straight of three letters, avoids `i`/`o`/`l`, and contains two
+  * different non-overlapping pairs. Counting upward reaches a valid candidate deterministically.
+  */
+def nextPassword(password: Password): Password =
+  @scala.annotation.tailrec
+  def loop(candidate: Password): Password =
+    if hasStraight(candidate) && hasNoAmbiguousLetters(candidate) && hasTwoPairs(candidate) then
+      candidate
+    else loop(increment(candidate))
+
+  loop(increment(password))
+
+end nextPassword
