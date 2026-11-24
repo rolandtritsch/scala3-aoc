@@ -37,6 +37,12 @@ object Day10Test extends ZIOSpecDefault:
     test("part1 - single digit input length after 40 steps"):
       readFile("inputs/Day10Boundary.txt").map(digits => assertTrue(part1(digits) == 82350))
     ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day10.txt").map(digits => assertTrue(part2(digits) == 6989950))
+    ,
+    test("part2 - single digit input length after 50 steps"):
+      readFile("inputs/Day10Boundary.txt").map(digits => assertTrue(part2(digits) == 1166642))
+    ,
     test("readFile - malformed digit reports its position"):
       readFile("inputs/Day10Invalid.txt").either.map(result =>
         assertTrue(result.left.exists {
