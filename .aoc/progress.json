@@ -2196,13 +2196,10 @@
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. You have completed Day 16! You can [Shareon Bluesky Twitter Mastodon] this victory or [Return to Your Advent Calendar]."
     },
     "2015/17/1": {
-      "at": "2026-11-24T18:33:23.806761+00:00",
-      "attempt": 0,
-      "kind": "computational",
       "outcome": "accepted",
       "receipt": {
         "answer": "1638",
-        "commit": "6553d8a4e6ea50bd319acf0453a543cd291f37b0",
+        "commit": "cbd68b76aa564a50252acb08941b854ac861084a",
         "day": 17,
         "files": {
           "2015/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
@@ -2216,7 +2213,7 @@
           "2015/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
           "2015/src/main/scala/aoc2015/day17/Liters.scala": "88d662fb8cd3349a8ed9411a6b94ca0816f48fc613a3559fe7cc719c6222e012",
           "2015/src/main/scala/aoc2015/day17/Part1.scala": "d29fdb3a3030f4d8022c82fb7fd530c5aad5f38839f0ab3a95f7deffe0410d73",
-          "2015/src/main/scala/aoc2015/day17/Part2.scala": "688caa8457e988b5906b13f8277e50513186dd0e7b968de3c799a19eaf85ca7a",
+          "2015/src/main/scala/aoc2015/day17/Part2.scala": "5e745613f038b86f90c45f390cfd478373228fe34e508ce3d11655e63289d54e",
           "2015/src/main/scala/aoc2015/day17/ReadFile.scala": "29afe5c357be4bfd680e504c8bc3a18d9db68114595138e63382c06a1734bc06",
           "2015/src/main/scala/aoc2015/package.scala": "80806f11f382a22b2f229277f15fb39e37d8d39767cd527beeb146caa1a324c8",
           "2015/src/main/scala/aoc2015/util/AocError.scala": "be262dc9b44c214b29b125231cfe15629a7b3b9192449d7405d7bcdd8a2df236",
@@ -2238,19 +2235,19 @@
         },
         "formatting": "passed",
         "owner": {
-          "company": "1f5735e4-3815-4ff1-b782-05b2444288d2",
-          "generation": "b116b0b2-f5c7-4725-a8e3-ab2b9360b837"
+          "company": "61fdfdaf-9385-4c0c-a3df-dbe63e3fef33",
+          "generation": "c38cffb3-d798-495a-8b0f-ce65d4a0121e"
         },
         "part": 1,
         "runner": "passed",
         "schema": 1,
         "tests": "passed",
         "verification": {
-          "tree": "a13840f537c896534d37eeb4159ad582e46c22fd",
-          "yearChecksAt": "2026-11-24T20:04:54.321447+00:00",
-          "yearChecksCommit": "6553d8a4e6ea50bd319acf0453a543cd291f37b0"
+          "tree": "4810daec2ce265277914307289c9e9b4708addb5",
+          "yearChecksAt": "2026-11-25T20:29:50.758648+00:00",
+          "yearChecksCommit": "cbd68b76aa564a50252acb08941b854ac861084a"
         },
-        "verifiedAt": "2026-11-24T20:04:54.903417+00:00",
+        "verifiedAt": "2026-11-25T20:29:51.290863+00:00",
         "year": 2015
       },
       "site": {
@@ -2259,9 +2256,8 @@
           "1638"
         ],
         "complete": 1,
-        "observedAt": "2026-11-24T20:00:17.248712+00:00"
-      },
-      "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
+        "observedAt": "2026-11-25T20:30:19.088576+00:00"
+      }
     }
   },
   "schema": 1
