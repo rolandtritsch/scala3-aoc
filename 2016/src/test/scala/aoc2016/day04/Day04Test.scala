@@ -45,11 +45,18 @@ object Day04Test extends ZIOSpecDefault:
     test("part1 - official examples sum to 1514"):
       assertTrue(part1(exampleRooms) == 1514)
     ,
+    test("part2 - official example decrypts to very encrypted name"):
+      val room = Room(Seq("qzmt", "zixmtkozy", "ivhz"), 343, "")
+      assertTrue(decryptName(room) == "very encrypted name")
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day04.txt").map(input => assertTrue(input.nonEmpty))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day04.txt").map(input => assertTrue(part1(input) == 137896)),
+      readFile("inputs/Day04.txt").map(input => assertTrue(part1(input) == 137896))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day04.txt").map(input => assertTrue(part2(input).contains(501))),
   )
 
   end spec

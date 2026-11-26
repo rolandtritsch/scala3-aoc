@@ -33,6 +33,8 @@ object Main extends ZIOAppDefault:
         .tapError(e => ZIO.logError(s"Day04 input failed: $e"))
       _ <- ZIO.logDebug(s"Day04 input: $input04")
       _ <- Console.printLine(s"Day04 - part1: ${day04.part1(input04)}").orDie
+      answer04Part2 = day04.part2(input04).fold("North Pole object storage not found")(_.toString)
+      _ <- Console.printLine(s"Day04 - part2: $answer04Part2").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
