@@ -34,12 +34,41 @@ HOH"""
       )
       assertTrue(part1(input) == 7)
     ,
+    test("part2 - example from problem (HOH -> 3 steps)"):
+      val input = Input(
+        replacements = Seq(
+          Replacement("e", "H"),
+          Replacement("e", "O"),
+          Replacement("H", "HO"),
+          Replacement("H", "OH"),
+          Replacement("O", "HH"),
+        ),
+        medicine = "HOH",
+      )
+      assertTrue(part2(input) == 3)
+    ,
+    test("part2 - HOHOHO example (6 steps)"):
+      val input = Input(
+        replacements = Seq(
+          Replacement("e", "H"),
+          Replacement("e", "O"),
+          Replacement("H", "HO"),
+          Replacement("H", "OH"),
+          Replacement("O", "HH"),
+        ),
+        medicine = "HOHOHO",
+      )
+      assertTrue(part2(input) == 6)
+    ,
     test("readFile - loads real input"):
       readFile("inputs/Day19.txt")
         .map(input => assertTrue(input.replacements.nonEmpty && input.medicine.nonEmpty))
     ,
     test("part1 - real input answer"):
-      readFile("inputs/Day19.txt").map(input => assertTrue(part1(input) == 509)),
+      readFile("inputs/Day19.txt").map(input => assertTrue(part1(input) == 509))
+    ,
+    test("part2 - real input answer"):
+      readFile("inputs/Day19.txt").map(input => assertTrue(part2(input) == 195)),
   )
   end spec
 
