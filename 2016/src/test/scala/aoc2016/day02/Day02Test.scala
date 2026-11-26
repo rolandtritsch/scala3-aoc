@@ -34,11 +34,17 @@ object Day02Test extends ZIOSpecDefault:
     test("part1 - official example"):
       assertTrue(parse("sample", "ULL\nRRDDD\nLURDL\nUUUUUD").map(part1) == Right("1985"))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", "ULL\nRRDDD\nLURDL\nUUUUUD").map(part2) == Right("5DB3"))
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day02.txt").map(input => assertTrue(input.nonEmpty))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day02.txt").map(input => assertTrue(part1(input) == "65556")),
+      readFile("inputs/Day02.txt").map(input => assertTrue(part1(input) == "65556"))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day02.txt").map(input => assertTrue(part2(input) == "CB779")),
   )
 
   end spec
