@@ -3362,6 +3362,18 @@
         "observedAt": "2026-11-26T15:53:50.296870+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to powering the weather machine. [Continue to Part Two]"
+    },
+    "2015/25/2": {
+      "kind": "finale",
+      "outcome": "accepted",
+      "site": {
+        "account": "b412c0ed92a2fe625f069cc5c6e27115bc25830227e8b4d96cbfa2b5f5eaa3e1",
+        "answers": [
+          "9132360"
+        ],
+        "complete": 2,
+        "observedAt": "2026-11-26T16:06:01.253857+00:00"
+      }
     }
   },
   "schema": 1
