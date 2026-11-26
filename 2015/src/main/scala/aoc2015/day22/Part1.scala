@@ -15,41 +15,43 @@ def part1(input: Input): Int =
     playerTurn = true,
   )
 
-  // Dijkstra's algorithm: priority queue ordered by mana spent (min-heap)
+  // Dijkstra's algorithm with cost map
   given Ordering[State] = Ordering.by(-_.manaSpent)
   val pq = mutable.PriorityQueue[State]()
-  val visited = mutable.Set[String]()
+  val bestCost = mutable.Map[String, Int]()
   pq.enqueue(startState)
+  bestCost(Search.stateKey(startState)) = 0
 
   @tailrec
   def search(): Int =
-    if pq.isEmpty then -1 // Should not reach here
+    if pq.isEmpty then -1
     else
       val state = pq.dequeue()
-      val afterEffects = state.applyEffects
-
-      if afterEffects.bossDead then afterEffects.manaSpent
-      else if afterEffects.playerDead then search()
+      val key = Search.stateKey(state)
+      // Skip if we've found a better path to this state
+      if state.manaSpent > bestCost.getOrElse(key, Int.MaxValue) then search()
       else
-        val nextStates: Seq[State] =
-          if afterEffects.playerTurn then afterEffects.playerActions
-          else Seq(afterEffects.bossAction)
+        val afterEffects = state.applyEffects
 
-        for nextState <- nextStates do
-          val key = stateKey(nextState)
-          if !visited.contains(key) && !nextState.playerDead then
-            visited.add(key)
-            pq.enqueue(nextState)
-          else ()
+        if afterEffects.bossDead then afterEffects.manaSpent
+        else if afterEffects.playerDead then search()
+        else
+          val nextStates: Seq[State] =
+            if afterEffects.playerTurn then afterEffects.playerActions
+            else Seq(afterEffects.bossAction)
 
-        search()
+          for nextState <- nextStates do
+            if !nextState.playerDead then
+              val nextKey = Search.stateKey(nextState)
+              val currentBest = bestCost.getOrElse(nextKey, Int.MaxValue)
+              if nextState.manaSpent < currentBest then
+                bestCost(nextKey) = nextState.manaSpent
+                pq.enqueue(nextState)
+              else ()
+            else ()
+
+          search()
   end search
 
   search()
 end part1
-
-/** Creates a string key for visited state tracking. */
-private def stateKey(state: State): String =
-  val effectsKey = state.activeEffects.map(e => s"${e.effectType}-${e.timer}").sorted.mkString(",")
-  s"${state.playerHp},${state.playerMana},${state.bossHp},${state.armor},$effectsKey,${state
-      .playerTurn}"
