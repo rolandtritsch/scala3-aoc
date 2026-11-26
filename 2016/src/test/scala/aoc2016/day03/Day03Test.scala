@@ -47,11 +47,32 @@ object Day03Test extends ZIOSpecDefault:
         part1(Seq(Triangle(3, 4, 5), Triangle(2, 2, 3), Triangle(2, 2, 4), Triangle(1, 2, 3))) == 2
       )
     ,
+    test("part2 - official column example"):
+      val input = Seq(
+        Triangle(101, 301, 501),
+        Triangle(102, 302, 502),
+        Triangle(103, 303, 503),
+        Triangle(201, 401, 601),
+        Triangle(202, 402, 602),
+        Triangle(203, 403, 603),
+      )
+      assertTrue(part2(input) == Right(6))
+    ,
+    test("part2 - reads columns instead of rows"):
+      val input = Seq(Triangle(5, 10, 25), Triangle(3, 4, 5), Triangle(2, 2, 3))
+      assertTrue(part1(input) == 2 && part2(input) == Right(0))
+    ,
+    test("part2 - rejects an incomplete final column group"):
+      assertTrue(part2(Seq(Triangle(3, 4, 5))).isLeft)
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day03.txt").map(input => assertTrue(input.nonEmpty))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day03.txt").map(input => assertTrue(part1(input) == 869)),
+      readFile("inputs/Day03.txt").map(input => assertTrue(part1(input) == 869))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day03.txt").map(input => assertTrue(part2(input) == Right(1544))),
   )
 
   end spec
