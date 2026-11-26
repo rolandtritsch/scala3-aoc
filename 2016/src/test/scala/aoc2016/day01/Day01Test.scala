@@ -38,12 +38,25 @@ object Day01Test extends ZIOSpecDefault:
     test("part1 - left turn from initial north"):
       assertTrue(parse("sample", "L2").map(part1) == Right(2))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", "R8, R4, R4, R8").map(part2) == Right(Some(4)))
+    ,
+    test("part2 - detects a return to the starting location"):
+      assertTrue(parse("sample", "R1, R1, R1, R1").map(part2) == Right(Some(0)))
+    ,
+    test("part2 - returns no answer when no location is revisited"):
+      assertTrue(parse("sample", "R1, L1").map(part2) == Right(None))
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day01.txt").map(input => assertTrue(input.nonEmpty))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day01.txt").map(input => assertTrue(part1(input) == 241)),
+      readFile("inputs/Day01.txt").map(input => assertTrue(part1(input) == 241))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day01.txt").map(input => assertTrue(part2(input) == Some(116))),
   )
+
   end spec
 
 end Day01Test
