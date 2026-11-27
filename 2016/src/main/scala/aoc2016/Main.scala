@@ -74,6 +74,9 @@ object Main extends ZIOAppDefault:
       answer11 <- ZIO
         .fromEither(day11.part1(input11).toRight(AocError.ValidationError("Day11 has no solution")))
       _ <- Console.printLine(s"Day11 - part1: $answer11").orDie
+      answer11Part2 <- ZIO
+        .fromEither(day11.part2(input11).toRight(AocError.ValidationError("Day11 has no solution")))
+      _ <- Console.printLine(s"Day11 - part2: $answer11Part2").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))

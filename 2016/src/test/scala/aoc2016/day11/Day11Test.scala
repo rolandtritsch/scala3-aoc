@@ -53,6 +53,12 @@ object Day11Test extends ZIOSpecDefault:
     test("readFile and part1 - personal input"):
       readFile("inputs/Day11.txt").map(input => assertTrue(part1(input) == Some(37)))
     ,
+    test("part2 - transports both additional pairs"):
+      assertTrue(part2(Facility(Seq.empty)) == Some(15))
+    ,
+    test("readFile and part2 - personal input"):
+      readFile("inputs/Day11.txt").map(input => assertTrue(part2(input) == Some(61)))
+    ,
     test("readFile - maps every personal-input pair"):
       readFile("inputs/Day11.txt").map(input =>
         assertTrue(
