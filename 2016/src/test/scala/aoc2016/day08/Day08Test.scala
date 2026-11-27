@@ -63,7 +63,14 @@ object Day08Test extends ZIOSpecDefault:
       assertTrue(part1(Seq(Instruction.Rect(2, 2), Instruction.Rect(2, 2))) == 4)
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day08.txt").map(instructions => assertTrue(part1(instructions) == 106)),
+      readFile("inputs/Day08.txt").map(instructions => assertTrue(part1(instructions) == 106))
+    ,
+    test("part2 - rejects a display containing an unrecognized glyph"):
+      assertTrue(part2(Seq.empty).isLeft)
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day08.txt")
+        .map(instructions => assertTrue(part2(instructions) == Right("CFLELOYFCS"))),
   )
 
   end spec
