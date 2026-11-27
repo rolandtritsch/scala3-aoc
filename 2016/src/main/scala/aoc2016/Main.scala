@@ -77,6 +77,10 @@ object Main extends ZIOAppDefault:
       answer11Part2 <- ZIO
         .fromEither(day11.part2(input11).toRight(AocError.ValidationError("Day11 has no solution")))
       _ <- Console.printLine(s"Day11 - part2: $answer11Part2").orDie
+      input12 <- day12.readFile("inputs/Day12.txt")
+        .tapError(e => ZIO.logError(s"Day12 input failed: $e"))
+      _ <- ZIO.logDebug(s"Day12 input: $input12")
+      _ <- Console.printLine(s"Day12 - part1: ${day12.part1(input12)}").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
