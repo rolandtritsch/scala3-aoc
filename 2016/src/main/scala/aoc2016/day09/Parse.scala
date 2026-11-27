@@ -1,7 +1,5 @@
 package aoc2016.day09
 
-import scala.annotation.tailrec
-
 import aoc2016.util.AocError
 
 private val Marker = """\((\d+)x(\d+)\)""".r
@@ -9,7 +7,6 @@ private val Marker = """\((\d+)x(\d+)\)""".r
 def parse(filename: String, raw: String): Either[AocError, CompressedFile] =
   val input = raw.filterNot(_.isWhitespace)
 
-  @tailrec
   def loop(index: Int, reversed: List[Chunk]): Either[AocError, CompressedFile] =
     if index >= input.length then Right(CompressedFile(reversed.reverse))
     else if input(index) == '(' then
@@ -30,9 +27,10 @@ def parse(filename: String, raw: String): Either[AocError, CompressedFile] =
                 s"marker at non-whitespace character ${index + 1} needs $length data characters",
               ))
             else
-              loop(
-                dataEnd.toInt,
-                Chunk.Repeat(input.substring(dataStart, dataEnd.toInt), times) :: reversed,
+              val data = input.substring(dataStart, dataEnd.toInt)
+              parse(filename, data).fold(
+                error => Left(error),
+                contents => loop(dataEnd.toInt, Chunk.Repeat(data, times, contents) :: reversed),
               )
           case _ => Left(AocError.ParseError(
               filename,
