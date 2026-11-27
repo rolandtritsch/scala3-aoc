@@ -45,6 +45,10 @@ object Main extends ZIOAppDefault:
       _ <- ZIO.logDebug(s"Day06 input: $input06")
       _ <- Console.printLine(s"Day06 - part1: ${day06.part1(input06)}").orDie
       _ <- Console.printLine(s"Day06 - part2: ${day06.part2(input06)}").orDie
+      input07 <- day07.readFile("inputs/Day07.txt")
+        .tapError(e => ZIO.logError(s"Day07 input failed: $e"))
+      _ <- ZIO.logDebug(s"Day07 input: $input07")
+      _ <- Console.printLine(s"Day07 - part1: ${day07.part1(input07)}").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
