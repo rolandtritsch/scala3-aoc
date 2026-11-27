@@ -61,9 +61,16 @@ object Day12Test extends ZIOSpecDefault:
       val instructions = Seq(JumpNotZero(Literal(0), 2), Increment(A), Copy(Literal(9), B))
       assertTrue(execute(instructions) == Registers(a = 1, b = 9, c = 0, d = 0))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", officialExample).map(part2) == Right(42))
+    ,
     test("readFile and part1 - personal input"):
       readFile("inputs/Day12.txt")
-        .map(input => assertTrue(input.size == 23 && part1(input) == 317993)),
+        .map(input => assertTrue(input.size == 23 && part1(input) == 317993))
+    ,
+    test("readFile and part2 - personal input"):
+      readFile("inputs/Day12.txt")
+        .map(input => assertTrue(input.size == 23 && part2(input) == 9227647)),
   )
   end spec
 
