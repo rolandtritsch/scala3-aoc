@@ -36,7 +36,13 @@ object Day15Test extends ZIOSpecDefault:
       readFile("inputs/Day15.txt").map(discs => assertTrue(discs.size == 6))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day15.txt").map(discs => assertTrue(part1(discs) == 121834)),
+      readFile("inputs/Day15.txt").map(discs => assertTrue(part1(discs) == 121834))
+    ,
+    test("part2 - official example gains an 11-position disc"):
+      assertTrue(parse("sample", Example).map(part2) == Right(85))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day15.txt").map(discs => assertTrue(part2(discs) == 3208099)),
   )
 
   end spec
