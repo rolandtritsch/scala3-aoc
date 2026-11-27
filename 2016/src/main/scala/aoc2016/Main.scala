@@ -61,6 +61,11 @@ object Main extends ZIOAppDefault:
       _ <- ZIO.logDebug(s"Day09 input: $input09")
       _ <- Console.printLine(s"Day09 - part1: ${day09.part1(input09)}").orDie
       _ <- Console.printLine(s"Day09 - part2: ${day09.part2(input09)}").orDie
+      input10 <- day10.readFile("inputs/Day10.txt")
+        .tapError(e => ZIO.logError(s"Day10 input failed: $e"))
+      _ <- ZIO.logDebug(s"Day10 input: $input10")
+      answer10 = day10.part1(input10).fold("no matching comparison")(_.toString)
+      _ <- Console.printLine(s"Day10 - part1: $answer10").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
