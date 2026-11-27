@@ -28,11 +28,17 @@ object Day05Test extends ZIOSpecDefault:
     test("part1 - official example"):
       assertTrue(parse("sample", "abc").map(part1) == Right("18f47a30"))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", "abc").map(part2) == Right("05ace8e3"))
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day05.txt").map(doorId => assertTrue(doorId.value == "ffykfhsq"))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day05.txt").map(doorId => assertTrue(part1(doorId) == "c6697b55")),
+      readFile("inputs/Day05.txt").map(doorId => assertTrue(part1(doorId) == "c6697b55"))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day05.txt").map(doorId => assertTrue(part2(doorId) == "8c35d1ab")),
   )
 
   end spec
