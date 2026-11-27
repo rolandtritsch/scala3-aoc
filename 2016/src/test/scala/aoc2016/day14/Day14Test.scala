@@ -42,11 +42,17 @@ object Day14Test extends ZIOSpecDefault:
     test("part1 - official example"):
       assertTrue(parse("sample", "abc").map(part1) == Right(22728))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", "abc").map(part2) == Right(22551))
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day14.txt").map(salt => assertTrue(salt.value == "qzyelonm"))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day14.txt").map(salt => assertTrue(part1(salt) == 15168)),
+      readFile("inputs/Day14.txt").map(salt => assertTrue(part1(salt) == 15168))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day14.txt").map(salt => assertTrue(part2(salt) == 20864)),
   )
 
   end spec
