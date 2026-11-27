@@ -43,7 +43,10 @@ object Day13Test extends ZIOSpecDefault:
       assertTrue(shortestPath(10, Start) == Some(0))
     ,
     test("readFile and part1 - personal input"):
-      readFile("inputs/Day13.txt").map(input => assertTrue(part1(input) == Some(82))),
+      readFile("inputs/Day13.txt").map(input => assertTrue(part1(input) == Some(82)))
+    ,
+    test("readFile and part2 - personal input"):
+      readFile("inputs/Day13.txt").map(input => assertTrue(part2(input) == 138)),
   )
   end spec
 

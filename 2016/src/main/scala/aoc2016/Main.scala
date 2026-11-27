@@ -88,6 +88,7 @@ object Main extends ZIOAppDefault:
       answer13 <- ZIO
         .fromEither(day13.part1(input13).toRight(AocError.ValidationError("Day13 has no route")))
       _ <- Console.printLine(s"Day13 - part1: $answer13").orDie
+      _ <- Console.printLine(s"Day13 - part2: ${day13.part2(input13)}").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
