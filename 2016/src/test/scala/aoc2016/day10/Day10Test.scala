@@ -47,8 +47,14 @@ object Day10Test extends ZIOSpecDefault:
     test("part1 - official example"):
       assertTrue(parse("sample", officialExample).map(findBotComparing(_, 2, 5)) == Right(Some(2)))
     ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", officialExample).map(part2) == Right(Some(30)))
+    ,
     test("readFile and part1 - personal input"):
-      readFile("inputs/Day10.txt").map(input => assertTrue(part1(input) == Some(47))),
+      readFile("inputs/Day10.txt").map(input => assertTrue(part1(input) == Some(47)))
+    ,
+    test("readFile and part2 - personal input"):
+      readFile("inputs/Day10.txt").map(input => assertTrue(part2(input) == Some(2666))),
   )
   end spec
 

@@ -66,6 +66,8 @@ object Main extends ZIOAppDefault:
       _ <- ZIO.logDebug(s"Day10 input: $input10")
       answer10 = day10.part1(input10).fold("no matching comparison")(_.toString)
       _ <- Console.printLine(s"Day10 - part1: $answer10").orDie
+      answer10Part2 = day10.part2(input10).fold("missing output chip")(_.toString)
+      _ <- Console.printLine(s"Day10 - part2: $answer10Part2").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))
