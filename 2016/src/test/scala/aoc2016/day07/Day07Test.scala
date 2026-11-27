@@ -10,6 +10,11 @@ object Day07Test extends ZIOSpecDefault:
                                   |aaaa[qwer]tyui
                                   |ioxxoj[asdfgh]zxcvbn""".stripMargin
 
+  private val officialPart2Example = """aba[bab]xyz
+                                       |xyx[xyx]xyx
+                                       |aaa[kek]eke
+                                       |zazbz[bzb]cdb""".stripMargin
+
   def spec: Spec[Any, Any] = suite("Day07")(
     test("parse - accepts LF and CRLF input with a final newline"):
       assertTrue(
@@ -39,7 +44,16 @@ object Day07Test extends ZIOSpecDefault:
       )
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day07.txt").map(addresses => assertTrue(part1(addresses) == 105)),
+      readFile("inputs/Day07.txt").map(addresses => assertTrue(part1(addresses) == 105))
+    ,
+    test("part2 - official examples"):
+      assertTrue(parse("sample", officialPart2Example).map(part2) == Right(3))
+    ,
+    test("part2 - an ABA and BAB outside their required sequences do not count"):
+      assertTrue(parse("sample", "aba[xyz]bab").map(part2) == Right(0))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day07.txt").map(addresses => assertTrue(part2(addresses) == 258)),
   )
 
   end spec
