@@ -45,7 +45,13 @@ object Day06Test extends ZIOSpecDefault:
       assertTrue(parse("sample", officialExample).map(part1) == Right("easter"))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day06.txt").map(recording => assertTrue(part1(recording) == "ursvoerv")),
+      readFile("inputs/Day06.txt").map(recording => assertTrue(part1(recording) == "ursvoerv"))
+    ,
+    test("part2 - official example"):
+      assertTrue(parse("sample", officialExample).map(part2) == Right("advent"))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day06.txt").map(recording => assertTrue(part2(recording) == "vomaypnn")),
   )
 
   end spec
