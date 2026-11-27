@@ -5306,6 +5306,72 @@
         "observedAt": "2026-11-27T22:22:12.537532+00:00"
       },
       "verdict": "That's the right answer! You are one gold star closer to fixing the sleigh. [Continue to Part Two]"
+    },
+    "2016/15/2": {
+      "at": "2026-11-27T22:40:00.882043+00:00",
+      "attempt": 0,
+      "kind": "computational",
+      "outcome": "accepted",
+      "receipt": {
+        "answer": "3208099",
+        "commit": "f93a0195b29a11118bd83d97478479710643bd07",
+        "day": 15,
+        "files": {
+          "2016/.scalafix.conf": "d2ab634ad8b7e126aa6c0e8d6553de8d1cc762cc615f85e5c274a32ffb8aab8a",
+          "2016/.scalafix/FunctionEndMarkers.scala": "53d0291feef3fe3c14ba911c96db50858209fd642baa6b1a73ad4804787c4742",
+          "2016/.scalafmt.conf": "b2791fe044d79a5cfceffb0f4f5afabce5a9c7874b56b5dce073e01972117b24",
+          "2016/.tool-versions": "e083b84be3727290ae24bd48449cb66a3d852defdfc47f14c56e9d6e75adf73a",
+          "2016/build.sbt": "4b042505fadfdb593d3d8fb25d76b0a1d59f23d496161bc8b401de8b347d394e",
+          "2016/project/build.properties": "a3b9ff27fef238140095357b541756cbfd22196f8583503e1d2b7ea1ddf9793e",
+          "2016/project/plugins.sbt": "c2fed9f4cecd751a2ceaab0fc3c54c95657e7dc627424452e1dc55403bbe4d05",
+          "2016/src/main/resources/inputs/Day15.txt": "e415942b1327acb893539c4bd71c0b6fa31393c9fdcfc28821fd56fff0131d72",
+          "2016/src/main/resources/logback.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
+          "2016/src/main/scala/aoc2016/day15/Disc.scala": "8b553f86e666c9f30cf8fbe9a6af7461953475f6ead1aea5dab038a7d138f6dd",
+          "2016/src/main/scala/aoc2016/day15/Parse.scala": "c3a0f975fee8f9454c7b9838c3a2facbde46f38e73945f17fe75cf0352e13564",
+          "2016/src/main/scala/aoc2016/day15/Part1.scala": "6c060dc42777d46469a56ebc21e0996ebe0c03ee1a1e57c2d62f7b0a863fbadf",
+          "2016/src/main/scala/aoc2016/day15/Part2.scala": "4ee992903c1c153befd7d58a283d9beebbe0c07282f525658b50c647174cf97c",
+          "2016/src/main/scala/aoc2016/day15/ReadFile.scala": "b1a53f8f770d9ec14ce8746158ae91120f56d82741fcdfddb0bb5df64b4b4a87",
+          "2016/src/main/scala/aoc2016/package.scala": "fa1a7229c307685b8f035b345ea8d066df82c6e9e741afe9ce97ae91d2e43672",
+          "2016/src/main/scala/aoc2016/util/AocError.scala": "c0c37b3ea32689cac220f8be04be54f973a2064831eb8108480ec5a1dc3fe99e",
+          "2016/src/main/scala/aoc2016/util/ReadResource.scala": "28a85e8ad3d8e783b56988eb1436844d52d2a29aa9e4131b8e927d515b6427c5",
+          "2016/src/test/resources/logback-test.xml": "95543602f128c0a5c6e037e1b4f98aa27cff290f1310b90d03dc7624b052f6a5",
+          "2016/src/test/resources/tests/GridTest-Large.txt": "62e0cefe3b2a66e1833939eacfcd6ea736d45541527c632aedd8df041a4b840a",
+          "2016/src/test/resources/tests/GridTest-Medium.txt": "2e27b2bc827961a77653f5152cb73ee9b3e0986c56bd149769d64fa5fde35475",
+          "2016/src/test/resources/tests/GridTest-NoBoundaries.txt": "e21a84e37c3f59650ffe6b261953862eca119b910519932f5a1c0f777b0d3786",
+          "2016/src/test/resources/tests/GridTest-NoPath.txt": "76f7bb89a1980b16596f64c8e4785ae72cec1b5dd573dcb44ee91bfef3b9567e",
+          "2016/src/test/resources/tests/GridTest-Simple.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
+          "2016/src/test/resources/tests/GridTest-Small.txt": "fe66eddc6bd5b3c1a1fcd9d902adc353616b78ef878cbb343dbcec784b4cb8c8",
+          "2016/src/test/resources/tests/GridTest-SmallMedium.txt": "0de234a357c61b07bf695979a92cc85a9e6100c5085c253eb3c8dee687ea7e32",
+          "2016/src/test/resources/tests/GridTest.txt": "159304462e6947c9f9558cca60bec1a94374358874fab1d0be9df1a44d275d11",
+          "2016/src/test/scala/aoc2016/day15/Day15Test.scala": "b95f19f1c0fcedc5a25c1d42ddcd11d8ebf25dd84f8d9a6f470b626212135f93"
+        },
+        "formatting": "passed",
+        "owner": {
+          "company": "61fdfdaf-9385-4c0c-a3df-dbe63e3fef33",
+          "generation": "c38cffb3-d798-495a-8b0f-ce65d4a0121e"
+        },
+        "part": 2,
+        "runner": "passed",
+        "schema": 1,
+        "tests": "passed",
+        "verification": {
+          "tree": "ff4dce8dab158f04a5eebd5f700d410e0a2e202b",
+          "yearChecksAt": "2026-11-27T22:39:59.258217+00:00",
+          "yearChecksCommit": "f93a0195b29a11118bd83d97478479710643bd07"
+        },
+        "verifiedAt": "2026-11-27T22:39:59.978361+00:00",
+        "year": 2016
+      },
+      "site": {
+        "account": "b412c0ed92a2fe625f069cc5c6e27115bc25830227e8b4d96cbfa2b5f5eaa3e1",
+        "answers": [
+          "121834",
+          "3208099"
+        ],
+        "complete": 2,
+        "observedAt": "2026-11-27T22:40:01.279434+00:00"
+      },
+      "verdict": "That's the right answer! You are one gold star closer to fixing the sleigh. You have completed Day 15! You can [Shareon Bluesky Twitter Mastodon] this victory or [Return to Your Advent Calendar]."
     }
   },
   "schema": 1
