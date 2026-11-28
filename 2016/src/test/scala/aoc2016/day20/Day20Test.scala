@@ -38,11 +38,25 @@ object Day20Test extends ZIOSpecDefault:
     test("part1 - everything blocked yields -1"):
       assertTrue(part1(Input(Seq(BlockedRange(0, 4294967295L)))) == -1L)
     ,
+    test("part2 - official example counts every unblocked IP"):
+      assertTrue(
+        part2(Input(Seq(BlockedRange(5, 8), BlockedRange(0, 2), BlockedRange(4, 7)))) == 4294967288L
+      )
+    ,
+    test("part2 - everything blocked leaves none"):
+      assertTrue(part2(Input(Seq(BlockedRange(0, 4294967295L)))) == 0L)
+    ,
+    test("part2 - single gap in the middle"):
+      assertTrue(part2(Input(Seq(BlockedRange(0, 4), BlockedRange(6, 10)))) == 4294967286L)
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day20.txt").map(input => assertTrue(input.ranges.size == 1176))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day20.txt").map(input => assertTrue(part1(input) == 4793564L)),
+      readFile("inputs/Day20.txt").map(input => assertTrue(part1(input) == 4793564L))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day20.txt").map(input => assertTrue(part2(input) == 146L)),
   )
 
   end spec
