@@ -34,11 +34,20 @@ object Day18Test extends ZIOSpecDefault:
           Right(38)
       )
     ,
+    test("part2 - streaming count matches the row-based count"):
+      assertTrue(
+        parse("sample", ".^^.^.^^^^").map(input => countSafe(input.firstRow, 10)) == Right(38),
+        parse("sample", "..^^.").map(input => countSafe(input.firstRow, 3)) == Right(6),
+      )
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day18.txt").map(input => assertTrue(input.firstRow.size == 100))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day18.txt").map(input => assertTrue(part1(input) == 1978)),
+      readFile("inputs/Day18.txt").map(input => assertTrue(part1(input) == 1978))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day18.txt").map(input => assertTrue(part2(input) == 20003246)),
   )
 
   end spec
