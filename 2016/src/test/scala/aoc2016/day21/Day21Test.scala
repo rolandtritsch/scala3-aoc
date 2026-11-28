@@ -49,7 +49,17 @@ object Day21Test extends ZIOSpecDefault:
       assertTrue(scramble("abcde", input.operations) == "decab")
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day21.txt").map(input => assertTrue(part1(input) == "bfheacgd")),
+      readFile("inputs/Day21.txt").map(input => assertTrue(part1(input) == "bfheacgd"))
+    ,
+    test("part2 - unscrambling reverses scrambling on the personal input"):
+      readFile("inputs/Day21.txt").map(input =>
+        assertTrue(
+          unscramble(scramble("abcdefgh", input.operations), input.operations) == "abcdefgh"
+        )
+      )
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day21.txt").map(input => assertTrue(part2(input) == "gcehdbfa")),
   )
 
   end spec
