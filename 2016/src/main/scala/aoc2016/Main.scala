@@ -109,6 +109,8 @@ object Main extends ZIOAppDefault:
       _ <- ZIO.logDebug(s"Day17 input: $input17")
       answer17 = day17.part1(input17).getOrElse("no path to the vault")
       _ <- Console.printLine(s"Day17 - part1: $answer17").orDie
+      answer17Part2 = day17.part2(input17).fold("no path to the vault")(_.toString)
+      _ <- Console.printLine(s"Day17 - part2: $answer17Part2").orDie
     yield ()
 
   def run: ZIO[Any, Any, Unit] = program.tapError(e => ZIO.logError(s"run failed: $e"))

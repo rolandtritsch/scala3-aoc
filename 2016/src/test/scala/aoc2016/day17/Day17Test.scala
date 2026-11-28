@@ -25,9 +25,19 @@ object Day17Test extends ZIOSpecDefault:
         parse("sample", "ulqzkmiv").map(part1) == Right(Some("DRURDRUDDLLDLUURRDULRLDUUDDDRR")),
       )
     ,
+    test("part2 - official examples"):
+      assertTrue(
+        parse("sample", "ihgpwlah").map(part2) == Right(Some(370)),
+        parse("sample", "kglvqrro").map(part2) == Right(Some(492)),
+        parse("sample", "ulqzkmiv").map(part2) == Right(Some(830)),
+      )
+    ,
     test("readFile and part1 - personal input"):
       readFile("inputs/Day17.txt")
-        .map(passcode => assertTrue(part1(passcode) == Some("RDRLDRDURD"))),
+        .map(passcode => assertTrue(part1(passcode) == Some("RDRLDRDURD")))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day17.txt").map(passcode => assertTrue(part2(passcode) == Some(596))),
   )
 
   end spec
