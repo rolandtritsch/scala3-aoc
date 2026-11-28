@@ -30,11 +30,19 @@ object Day16Test extends ZIOSpecDefault:
           Right("01100")
       )
     ,
+    test("part2 - official example"):
+      assertTrue(
+        parse("sample", "10000").map(input => checksumFor(input.bits, 20)) == Right("01100")
+      )
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day16.txt").map(input => assertTrue(input.bits.size == 17))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day16.txt").map(input => assertTrue(part1(input) == "10100011010101011")),
+      readFile("inputs/Day16.txt").map(input => assertTrue(part1(input) == "10100011010101011"))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day16.txt").map(input => assertTrue(part2(input) == "01010001101011001")),
   )
 
   end spec
