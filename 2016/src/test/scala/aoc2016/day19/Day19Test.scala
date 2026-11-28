@@ -37,11 +37,28 @@ object Day19Test extends ZIOSpecDefault:
         part1(Input(7)) == 7,
       )
     ,
+    test("part2 - official five-Elf example leaves Elf 2"):
+      assertTrue(part2(Input(5)) == 2)
+    ,
+    test("part2 - small circles"):
+      assertTrue(
+        part2(Input(1)) == 1,
+        part2(Input(2)) == 1,
+        part2(Input(3)) == 3,
+        part2(Input(4)) == 1,
+        part2(Input(6)) == 3,
+        part2(Input(7)) == 5,
+        part2(Input(9)) == 9,
+      )
+    ,
     test("readFile - personal input"):
       readFile("inputs/Day19.txt").map(input => assertTrue(input.elfCount == 3014603))
     ,
     test("part1 - personal input"):
-      readFile("inputs/Day19.txt").map(input => assertTrue(part1(input) == 1834903)),
+      readFile("inputs/Day19.txt").map(input => assertTrue(part1(input) == 1834903))
+    ,
+    test("part2 - personal input"):
+      readFile("inputs/Day19.txt").map(input => assertTrue(part2(input) == 1420280)),
   )
 
   end spec
